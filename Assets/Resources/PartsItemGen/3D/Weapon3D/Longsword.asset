@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1dde3fe41e0f93540bfc37f12bf20cfd, type: 3}
+  m_Name: Longsword
+  m_EditorClassIdentifier: 
+  weaponName: Longsword
+  icon: {fileID: 0}
+  weaponType: LongSword
+  dimension: 1
+  damage: 8
+  parts:
+  - {fileID: 11400000, guid: eabf4946380c70842956e0f9a39a0564, type: 2}
+  - {fileID: 11400000, guid: a98a5bb9a01c2244689487035ea8a8a1, type: 2}
+  - {fileID: 11400000, guid: 0345371039ab7cc48bd4ee3985f4edf8, type: 2}
+  partTotal: 3

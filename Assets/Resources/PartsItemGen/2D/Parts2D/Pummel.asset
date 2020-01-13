@@ -9,11 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 126be377170ca794680018d17ee6a12d, type: 3}
-  m_Name: 2DWeapon2DSword22222
+  m_Script: {fileID: 11500000, guid: 6932758b9b4f0794a98dbbc753ac2002, type: 3}
+  m_Name: Pummel
   m_EditorClassIdentifier: 
-  objectName: 
-  objectType: 
-  mesh: {fileID: 0}
-  sprite: {fileID: 0}
+  partName: Pummel
+  icon: {fileID: 0}
+  partType: 0
   dimension: 0
+  statBoost: 4

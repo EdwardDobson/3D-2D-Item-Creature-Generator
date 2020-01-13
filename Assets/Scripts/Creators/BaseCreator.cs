@@ -12,6 +12,11 @@ public class BaseCreator : MonoBehaviour
     public MeshFilter mesh;
     public int amountToCreate;
     public BaseObject scriptableObject;
+    public WeaponBase weaponObject;
+    public PartBase part;
+    public List<PartBase> parts = new List<PartBase>();
+    public List<string> partsNames = new List<string>();
+
     // Start is called before the first frame update
     void Start()
     {
@@ -23,30 +28,39 @@ public class BaseCreator : MonoBehaviour
     {
         
     }
-    public BaseObject Create(BaseObject _object)
+    /*
+    public void Create(BaseObject _object,int _partTotal)
     {
-        for(int i = 0; i < amountToCreate; ++i)
+        amountToCreate = _partTotal;
+        for (int i = 0; i < amountToCreate; ++i)
         {
-
-            _object.objectName = itemName;
-            _object.dimension = dimension;
-            _object.objectType = itemType;
-            if (dimension == Dimension.e2D)
+           
+            if(_object.objectType.Contains("Weapon") || _object.objectType.Contains("weapon"))
             {
-                _object.sprite = sprite;
-                _object.mesh = null;
+                weaponObject = (WeaponBase)_object;
+                weaponObject.partTotal = _partTotal;
+                if (dimension == Dimension.e2D)
+                {
+                    weaponObject.sprite = sprite;
+                    weaponObject.mesh = null;
+                }
+                else
+                {
+                    weaponObject.mesh = mesh;
+                    weaponObject.sprite = null;
+                }
+             
             }
-            else
-            {
-                _object.mesh = mesh;
-                _object.sprite = null;
-            }
+    
          
+            if(_object.objectType.Contains("part") || _object.objectType.Contains("Part"))
+            {
+                Debug.Log("Making part" + _object.objectName);
+                part = ScriptableObject.CreateInstance<PartBase>();
+                parts.Add(part);
+                partsNames.Add(itemName);
+            }
         }
-        return _object;
-
-
-
     }
-
+    */
 }

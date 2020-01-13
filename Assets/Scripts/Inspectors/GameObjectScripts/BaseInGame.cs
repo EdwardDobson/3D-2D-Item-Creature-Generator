@@ -11,8 +11,10 @@ public class BaseInGame : MonoBehaviour
     public List<string> itemTypesList3D = new List<string>();
     void OnEnable()
     {
+        /*
         itemTypesList2D.Clear();
         itemTypesList3D.Clear();
+        */
     }
     public void findObjects()
     {

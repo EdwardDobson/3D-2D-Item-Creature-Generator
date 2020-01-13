@@ -120,6 +120,75 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!114 &65019848
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6932758b9b4f0794a98dbbc753ac2002, type: 3}
+  m_Name: (Clone)
+  m_EditorClassIdentifier: 
+  partName: Blade
+  icon: {fileID: 0}
+  partType: 2
+  dimension: 0
+  statBoost: 0
+--- !u!114 &116206052
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6932758b9b4f0794a98dbbc753ac2002, type: 3}
+  m_Name: (Clone)
+  m_EditorClassIdentifier: 
+  partName: Blade
+  icon: {fileID: 0}
+  partType: 0
+  dimension: 0
+  statBoost: 0
+--- !u!114 &217476835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6932758b9b4f0794a98dbbc753ac2002, type: 3}
+  m_Name: (Clone)
+  m_EditorClassIdentifier: 
+  partName: Hilt
+  icon: {fileID: 0}
+  partType: 0
+  dimension: 0
+  statBoost: 0
+--- !u!114 &222198188
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ee2643c1047afd4cbc6c0c2b5e8fd7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectName: 
+  objectType: 
+  mesh: {fileID: 0}
+  sprite: {fileID: 0}
+  dimension: 0
+  valueBoost: 0
 --- !u!1 &233188184
 GameObject:
   m_ObjectHideFlags: 0
@@ -203,6 +272,23 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &360858975
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6932758b9b4f0794a98dbbc753ac2002, type: 3}
+  m_Name: (Clone)
+  m_EditorClassIdentifier: 
+  partName: Blade
+  icon: {fileID: 0}
+  partType: 2
+  dimension: 0
+  statBoost: 0
 --- !u!1 &464466511 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5979763464513214709, guid: 2d6a3163457286047917fc175c140b48,
@@ -226,8 +312,484 @@ MonoBehaviour:
   dimension: 0
   sprite: {fileID: 0}
   mesh: {fileID: 0}
-  amountToCreate: 0
+  amountToCreate: 1
   scriptableObject: {fileID: 0}
+  weaponObject: {fileID: 0}
+  part: {fileID: 222198188}
+  parts: []
+  partsNames: []
+--- !u!114 &567571257
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6932758b9b4f0794a98dbbc753ac2002, type: 3}
+  m_Name: (Clone)
+  m_EditorClassIdentifier: 
+  partName: Hilt
+  icon: {fileID: 0}
+  partType: 0
+  dimension: 0
+  statBoost: 0
+--- !u!114 &569339411
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6932758b9b4f0794a98dbbc753ac2002, type: 3}
+  m_Name: (Clone)
+  m_EditorClassIdentifier: 
+  partName: asdsad
+  icon: {fileID: 0}
+  partType: -1
+  dimension: 0
+  statBoost: 0
+--- !u!114 &623563386
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6932758b9b4f0794a98dbbc753ac2002, type: 3}
+  m_Name: (Clone)
+  m_EditorClassIdentifier: 
+  partName: Guard
+  icon: {fileID: 0}
+  partType: 2
+  dimension: 0
+  statBoost: 0
+--- !u!114 &768728972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6932758b9b4f0794a98dbbc753ac2002, type: 3}
+  m_Name: (Clone)
+  m_EditorClassIdentifier: 
+  partName: HEllo
+  icon: {fileID: 0}
+  partType: 0
+  dimension: 0
+  statBoost: 0
+--- !u!1 &809445914
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 809445915}
+  - component: {fileID: 809445916}
+  m_Layer: 0
+  m_Name: WeaponBuilder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &809445915
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 809445914}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &809445916
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 809445914}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e973f06b7129524cba595aa18c32185, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponTypeNames:
+  - Dagger
+  - Axe
+  - Sword
+  - LongSword
+  - GreatSword
+  - Hammer
+  weapons: []
+  weapon: {fileID: 0}
+  partsAvailable2D:
+  - {fileID: 11400000, guid: eabf4946380c70842956e0f9a39a0564, type: 2}
+  - {fileID: 11400000, guid: a98a5bb9a01c2244689487035ea8a8a1, type: 2}
+  partsAvailable3D: []
+  partsAvailable2DNames:
+  - Blade
+  - Hilt
+--- !u!114 &871876865
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6932758b9b4f0794a98dbbc753ac2002, type: 3}
+  m_Name: (Clone)
+  m_EditorClassIdentifier: 
+  partName: asdsad
+  icon: {fileID: 0}
+  partType: -1
+  dimension: 0
+  statBoost: 0
+--- !u!114 &1001264254
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6932758b9b4f0794a98dbbc753ac2002, type: 3}
+  m_Name: (Clone)
+  m_EditorClassIdentifier: 
+  partName: Guard
+  icon: {fileID: 0}
+  partType: 2
+  dimension: 0
+  statBoost: 0
+--- !u!114 &1131285154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6932758b9b4f0794a98dbbc753ac2002, type: 3}
+  m_Name: (Clone)
+  m_EditorClassIdentifier: 
+  partName: Pummel
+  icon: {fileID: 0}
+  partType: 0
+  dimension: 0
+  statBoost: 0
+--- !u!114 &1180703254
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6932758b9b4f0794a98dbbc753ac2002, type: 3}
+  m_Name: (Clone)
+  m_EditorClassIdentifier: 
+  partName: asdsad
+  icon: {fileID: 0}
+  partType: -1
+  dimension: 0
+  statBoost: 0
+--- !u!114 &1252706201
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6932758b9b4f0794a98dbbc753ac2002, type: 3}
+  m_Name: (Clone)
+  m_EditorClassIdentifier: 
+  partName: Pummel
+  icon: {fileID: 0}
+  partType: 1
+  dimension: 0
+  statBoost: 0
+--- !u!114 &1342103884
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6932758b9b4f0794a98dbbc753ac2002, type: 3}
+  m_Name: (Clone)
+  m_EditorClassIdentifier: 
+  partName: Blade
+  icon: {fileID: 0}
+  partType: 1
+  dimension: 0
+  statBoost: 0
+--- !u!114 &1351054225
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6932758b9b4f0794a98dbbc753ac2002, type: 3}
+  m_Name: (Clone)
+  m_EditorClassIdentifier: 
+  partName: HEllo
+  icon: {fileID: 0}
+  partType: 0
+  dimension: 0
+  statBoost: 0
+--- !u!114 &1378284608
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6932758b9b4f0794a98dbbc753ac2002, type: 3}
+  m_Name: (Clone)
+  m_EditorClassIdentifier: 
+  partName: Blade
+  icon: {fileID: 0}
+  partType: 0
+  dimension: 0
+  statBoost: 0
+--- !u!114 &1394142677
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6932758b9b4f0794a98dbbc753ac2002, type: 3}
+  m_Name: (Clone)
+  m_EditorClassIdentifier: 
+  partName: Guard
+  icon: {fileID: 0}
+  partType: 2
+  dimension: 0
+  statBoost: 0
+--- !u!114 &1568259415
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6932758b9b4f0794a98dbbc753ac2002, type: 3}
+  m_Name: (Clone)
+  m_EditorClassIdentifier: 
+  partName: Pummel
+  icon: {fileID: 0}
+  partType: 1
+  dimension: 0
+  statBoost: 0
+--- !u!114 &1579857200
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6932758b9b4f0794a98dbbc753ac2002, type: 3}
+  m_Name: (Clone)
+  m_EditorClassIdentifier: 
+  partName: Guard
+  icon: {fileID: 0}
+  partType: 0
+  dimension: 0
+  statBoost: 0
+--- !u!1 &1606045842
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1606045844}
+  - component: {fileID: 1606045843}
+  m_Layer: 0
+  m_Name: WeaponPartBuilder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1606045843
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1606045842}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86b6aa423f7069348994c2d24a4b8bb5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Parts:
+  - {fileID: 1669113294}
+  - {fileID: 768728972}
+  - {fileID: 1351054225}
+  - {fileID: 1378284608}
+  - {fileID: 1579857200}
+  - {fileID: 567571257}
+  - {fileID: 116206052}
+  - {fileID: 1568259415}
+  - {fileID: 360858975}
+  - {fileID: 1777390292}
+  - {fileID: 1342103884}
+  - {fileID: 1252706201}
+  - {fileID: 1001264254}
+  - {fileID: 623563386}
+  - {fileID: 1394142677}
+  - {fileID: 569339411}
+  - {fileID: 871876865}
+  - {fileID: 1180703254}
+  - {fileID: 1131285154}
+  - {fileID: 2116441154}
+  - {fileID: 65019848}
+  - {fileID: 2068515117}
+  - {fileID: 217476835}
+  - {fileID: 1682155977}
+  - {fileID: 1738953639}
+  PartNames:
+  - Blade
+  - Pummel
+  - Guard
+  - Guard
+  - Guard
+  - asdsad
+  - asdsad
+  - asdsad
+  - Pummel
+  - Pummel
+  - Blade
+  - Guard
+  - Hilt
+  - Hilt
+  - Blade
+  partTypes:
+  - Hilt
+  - Pummel
+  - Blade
+  - Guard
+--- !u!4 &1606045844
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1606045842}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1669113294
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6932758b9b4f0794a98dbbc753ac2002, type: 3}
+  m_Name: (Clone)
+  m_EditorClassIdentifier: 
+  partName: HEllo
+  icon: {fileID: 0}
+  partType: 0
+  dimension: 0
+  statBoost: 0
+--- !u!114 &1682155977
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6932758b9b4f0794a98dbbc753ac2002, type: 3}
+  m_Name: (Clone)
+  m_EditorClassIdentifier: 
+  partName: Hilt
+  icon: {fileID: 0}
+  partType: -1
+  dimension: 0
+  statBoost: 2
+--- !u!114 &1738953639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6932758b9b4f0794a98dbbc753ac2002, type: 3}
+  m_Name: (Clone)
+  m_EditorClassIdentifier: 
+  partName: Blade
+  icon: {fileID: 0}
+  partType: 1
+  dimension: 0
+  statBoost: 2
+--- !u!114 &1777390292
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6932758b9b4f0794a98dbbc753ac2002, type: 3}
+  m_Name: (Clone)
+  m_EditorClassIdentifier: 
+  partName: Blade
+  icon: {fileID: 0}
+  partType: 1
+  dimension: 0
+  statBoost: 0
 --- !u!1 &2034870154
 GameObject:
   m_ObjectHideFlags: 0
@@ -319,6 +881,40 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!114 &2068515117
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6932758b9b4f0794a98dbbc753ac2002, type: 3}
+  m_Name: (Clone)
+  m_EditorClassIdentifier: 
+  partName: Guard
+  icon: {fileID: 0}
+  partType: 2
+  dimension: 0
+  statBoost: 0
+--- !u!114 &2116441154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6932758b9b4f0794a98dbbc753ac2002, type: 3}
+  m_Name: (Clone)
+  m_EditorClassIdentifier: 
+  partName: Pummel
+  icon: {fileID: 0}
+  partType: 1
+  dimension: 0
+  statBoost: 0
 --- !u!1001 &358234261586626741
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -330,6 +926,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: GameObject
+      objectReference: {fileID: 0}
+    - target: {fileID: 5979763464513214709, guid: 2d6a3163457286047917fc175c140b48,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3851081108222622422, guid: 2d6a3163457286047917fc175c140b48,
         type: 3}

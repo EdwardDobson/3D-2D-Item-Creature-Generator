@@ -15,6 +15,7 @@ public class BaseInspector : Editor
     void OnEnable()
     {
         baseInGame = ((MonoBehaviour)target).gameObject.GetComponent<BaseInGame>();
+    
     }
 
     // Update is called once per frame
@@ -25,7 +26,6 @@ public class BaseInspector : Editor
     public override void OnInspectorGUI()
     {
         dimensionIndex = EditorGUILayout.Popup("Dimension", dimensionIndex, dimension);
-        GUILayout.Label("Enter the name of resources folder you wish to add.");
         folderName = EditorGUILayout.TextField("Object Folder Name:", folderName);
 
         if (GUILayout.Button("Add object type"))
@@ -48,7 +48,7 @@ public class BaseInspector : Editor
                     }
                 }
                 CreateFolder();
-                Debug.Log("Creating item " + dimension[dimensionIndex]);
+   
             }
            
         }
