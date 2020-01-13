@@ -9,11 +9,10 @@ public class BaseInGame : MonoBehaviour
     public Object[] objects;
     public List<string> itemTypesList2D = new List<string>();
     public List<string> itemTypesList3D = new List<string>();
-    // Start is called before the first frame update
-void OnEnable()
+    void OnEnable()
     {
         itemTypesList2D.Clear();
-              itemTypesList3D.Clear();
+        itemTypesList3D.Clear();
     }
     public void findObjects()
     {

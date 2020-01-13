@@ -8,11 +8,10 @@ public class BaseInspector : Editor
 {
 
     BaseInGame baseInGame;
-    string[] dimension = new string[] { "2D", "3D" };
-    int dimensionIndex;
-
-    int itemTypeIndex;
-    string folderName = null;
+    protected string[] dimension = new string[] { "2D", "3D" };
+    protected int dimensionIndex;
+    protected int itemTypeIndex;
+    protected string folderName = null;
     void OnEnable()
     {
         baseInGame = ((MonoBehaviour)target).gameObject.GetComponent<BaseInGame>();
@@ -25,49 +24,42 @@ public class BaseInspector : Editor
     }
     public override void OnInspectorGUI()
     {
-
         dimensionIndex = EditorGUILayout.Popup("Dimension", dimensionIndex, dimension);
         GUILayout.Label("Enter the name of resources folder you wish to add.");
-        folderName = EditorGUILayout.TextField("", folderName);
+        folderName = EditorGUILayout.TextField("Object Folder Name:", folderName);
 
         if (GUILayout.Button("Add object type"))
         {
-            if (dimensionIndex == 0)
+            if (folderName + dimension[dimensionIndex] != "")
             {
-                if (!baseInGame.itemTypesList2D.Contains(folderName) && folderName != "")
+                if (dimensionIndex == 0)
                 {
-                    baseInGame.itemTypesList2D.Add(folderName);
-                    Debug.Log("Creating item 2D");
+                    if (!baseInGame.itemTypesList2D.Contains(folderName + dimension[dimensionIndex]))
+                    {
+                        baseInGame.itemTypesList2D.Add(folderName + dimension[dimensionIndex]);
+                    }
                 }
+                else if (!baseInGame.itemTypesList3D.Contains(folderName + dimension[dimensionIndex]))
+                {
+                    if (!baseInGame.itemTypesList3D.Contains(folderName + dimension[dimensionIndex]))
+                    {
+                        baseInGame.itemTypesList3D.Add(folderName + dimension[dimensionIndex]);
+                       
+                    }
+                }
+                CreateFolder();
+                Debug.Log("Creating item " + dimension[dimensionIndex]);
             }
-            else if (!baseInGame.itemTypesList3D.Contains(folderName) && folderName != "")
-            {
-
-                baseInGame.itemTypesList3D.Add(folderName);
-                Debug.Log("Creating item 3D");
-
-            }
-            baseInGame.filePath = "/" + dimension[dimensionIndex] + "/" + folderName;
-            if (folderName != "")
-            {
-                string s = AssetDatabase.CreateFolder("Assets/Resources/PartsItemGen/" + dimension[dimensionIndex], folderName);
-                string newFolderPath = AssetDatabase.GUIDToAssetPath(s);
-                Debug.Log("Creating Folder at: " + newFolderPath);
-
-            }
-
+           
         }
+    
         RemoveItemType();
+        baseInGame.filePath = "/" + dimension[dimensionIndex] + "/" + folderName;
         if (dimensionIndex == 0)
-        {
-            Debug.Log("2d mode");
-            itemTypeIndex = EditorGUILayout.Popup("ItemTypes", itemTypeIndex, baseInGame.itemTypesList2D.ToArray());
-        }
+        itemTypeIndex = EditorGUILayout.Popup("ItemTypes", itemTypeIndex, baseInGame.itemTypesList2D.ToArray());
         else
-        {
-            Debug.Log("3d mode");
             itemTypeIndex = EditorGUILayout.Popup("ItemTypes", itemTypeIndex, baseInGame.itemTypesList3D.ToArray());
-        }
+
         if (GUILayout.Button("Update Object List"))
         {
             baseInGame.findObjects();
@@ -77,23 +69,31 @@ public class BaseInspector : Editor
             }
 
         }
+      
     }
     void RemoveItemType()
     {
         if (GUILayout.Button("Remove Item Type"))
         {
-            if (dimensionIndex == 0)
+            if(dimensionIndex == 0)
             {
-                AssetDatabase.DeleteAsset("Assets/Resources/PartsItemGen/2D/" + baseInGame.itemTypesList2D[itemTypeIndex]);
-                Debug.Log(baseInGame.itemTypesList2D[itemTypeIndex]);
+                AssetDatabase.DeleteAsset("Assets/Resources/PartsItemGen/" + dimension[dimensionIndex] + "/" + baseInGame.itemTypesList2D[itemTypeIndex]);
                 baseInGame.itemTypesList2D.RemoveAt(itemTypeIndex);
             }
             else
             {
-                AssetDatabase.DeleteAsset("Assets/Resources/PartsItemGen/2D/" + baseInGame.itemTypesList2D[itemTypeIndex]);
+                AssetDatabase.DeleteAsset("Assets/Resources/PartsItemGen/" + dimension[dimensionIndex] + "/" + baseInGame.itemTypesList3D[itemTypeIndex]);
                 baseInGame.itemTypesList3D.RemoveAt(itemTypeIndex);
-                Debug.Log(baseInGame.itemTypesList3D[itemTypeIndex]);
             }
+        }
+    }
+    void CreateFolder()
+    {
+        if (folderName != "")
+        {
+            string s = AssetDatabase.CreateFolder("Assets/Resources/PartsItemGen/" + dimension[dimensionIndex], folderName + dimension[dimensionIndex]);
+            string newFolderPath = AssetDatabase.GUIDToAssetPath(s);
+            Debug.Log("Creating Folder at: " + newFolderPath);
         }
     }
 

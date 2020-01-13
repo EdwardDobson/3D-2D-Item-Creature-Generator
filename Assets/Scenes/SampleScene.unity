@@ -203,6 +203,31 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &464466511 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5979763464513214709, guid: 2d6a3163457286047917fc175c140b48,
+    type: 3}
+  m_PrefabInstance: {fileID: 358234261586626741}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &464466512
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 464466511}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5e199d6e726b624096da223ceaac6de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemName: Sword
+  itemType: Weapon
+  dimension: 0
+  sprite: {fileID: 0}
+  mesh: {fileID: 0}
+  amountToCreate: 0
+  scriptableObject: {fileID: 0}
 --- !u!1 &2034870154
 GameObject:
   m_ObjectHideFlags: 0
