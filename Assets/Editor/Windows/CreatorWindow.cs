@@ -1,17 +1,27 @@
 ﻿using UnityEngine;
 using UnityEditor;
-
+using System;
+using System.IO;
 public class CreatorWindow : EditorWindow
 {
-    protected string currentWindowName = "";
+    static CreatorWindow window;
     string[] m_buttonNames = { "Material Builder", "Weapon Builder", "Weapon Part Builder", "Armour Builder", "Armour Part Builder","Creature Builder",
     "Creature Part Builder","Potion Builder" };
     Rect m_buttonSize;
+    bool m_aspectMode;
+    int m_materialID;
+
+    protected string currentWindowName = "";
     protected int screenID;
-    static CreatorWindow window;
+    protected string itemName;
+    protected string itemDescription;
+    protected ScriptableObjectData objectData;
+    public Sprite itemTexture;
+
     [MenuItem("Window/Item + Creature Builder")]
     static void Init()
     {
+
         window = (CreatorWindow)GetWindow(typeof(CreatorWindow));
         window.currentWindowName = "Builder";
         window.Show();
@@ -19,10 +29,8 @@ public class CreatorWindow : EditorWindow
     void OnGUI()
     {
         EditorGUILayout.BeginHorizontal();
-        GUIStyle style = new GUIStyle(GUI.skin.GetStyle("label"));
-        style.fontSize = 25;
-        style.padding = new RectOffset(15, 0, 15, 0);
-        GUILayout.Label("Item + Creature Builder", style);
+
+        CreateLabel(25, new RectOffset(15, 0, 15, 0), "Item + Creature Builder");
         Buttons();
 
         EditorGUILayout.EndHorizontal();
@@ -63,12 +71,12 @@ public class CreatorWindow : EditorWindow
                         window = (PotionBuilderWindow)GetWindow(typeof(PotionBuilderWindow));
                         break;
                 }
-                if(window != null)
+                if (window != null)
                 {
                     window.currentWindowName = m_buttonNames[i];
                     window.Show();
                 }
-              
+
                 Debug.Log("Clicked " + m_buttonNames[i] + screenID);
             }
 
@@ -78,18 +86,83 @@ public class CreatorWindow : EditorWindow
     //Contains the basic blocks for a window
     protected void BaseFunction()
     {
-        EditorGUILayout.BeginHorizontal();
-        GUIStyle style = new GUIStyle(GUI.skin.GetStyle("label"));
-        style.fontSize = 25;
-        style.padding = new RectOffset(15, 0, 15, 0);
-        GUILayout.Label(currentWindowName, style);
+
+        CreateLabel(25, new RectOffset(15, 0, 15, 0), currentWindowName);
+        CreateLabel(15, new RectOffset(15, 0, 15, 0), "Item + Creature Name");
+        itemName = GUILayout.TextField(itemName);
+        CreateLabel(15, new RectOffset(15, 0, 25, 0), "Description");
+        itemDescription = GUILayout.TextField(itemDescription);
+
+        GUIStyle styleB = new GUIStyle(GUI.skin.GetStyle("label"));
+        styleB.fontSize = 15;
+        styleB.padding = new RectOffset(15, 0, 15, 0);
+
+        UnityEngine.Object[] materials = Resources.LoadAll("Materials");
+        string[] MaterialNames = Array.ConvertAll(materials, x => x.ToString());
+
+        m_materialID = EditorGUILayout.Popup("Materials", m_materialID, MaterialNames);
+
+        if (m_aspectMode)
+        {
+            GUILayout.Label("Current Mode 3D", styleB);
+            m_aspectMode = GUILayout.Toggle(m_aspectMode, "3D");
+        }
+        else
+        {
+            GUILayout.Label("Current Mode 2D", styleB);
+            m_aspectMode = GUILayout.Toggle(m_aspectMode, "2D");
+        }
+        itemTexture = (Sprite)EditorGUILayout.ObjectField("Icon", itemTexture, typeof(Sprite), true);
+        objectData = (ScriptableObjectData)EditorGUILayout.ObjectField("Data", objectData, typeof(ScriptableObjectData), false);
+        GUILayout.FlexibleSpace();
         if (GUILayout.Button("Close"))
         {
             screenID = 0;
             Debug.Log("Closing window");
             this.Close();
         }
-        EditorGUILayout.EndHorizontal();
+    }
+    public void CreateLabel(int _fontSize, RectOffset _rect, string _labelText)
+    {
+        GUIStyle style = new GUIStyle(GUI.skin.GetStyle("label"));
+        style.fontSize = _fontSize;
+        style.padding = _rect;
+        GUILayout.Label(_labelText, style);
+    }
+    protected void BuildItem()
+    {
+        GameObject item = new GameObject();
+        item.name = itemName;
+        string itemNameCombined = itemName + ".prefab";
+        if (itemNameCombined != null && objectData != null)
+        {
+            objectData.Sprite = itemTexture;
+            if (m_aspectMode)//3D Mode
+            {
+                item.AddComponent<BoxCollider>();
+                item.AddComponent<MeshFilter>();
+                item.AddComponent<MeshRenderer>();
+                item.GetComponent<MeshFilter>().mesh = objectData.Mesh;
+            }
+            else//2D Mode
+            {
+                item.AddComponent<BoxCollider2D>();
+                item.AddComponent<SpriteRenderer>();
+                item.GetComponent<SpriteRenderer>().sprite = objectData.Sprite;
+            }
+            item.AddComponent<ScriptableObjectHolder>();
+            if (item.GetComponent<ScriptableObjectHolder>() != null)
+            {
+                ScriptableObjectData clone = Instantiate(objectData);
+                AssetDatabase.CreateAsset(clone, "Assets/Resources/Materials/" + itemName + ".asset");
+                item.GetComponent<ScriptableObjectHolder>().data = (ScriptableObjectData)AssetDatabase.LoadAssetAtPath("Assets/Resources/Materials/" + itemName + ".asset", typeof(ScriptableObjectData));
+                Debug.Log("Item buff value " + item.GetComponent<ScriptableObjectHolder>().data.BuffValue);
+                PrefabUtility.SaveAsPrefabAssetAndConnect(item, "Assets/BuiltItems/" + itemNameCombined, InteractionMode.UserAction);
+                AssetDatabase.Refresh();
+
+            }
+
+        }
     }
 }
 
