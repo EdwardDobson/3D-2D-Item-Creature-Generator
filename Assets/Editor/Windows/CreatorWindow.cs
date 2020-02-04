@@ -29,15 +29,17 @@ public class CreatorWindow : EditorWindow
 
         window = (CreatorWindow)GetWindow(typeof(CreatorWindow));
         window.currentWindowName = "Builder";
+        window.maxSize = new Vector2(245, 550);
+        window.minSize = window.maxSize;
         window.Show();
     }
     void OnGUI()
     {
         EditorGUILayout.BeginHorizontal();
 
-        CreateLabel(25, new RectOffset(15, 0, 15, 0), "Item + Creature Builder");
+
+        CreateLabel(20, new RectOffset(15, 0, 15, 0), "Item + Creature \nBuilder\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCreated by\nEdward Dobson");
         Buttons();
-        
         EditorGUILayout.EndHorizontal();
 
     }
@@ -45,7 +47,7 @@ public class CreatorWindow : EditorWindow
     {
         for (int i = 0; i < m_buttonNames.Length; ++i)
         {
-            m_buttonSize = new Rect(20, 55 + i * 40, 140, 30);
+            m_buttonSize = new Rect(20, 95 + i * 50, 140, 30);
             if (GUI.Button(m_buttonSize, m_buttonNames[i]))
             {
                 screenID = i + 1;
