@@ -9,11 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6932758b9b4f0794a98dbbc753ac2002, type: 3}
-  m_Name: PartsItemGene2DGuard
+  m_Script: {fileID: 11500000, guid: 7773514e10543974d87f318260e6da82, type: 3}
+  m_Name: Test Sword
   m_EditorClassIdentifier: 
-  partName: Guard
-  icon: {fileID: 0}
-  partType: 2
-  dimension: 0
-  startBoost: 0
+  Name: Handle
+  Description: asdasdasd
+  Sprite: {fileID: 10915, guid: 0000000000000000f000000000000000, type: 0}
+  Mesh: {fileID: 0}
+  BuffValueMaterial: 5
+  type: 3
+  BuffValuePart: 5

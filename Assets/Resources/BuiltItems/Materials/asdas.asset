@@ -10,9 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7773514e10543974d87f318260e6da82, type: 3}
-  m_Name: Iron2
+  m_Name: asdas
   m_EditorClassIdentifier: 
-  Sprite: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
+  Name: Handle
+  Description: asdasdasd
+  Sprite: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
   Mesh: {fileID: 0}
-  BuffValue: 4
-  IsMaterial: 1
+  BuffValueMaterial: 5
+  type: 0
+  BuffValuePart: 5

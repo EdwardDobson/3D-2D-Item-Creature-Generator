@@ -11,15 +11,14 @@ public class MaterialWindow : CreatorWindow
 
         if (objectData != null)
         {
-            objectData.BuffValue = m_buffValue;
+            objectData.BuffValueMaterial = m_buffValue;
             if (itemName != "" && itemDescription != "")
             {
-                Debug.Log("can build");
                 if (GUILayout.Button("Build Material"))
                 {
-                    objectData.IsMaterial = true;
-                    BuildItem();
-                    DestroyImmediate(GameObject.Find(itemName));
+                    objectData.type = ItemType.eMaterial;
+                    BuildItem("Materials",objectData.type);
+                 
                 }
             }
         }
