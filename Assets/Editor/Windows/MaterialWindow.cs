@@ -7,8 +7,8 @@ public class MaterialWindow : CreatorWindow
     {
         BaseFunction();
         m_buffValue = EditorGUILayout.FloatField("Buff Value: ", m_buffValue);
-     
-   
+        CloseButton();
+
         if (objectData != null)
         {
             objectData.BuffValue = m_buffValue;

@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 using UnityEditor;
 using System;
 using System.IO;
@@ -10,12 +12,15 @@ public class CreatorWindow : EditorWindow
     Rect m_buttonSize;
     bool m_aspectMode;
     int m_materialID;
+    List<string> m_MatNames = new List<string>();
+    List<ScriptableObjectData> m_Mats = new List<ScriptableObjectData>();
 
     protected string currentWindowName = "";
     protected int screenID;
     protected string itemName;
     protected string itemDescription;
     protected ScriptableObjectData objectData;
+
     public Sprite itemTexture;
 
     [MenuItem("Window/Item + Creature Builder")]
@@ -32,7 +37,7 @@ public class CreatorWindow : EditorWindow
 
         CreateLabel(25, new RectOffset(15, 0, 15, 0), "Item + Creature Builder");
         Buttons();
-
+        
         EditorGUILayout.EndHorizontal();
 
     }
@@ -97,11 +102,22 @@ public class CreatorWindow : EditorWindow
         styleB.fontSize = 15;
         styleB.padding = new RectOffset(15, 0, 15, 0);
 
+
         UnityEngine.Object[] materials = Resources.LoadAll("Materials");
+        for (int i = 0; i < materials.Length; i++)
+        {
+            if(!m_Mats.Contains((ScriptableObjectData)materials[i]))
+                m_Mats.Add((ScriptableObjectData)materials[i]);
+        }
+
         string[] MaterialNames = Array.ConvertAll(materials, x => x.ToString());
+        for (int i = 0; i < MaterialNames.Length; i++)
+        {
+            if(!m_MatNames.Contains(MaterialNames[i]))
+                m_MatNames.Add(MaterialNames[i].Substring(0, MaterialNames[i].IndexOf("(")));
+        }
 
-        m_materialID = EditorGUILayout.Popup("Materials", m_materialID, MaterialNames);
-
+        itemTexture = (Sprite)EditorGUILayout.ObjectField("Icon", itemTexture, typeof(Sprite), true);
         if (m_aspectMode)
         {
             GUILayout.Label("Current Mode 3D", styleB);
@@ -112,15 +128,23 @@ public class CreatorWindow : EditorWindow
             GUILayout.Label("Current Mode 2D", styleB);
             m_aspectMode = GUILayout.Toggle(m_aspectMode, "2D");
         }
-        itemTexture = (Sprite)EditorGUILayout.ObjectField("Icon", itemTexture, typeof(Sprite), true);
         objectData = (ScriptableObjectData)EditorGUILayout.ObjectField("Data", objectData, typeof(ScriptableObjectData), false);
+     
+    }
+    public void CloseButton()
+    {
         GUILayout.FlexibleSpace();
         if (GUILayout.Button("Close"))
         {
             screenID = 0;
             Debug.Log("Closing window");
-            this.Close();
+            Close();
         }
+    }
+    protected void ShowMaterialList()
+    {
+        m_materialID = EditorGUILayout.Popup("Materials", m_materialID, m_MatNames.ToArray());
+        itemTexture = m_Mats[m_materialID].Sprite;
     }
     public void CreateLabel(int _fontSize, RectOffset _rect, string _labelText)
     {
@@ -154,10 +178,15 @@ public class CreatorWindow : EditorWindow
             if (item.GetComponent<ScriptableObjectHolder>() != null)
             {
                 ScriptableObjectData clone = Instantiate(objectData);
-                AssetDatabase.CreateAsset(clone, "Assets/Resources/Materials/" + itemName + ".asset");
-                item.GetComponent<ScriptableObjectHolder>().data = (ScriptableObjectData)AssetDatabase.LoadAssetAtPath("Assets/Resources/Materials/" + itemName + ".asset", typeof(ScriptableObjectData));
-                Debug.Log("Item buff value " + item.GetComponent<ScriptableObjectHolder>().data.BuffValue);
-                PrefabUtility.SaveAsPrefabAssetAndConnect(item, "Assets/BuiltItems/" + itemNameCombined, InteractionMode.UserAction);
+             
+                    AssetDatabase.CreateAsset(clone, "Assets/Resources/Materials/" + itemName + ".asset");
+                    item.GetComponent<ScriptableObjectHolder>().data = (ScriptableObjectData)AssetDatabase.LoadAssetAtPath("Assets/Resources/Materials/" + itemName + ".asset", typeof(ScriptableObjectData));
+                    Debug.Log("Item buff value " + item.GetComponent<ScriptableObjectHolder>().data.BuffValue);
+              
+                    item.GetComponent<ScriptableObjectHolder>().data = (ScriptableObjectData)AssetDatabase.LoadAssetAtPath("Assets/Resources/Materials/" + itemName + ".asset", typeof(ScriptableObjectData));
+                    PrefabUtility.SaveAsPrefabAssetAndConnect(item, "Assets/BuiltItems/" + itemNameCombined, InteractionMode.UserAction);
+                 
+                
                 AssetDatabase.Refresh();
 
             }
