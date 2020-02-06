@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7773514e10543974d87f318260e6da82, type: 3}
   m_Name: Copper
   m_EditorClassIdentifier: 
-  Name: Handle
-  Description: asdasdasd
-  Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  Name: Copper
+  Description: Copper Bar
+  Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
   Mesh: {fileID: 0}
-  BuffValueMaterial: 5
+  BuffValueMaterial: 2
   type: 0
-  BuffValuePart: 5
+  BuffValuePart: 0

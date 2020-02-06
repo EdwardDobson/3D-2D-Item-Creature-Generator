@@ -12,15 +12,18 @@ public class CreatorWindow : EditorWindow
     Rect m_buttonSize;
     bool m_aspectMode;
     List<string> m_MatNames = new List<string>();
-
+    List<string> m_WeaponPartNames = new List<string>();
+    bool m_loadData = true;
     protected string currentWindowName = "";
     protected int screenID;
     protected string itemName;
     protected string itemDescription;
     protected ScriptableObjectData objectData;
+    protected Weapon weaponData;
     protected int  materialID;
     protected List<ScriptableObjectData>  Mats = new List<ScriptableObjectData>();
-
+    protected List<ScriptableObjectData> WeaponParts = new List<ScriptableObjectData>();
+    protected int[] WeaponPartsID = new int[4];
     public Sprite itemTexture;
 
     [MenuItem("Item + Creature Builder/Builder")]
@@ -34,7 +37,6 @@ public class CreatorWindow : EditorWindow
     }
     void OnGUI()
     {
-      
         EditorGUILayout.BeginHorizontal();
         CreateLabel(20, new RectOffset(15, 0, 15, 0), "Item + Creature \nBuilder\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCreated by\nEdward Dobson");
         Buttons();
@@ -48,11 +50,13 @@ public class CreatorWindow : EditorWindow
             m_buttonSize = new Rect(20, 95 + i * 50, 140, 30);
             if (GUI.Button(m_buttonSize, m_buttonNames[i]))
             {
+               
                 screenID = i + 1;
                 switch (screenID)
                 {
                     case 1:
                         m_window = (MaterialWindow)GetWindow(typeof(MaterialWindow));
+             
                         break;
                     case 2:
                         m_window = (WeaponBuilderWindow)GetWindow(typeof(WeaponBuilderWindow));
@@ -108,8 +112,17 @@ public class CreatorWindow : EditorWindow
             GUILayout.Label("Current Mode 2D", styleB);
             m_aspectMode = GUILayout.Toggle(m_aspectMode, "2D");
         }
-        objectData = (ScriptableObjectData)EditorGUILayout.ObjectField("Data", objectData, typeof(ScriptableObjectData), false);
-
+        if(m_loadData)
+        {
+            objectData = Resources.Load<ScriptableObjectData>("BuiltItems/ScriptableObjectData/Material");
+            weaponData = Resources.Load<Weapon>("BuiltItems/ScriptableObjectData/Weapon");
+            Debug.Log("Loading data");
+            m_loadData = false;
+        }
+   
+        //  Debug.Log("Object data " + objectData.name);
+        //   objectData = (ScriptableObjectData)EditorGUILayout.ObjectField("Data", objectData, typeof(ScriptableObjectData), false);
+     //   weaponData = (Weapon)EditorGUILayout.ObjectField("Weapon Data", weaponData, typeof(Weapon), false);
     }
     public void CloseButton()
     {
@@ -138,14 +151,60 @@ public class CreatorWindow : EditorWindow
                 m_MatNames.Add(MaterialNames[i].Substring(0, MaterialNames[i].IndexOf("(")));
         }
         materialID = EditorGUILayout.Popup(_dir, materialID, m_MatNames.ToArray());
+  
+        if (m_MatNames.Count > Mats.Count)
+            m_MatNames.Clear();
     }
- 
+    protected void ShowWeaponPartsList()
+    {
+        UnityEngine.Object[] parts = Resources.LoadAll("BuiltItems/WeaponParts", typeof(ScriptableObjectData));
+        for (int i = 0; i < parts.Length; i++)
+        {
+            if (!WeaponParts.Contains((ScriptableObjectData)parts[i]))
+                WeaponParts.Add((ScriptableObjectData)parts[i]);
+        }
+        string[] PartsNames = Array.ConvertAll(parts, x => x.ToString());
+        for (int i = 0; i < PartsNames.Length; i++)
+        {
+            if (!m_WeaponPartNames.Contains(PartsNames[i]))
+                m_WeaponPartNames.Add(PartsNames[i].Substring(0, PartsNames[i].IndexOf("(")));
+        }
+        WeaponPartsID[0] = EditorGUILayout.Popup("Slot 1", WeaponPartsID[0], m_WeaponPartNames.ToArray());
+        WeaponPartsID[1] = EditorGUILayout.Popup("Slot 2", WeaponPartsID[1], m_WeaponPartNames.ToArray());
+        WeaponPartsID[2] = EditorGUILayout.Popup("Slot 3", WeaponPartsID[2], m_WeaponPartNames.ToArray());
+        WeaponPartsID[3] = EditorGUILayout.Popup("Slot 4", WeaponPartsID[3], m_WeaponPartNames.ToArray());
+        if (m_WeaponPartNames.Count > WeaponParts.Count)
+            m_WeaponPartNames.Clear();
+
+    }
     public void CreateLabel(int _fontSize, RectOffset _rect, string _labelText)
     {
         GUIStyle style = new GUIStyle(GUI.skin.GetStyle("label"));
         style.fontSize = _fontSize;
         style.padding = _rect;
         GUILayout.Label(_labelText, style);
+    }
+    protected void ClearObjectData()
+    {
+        objectData.Name = "";
+        objectData.Description = "";
+        objectData.Sprite = null;
+        objectData.Mesh = null;
+        objectData.type = ItemType.eMaterial;
+        objectData.BuffValueMaterial = 0;
+        objectData.BuffValuePart = 0;
+        weaponData.Name = "";
+        weaponData.Description = "";
+        weaponData.Sprite = null;
+        weaponData.Mesh = null;
+        weaponData.type = ItemType.eWeapon;
+        weaponData.BuffValueMaterial = 0;
+        weaponData.BuffValuePart = 0;
+        weaponData.Slot1 = null;
+        weaponData.Slot2 = null;
+        weaponData.Slot3 = null;
+        weaponData.Slot4 = null;
+        weaponData.TotalDamage = 0;
     }
     //Handles building items/creature parts
     protected void BuildItem(string _dir, ItemType _type)
@@ -172,18 +231,28 @@ public class CreatorWindow : EditorWindow
             item.AddComponent<ScriptableObjectHolder>();
             if (item.GetComponent<ScriptableObjectHolder>() != null)
             {
-                ScriptableObjectData clone = Instantiate(objectData);
-                if (clone.type == _type)
+
+                if (_type != ItemType.eWeapon)
                 {
+                    ScriptableObjectData clone = Instantiate(objectData);
                     AssetDatabase.CreateAsset(clone, "Assets/Resources/BuiltItems/" + _dir + "/" + itemName + ".asset");
                     item.GetComponent<ScriptableObjectHolder>().data = (ScriptableObjectData)AssetDatabase.LoadAssetAtPath("Assets/Resources/BuiltItems/" + _dir + "/" + itemName + ".asset", typeof(ScriptableObjectData));
                     PrefabUtility.SaveAsPrefabAssetAndConnect(item, "Assets/Resources/BuiltItems/" + _dir + "/" + itemNameCombined, InteractionMode.UserAction);
                 }
+                else
+                {
+                    Weapon clone = Instantiate(weaponData);
+                    AssetDatabase.CreateAsset(clone, "Assets/Resources/BuiltItems/" + _dir + "/" + itemName + ".asset");
+                    item.GetComponent<ScriptableObjectHolder>().data = (Weapon)AssetDatabase.LoadAssetAtPath("Assets/Resources/BuiltItems/" + _dir + "/" + itemName + ".asset", typeof(Weapon));
+                    PrefabUtility.SaveAsPrefabAssetAndConnect(item, "Assets/Resources/BuiltItems/" + _dir + "/" + itemNameCombined, InteractionMode.UserAction);
+                    Debug.Log("Building");
+                }
+                
                 DestroyImmediate(GameObject.Find(itemName));
-           
+              
           
                 AssetDatabase.Refresh();
-
+                ClearObjectData();
             }
 
         }

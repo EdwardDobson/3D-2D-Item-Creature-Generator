@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7773514e10543974d87f318260e6da82, type: 3}
-  m_Name: Handle
+  m_Name: Copper Pummel
   m_EditorClassIdentifier: 
-  Name: Handle
-  Description: Iron
-  Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  Name: Copper Pummel
+  Description: Copper
+  Sprite: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
   Mesh: {fileID: 0}
   BuffValueMaterial: 0
   type: 1
-  BuffValuePart: 4
+  BuffValuePart: 2

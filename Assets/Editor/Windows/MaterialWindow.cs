@@ -11,14 +11,17 @@ public class MaterialWindow : CreatorWindow
 
         if (objectData != null)
         {
+           
             objectData.BuffValueMaterial = m_buffValue;
             if (itemName != "" && itemDescription != "")
             {
                 if (GUILayout.Button("Build Material"))
                 {
+                    objectData.Sprite = itemTexture;
+                    objectData.Name = itemName;
+                    objectData.Description = itemDescription;
                     objectData.type = ItemType.eMaterial;
                     BuildItem("Materials",objectData.type);
-                 
                 }
             }
         }

@@ -2,28 +2,28 @@
 using UnityEditor;
 public class WeaponPartWindow : CreatorWindow
 {
-
-  
-    void OnGUI()
+   void OnGUI()
     {
    
         BaseFunction();
+        ShowMaterialList("Materials");
         if (itemName != "" && itemDescription != "")
         {
-            ShowMaterialList("Materials");
-         
+   
+
             if (GUILayout.Button("Build Weapon Part"))
             {
+                objectData.Sprite = itemTexture;
                 objectData.Name = itemName;
                 objectData.Description = itemDescription;
                 objectData.BuffValuePart = Mats[materialID].BuffValueMaterial;
                 objectData.BuffValueMaterial = 0;
                 objectData.type = ItemType.eWeaponPart;
-                objectData.Sprite = itemTexture;
+                
                 BuildItem("WeaponParts",objectData.type);
              
             }
         }
         CloseButton();
-    }
+   }
 }

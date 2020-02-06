@@ -4,5 +4,5 @@ using UnityEngine;
 [ExecuteAlways]
 public class ScriptableObjectHolder : MonoBehaviour
 {
-    public ScriptableObjectData data;
+    public ScriptableObject data;
 }

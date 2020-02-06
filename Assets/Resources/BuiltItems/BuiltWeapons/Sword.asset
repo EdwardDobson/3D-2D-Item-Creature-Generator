@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8909bfcf64f6ea46b6907cfeb33728f, type: 3}
+  m_Name: Sword
+  m_EditorClassIdentifier: 
+  Name: Sword
+  Description: Iron
+  Sprite: {fileID: 0}
+  Mesh: {fileID: 0}
+  BuffValueMaterial: 0
+  type: 3
+  BuffValuePart: 0
+  Slot1: {fileID: 11400000, guid: 9c97d12843e948b40bcd67f4718a745e, type: 2}
+  Slot2: {fileID: 11400000, guid: e3f155a583d52ed48a10389bec31434e, type: 2}
+  Slot3: {fileID: 11400000, guid: f2dcb0c473c32cd499b2889bda98036c, type: 2}
+  Slot4: {fileID: 11400000, guid: 9ba4491c91596934383e4663aaab4524, type: 2}
+  TotalDamage: 16
