@@ -112,8 +112,9 @@ public class CreatorWindow : EditorWindow
             {
                 if (!RaritiesList.Contains(r))
                     RaritiesList.Add(r);
+                Debug.Log("Rarities name " + r.name);
             }
-            Debug.Log("Rarities list " + RaritiesList.Count);
+      
             Debug.Log("Loading data");
             m_loadData = false;
         }
