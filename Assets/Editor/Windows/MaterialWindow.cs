@@ -12,7 +12,7 @@ public class MaterialWindow : CreatorWindow
         if (objectData != null)
         {
            
-            objectData.BuffValueMaterial = m_buffValue * rarityBuff;
+            objectData.BuffValueMaterial = m_buffValue * RaritiesList[rarityID].BuffMuliplier;
             if (itemName != "" && itemDescription != "")
             {
                 if (GUILayout.Button("Build Material"))

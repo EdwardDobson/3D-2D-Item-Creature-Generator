@@ -8,13 +8,13 @@ public class CreatorWindow : EditorWindow
 {
     static CreatorWindow m_window;
     string[] m_buttonNames = { "Material Builder", "Weapon Builder", "Weapon Part Builder", "Armour Builder", "Armour Part Builder","Creature Builder",
-    "Creature Part Builder","Potion Builder" };
+    "Creature Part Builder","Potion Builder", "Rarity Window" };
     Rect m_buttonSize;
     bool m_aspectMode;
     List<string> m_MatNames = new List<string>();
     List<string> m_WeaponPartNames = new List<string>();
     bool m_loadData = true;
-  
+
 
     protected string currentWindowName = "";
     protected int screenID;
@@ -24,8 +24,10 @@ public class CreatorWindow : EditorWindow
     protected Weapon weaponData;
     protected int materialID;
     protected int rarityID;
-    protected List<ScriptableObjectData>  Mats = new List<ScriptableObjectData>();
+    protected List<ScriptableObjectData> Mats = new List<ScriptableObjectData>();
     protected List<ScriptableObjectData> WeaponParts = new List<ScriptableObjectData>();
+    protected UnityEngine.Object[] Rarities;
+    protected List<RarityBaseData> RaritiesList = new List<RarityBaseData>();
     protected int[] WeaponPartsID = new int[4];
     protected float rarityBuff = 1;
 
@@ -36,14 +38,14 @@ public class CreatorWindow : EditorWindow
     {
         m_window = (CreatorWindow)GetWindow(typeof(CreatorWindow));
         m_window.currentWindowName = "Builder";
-        m_window.maxSize = new Vector2(200, 550);
+        m_window.maxSize = new Vector2(200, 600);
         m_window.minSize = m_window.maxSize;
         m_window.Show();
     }
     void OnGUI()
     {
         EditorGUILayout.BeginHorizontal();
-        CreateLabel(20, new RectOffset(15, 0, 15, 0), "Item + Creature \nBuilder\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCreated by\nEdward Dobson");
+        CreateLabel(20, new RectOffset(15, 0, 15, 0), "Item + Creature \nBuilder\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCreated by\nEdward Dobson");
         Buttons();
         EditorGUILayout.EndHorizontal();
     }
@@ -55,13 +57,13 @@ public class CreatorWindow : EditorWindow
             m_buttonSize = new Rect(20, 95 + i * 50, 140, 30);
             if (GUI.Button(m_buttonSize, m_buttonNames[i]))
             {
-               
+
                 screenID = i + 1;
                 switch (screenID)
                 {
                     case 1:
                         m_window = (MaterialWindow)GetWindow(typeof(MaterialWindow));
-             
+
                         break;
                     case 2:
                         m_window = (WeaponBuilderWindow)GetWindow(typeof(WeaponBuilderWindow));
@@ -84,6 +86,9 @@ public class CreatorWindow : EditorWindow
                     case 8:
                         m_window = (PotionBuilderWindow)GetWindow(typeof(PotionBuilderWindow));
                         break;
+                    case 9:
+                        m_window = (RarityWindow)GetWindow(typeof(RarityWindow));
+                        break;
                 }
                 if (m_window != null)
                 {
@@ -98,36 +103,45 @@ public class CreatorWindow : EditorWindow
     {
 
         CreateLabel(25, new RectOffset(15, 0, 15, 0), currentWindowName);
-        CreateLabel(15, new RectOffset(15, 0, 15, 0), "Item + Creature Name");
-        itemName = GUILayout.TextField(itemName);
-        CreateLabel(15, new RectOffset(15, 0, 25, 0), "Description");
-        itemDescription = GUILayout.TextField(itemDescription);
-   
-        itemTexture = (Sprite)EditorGUILayout.ObjectField("Icon", itemTexture, typeof(Sprite), true);
-        GUIStyle styleB = new GUIStyle(GUI.skin.GetStyle("label"));
-        styleB.fontSize = 15;
-        styleB.padding = new RectOffset(15, 0, 15, 0);
-        if (m_aspectMode)
-        {
-            GUILayout.Label("Current Mode 3D", styleB);
-            m_aspectMode = GUILayout.Toggle(m_aspectMode, "3D");
-        }
-        else
-        {
-            GUILayout.Label("Current Mode 2D", styleB);
-            m_aspectMode = GUILayout.Toggle(m_aspectMode, "2D");
-        }
-        if(m_loadData)
+        if (m_loadData)
         {
             objectData = Resources.Load<ScriptableObjectData>("BuiltItems/ScriptableObjectData/Material");
             weaponData = Resources.Load<Weapon>("BuiltItems/ScriptableObjectData/Weapon");
+            Rarities = Resources.LoadAll("BuiltItems/ScriptableObjectData/RarityData/", typeof(RarityBaseData));
+            foreach (RarityBaseData r in Rarities)
+            {
+                if (!RaritiesList.Contains(r))
+                    RaritiesList.Add(r);
+            }
+            Debug.Log("Rarities list " + RaritiesList.Count);
             Debug.Log("Loading data");
             m_loadData = false;
         }
-        rarityID = EditorGUILayout.Popup("Rarity", rarityID, Enum.GetNames(typeof(Rarity)));
-        rarityBuff = EditorGUILayout.FloatField("Rarity Buff Multiplier: ", rarityBuff);
-        if (rarityBuff <= 0)
-            rarityBuff = 1;
+        if (currentWindowName != "Rarity Window")
+        {
+            CreateLabel(15, new RectOffset(15, 0, 15, 0), "Item + Creature Name");
+            itemName = GUILayout.TextField(itemName);
+            CreateLabel(15, new RectOffset(15, 0, 25, 0), "Description");
+            itemDescription = GUILayout.TextField(itemDescription);
+
+            itemTexture = (Sprite)EditorGUILayout.ObjectField("Icon", itemTexture, typeof(Sprite), true);
+            GUIStyle styleB = new GUIStyle(GUI.skin.GetStyle("label"));
+            styleB.fontSize = 15;
+            styleB.padding = new RectOffset(15, 0, 15, 0);
+            if (m_aspectMode)
+            {
+                GUILayout.Label("Current Mode 3D", styleB);
+                m_aspectMode = GUILayout.Toggle(m_aspectMode, "3D");
+            }
+            else
+            {
+                GUILayout.Label("Current Mode 2D", styleB);
+                m_aspectMode = GUILayout.Toggle(m_aspectMode, "2D");
+            }
+
+            rarityID = EditorGUILayout.Popup("Rarity", rarityID, Enum.GetNames(typeof(Rarity)));
+
+        }
         //  Debug.Log("Object data " + objectData.name);
         //   objectData = (ScriptableObjectData)EditorGUILayout.ObjectField("Data", objectData, typeof(ScriptableObjectData), false);
         //   weaponData = (Weapon)EditorGUILayout.ObjectField("Weapon Data", weaponData, typeof(Weapon), false);
@@ -159,7 +173,7 @@ public class CreatorWindow : EditorWindow
                 m_MatNames.Add(MaterialNames[i].Substring(0, MaterialNames[i].IndexOf("(")));
         }
         materialID = EditorGUILayout.Popup(_dir, materialID, m_MatNames.ToArray());
-  
+
         if (m_MatNames.Count > Mats.Count)
             m_MatNames.Clear();
     }
@@ -192,7 +206,7 @@ public class CreatorWindow : EditorWindow
                 WeaponPartsID[1] = EditorGUILayout.Popup("Slot 2", WeaponPartsID[1], m_WeaponPartNames.ToArray());
                 WeaponPartsID[2] = EditorGUILayout.Popup("Slot 3", WeaponPartsID[2], m_WeaponPartNames.ToArray());
                 break;
-        
+
         }
         if (m_WeaponPartNames.Count > WeaponParts.Count)
             m_WeaponPartNames.Clear();
@@ -258,7 +272,7 @@ public class CreatorWindow : EditorWindow
 
                 if (_type != ItemType.eWeapon)
                 {
-                  
+
                     ScriptableObjectData clone = Instantiate(objectData);
                     AssetDatabase.CreateAsset(clone, "Assets/Resources/BuiltItems/" + _dir + "/" + itemName + ".asset");
                     item.GetComponent<ScriptableObjectHolder>().data = (ScriptableObjectData)AssetDatabase.LoadAssetAtPath("Assets/Resources/BuiltItems/" + _dir + "/" + itemName + ".asset", typeof(ScriptableObjectData));
@@ -272,10 +286,8 @@ public class CreatorWindow : EditorWindow
                     PrefabUtility.SaveAsPrefabAssetAndConnect(item, "Assets/Resources/BuiltItems/" + _dir + "/" + itemNameCombined, InteractionMode.UserAction);
                     Debug.Log("Building");
                 }
-                
+
                 DestroyImmediate(GameObject.Find(itemName));
-              
-          
                 AssetDatabase.Refresh();
                 ClearObjectData();
             }

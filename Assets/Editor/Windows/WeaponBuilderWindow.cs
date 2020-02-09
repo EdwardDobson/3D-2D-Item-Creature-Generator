@@ -27,8 +27,6 @@ public class WeaponBuilderWindow : CreatorWindow
                 weaponData.WeaponType = WeaponType.eMace;
                 break;
         }
-
-       
         ShowWeaponPartsList();
         if (itemName != null && itemDescription != null)
         {
@@ -37,6 +35,29 @@ public class WeaponBuilderWindow : CreatorWindow
                 weaponData.Name = itemName;
                 weaponData.Description = itemDescription;
                 weaponData.Type = ItemType.eWeapon;
+                switch (rarityID)
+                {
+                    case 0:
+                        weaponData.Rarity = Rarity.eCommon;
+                        break;
+                    case 1:
+                        weaponData.Rarity = Rarity.eUncommon;
+                        break;
+                    case 2:
+                        weaponData.Rarity = Rarity.eRare;
+                        break;
+                    case 3:
+                        weaponData.Rarity = Rarity.eEpic;
+                        break;
+                    case 4:
+                        weaponData.Rarity = Rarity.eLegendary;
+                        break;
+                    case 5:
+                        weaponData.Rarity = Rarity.eUnique;
+                        break;
+                }
+
+        
                 if(WeaponParts[0] != null)
                 weaponData.Slot1 = WeaponParts[WeaponPartsID[0]];
                 if (WeaponParts[1] != null)
@@ -51,13 +72,13 @@ public class WeaponBuilderWindow : CreatorWindow
                 }
                 if(weaponData.Slot4 == null)
                 {
-                    weaponData.TotalDamage = (WeaponParts[WeaponPartsID[0]].BuffValuePart + WeaponParts[WeaponPartsID[1]].BuffValuePart + WeaponParts[WeaponPartsID[2]].BuffValuePart) * rarityBuff;
+                    weaponData.TotalDamage = (WeaponParts[WeaponPartsID[0]].BuffValuePart + WeaponParts[WeaponPartsID[1]].BuffValuePart + WeaponParts[WeaponPartsID[2]].BuffValuePart) * RaritiesList[rarityID].BuffMuliplier;
                     Debug.Log("Adding 3 slot damage");
                 }
                 else
                 {
                     Debug.Log("Adding 4 slot damage");
-                    weaponData.TotalDamage = (WeaponParts[WeaponPartsID[0]].BuffValuePart + WeaponParts[WeaponPartsID[1]].BuffValuePart + WeaponParts[WeaponPartsID[2]].BuffValuePart + WeaponParts[WeaponPartsID[3]].BuffValuePart) * rarityBuff;
+                    weaponData.TotalDamage = (WeaponParts[WeaponPartsID[0]].BuffValuePart + WeaponParts[WeaponPartsID[1]].BuffValuePart + WeaponParts[WeaponPartsID[2]].BuffValuePart + WeaponParts[WeaponPartsID[3]].BuffValuePart) * RaritiesList[rarityID].BuffMuliplier;
                 }
                 BuildItem("BuiltWeapons", weaponData.Type);
                 DestroyImmediate(GameObject.Find(itemName));

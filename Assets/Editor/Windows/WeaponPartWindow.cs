@@ -14,7 +14,7 @@ public class WeaponPartWindow : CreatorWindow
                 objectData.Sprite = itemTexture;
                 objectData.Name = itemName;
                 objectData.Description = itemDescription;
-                objectData.BuffValuePart = Mats[materialID].BuffValueMaterial * rarityBuff;
+                objectData.BuffValuePart = Mats[materialID].BuffValueMaterial * RaritiesList[rarityID].BuffMuliplier;
                 objectData.BuffValueMaterial = 0;
                 objectData.Type = ItemType.eWeaponPart;
                 
