@@ -14,8 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Iron
   Description: Iron Bar
-  Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  Sprite: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
   Mesh: {fileID: 0}
-  BuffValueMaterial: 4
-  type: 0
+  BuffValueMaterial: 5
+  Type: 0
+  Rarity: 0
   BuffValuePart: 0

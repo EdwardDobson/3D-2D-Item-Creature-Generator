@@ -12,7 +12,7 @@ public class MaterialWindow : CreatorWindow
         if (objectData != null)
         {
            
-            objectData.BuffValueMaterial = m_buffValue;
+            objectData.BuffValueMaterial = m_buffValue * rarityBuff;
             if (itemName != "" && itemDescription != "")
             {
                 if (GUILayout.Button("Build Material"))
@@ -20,8 +20,8 @@ public class MaterialWindow : CreatorWindow
                     objectData.Sprite = itemTexture;
                     objectData.Name = itemName;
                     objectData.Description = itemDescription;
-                    objectData.type = ItemType.eMaterial;
-                    BuildItem("Materials",objectData.type);
+                    objectData.Type = ItemType.eMaterial;
+                    BuildItem("Materials",objectData.Type);
                 }
             }
         }

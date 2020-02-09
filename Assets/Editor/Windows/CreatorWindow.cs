@@ -14,16 +14,21 @@ public class CreatorWindow : EditorWindow
     List<string> m_MatNames = new List<string>();
     List<string> m_WeaponPartNames = new List<string>();
     bool m_loadData = true;
+  
+
     protected string currentWindowName = "";
     protected int screenID;
     protected string itemName;
     protected string itemDescription;
     protected ScriptableObjectData objectData;
     protected Weapon weaponData;
-    protected int  materialID;
+    protected int materialID;
+    protected int rarityID;
     protected List<ScriptableObjectData>  Mats = new List<ScriptableObjectData>();
     protected List<ScriptableObjectData> WeaponParts = new List<ScriptableObjectData>();
     protected int[] WeaponPartsID = new int[4];
+    protected float rarityBuff = 1;
+
     public Sprite itemTexture;
 
     [MenuItem("Item + Creature Builder/Builder")]
@@ -119,10 +124,13 @@ public class CreatorWindow : EditorWindow
             Debug.Log("Loading data");
             m_loadData = false;
         }
-   
+        rarityID = EditorGUILayout.Popup("Rarity", rarityID, Enum.GetNames(typeof(Rarity)));
+        rarityBuff = EditorGUILayout.FloatField("Rarity Buff Multiplier: ", rarityBuff);
+        if (rarityBuff <= 0)
+            rarityBuff = 1;
         //  Debug.Log("Object data " + objectData.name);
         //   objectData = (ScriptableObjectData)EditorGUILayout.ObjectField("Data", objectData, typeof(ScriptableObjectData), false);
-     //   weaponData = (Weapon)EditorGUILayout.ObjectField("Weapon Data", weaponData, typeof(Weapon), false);
+        //   weaponData = (Weapon)EditorGUILayout.ObjectField("Weapon Data", weaponData, typeof(Weapon), false);
     }
     public void CloseButton()
     {
@@ -169,10 +177,23 @@ public class CreatorWindow : EditorWindow
             if (!m_WeaponPartNames.Contains(PartsNames[i]))
                 m_WeaponPartNames.Add(PartsNames[i].Substring(0, PartsNames[i].IndexOf("(")));
         }
-        WeaponPartsID[0] = EditorGUILayout.Popup("Slot 1", WeaponPartsID[0], m_WeaponPartNames.ToArray());
-        WeaponPartsID[1] = EditorGUILayout.Popup("Slot 2", WeaponPartsID[1], m_WeaponPartNames.ToArray());
-        WeaponPartsID[2] = EditorGUILayout.Popup("Slot 3", WeaponPartsID[2], m_WeaponPartNames.ToArray());
-        WeaponPartsID[3] = EditorGUILayout.Popup("Slot 4", WeaponPartsID[3], m_WeaponPartNames.ToArray());
+        switch (weaponData.WeaponType)
+        {
+            case WeaponType.eSword:
+                WeaponPartsID[0] = EditorGUILayout.Popup("Slot 1", WeaponPartsID[0], m_WeaponPartNames.ToArray());
+                WeaponPartsID[1] = EditorGUILayout.Popup("Slot 2", WeaponPartsID[1], m_WeaponPartNames.ToArray());
+                WeaponPartsID[2] = EditorGUILayout.Popup("Slot 3", WeaponPartsID[2], m_WeaponPartNames.ToArray());
+                WeaponPartsID[3] = EditorGUILayout.Popup("Slot 4", WeaponPartsID[3], m_WeaponPartNames.ToArray());
+                break;
+            case WeaponType.eSpear:
+            case WeaponType.eMace:
+            case WeaponType.eAxe:
+                WeaponPartsID[0] = EditorGUILayout.Popup("Slot 1", WeaponPartsID[0], m_WeaponPartNames.ToArray());
+                WeaponPartsID[1] = EditorGUILayout.Popup("Slot 2", WeaponPartsID[1], m_WeaponPartNames.ToArray());
+                WeaponPartsID[2] = EditorGUILayout.Popup("Slot 3", WeaponPartsID[2], m_WeaponPartNames.ToArray());
+                break;
+        
+        }
         if (m_WeaponPartNames.Count > WeaponParts.Count)
             m_WeaponPartNames.Clear();
 
@@ -184,20 +205,23 @@ public class CreatorWindow : EditorWindow
         style.padding = _rect;
         GUILayout.Label(_labelText, style);
     }
+    //Resets the values in the base scriptable objects to avoid old persisting
     protected void ClearObjectData()
     {
         objectData.Name = "";
         objectData.Description = "";
         objectData.Sprite = null;
         objectData.Mesh = null;
-        objectData.type = ItemType.eMaterial;
+        objectData.Type = ItemType.eMaterial;
+        weaponData.Rarity = Rarity.eCommon;
         objectData.BuffValueMaterial = 0;
         objectData.BuffValuePart = 0;
         weaponData.Name = "";
         weaponData.Description = "";
         weaponData.Sprite = null;
         weaponData.Mesh = null;
-        weaponData.type = ItemType.eWeapon;
+        weaponData.Type = ItemType.eWeapon;
+        weaponData.Rarity = Rarity.eCommon;
         weaponData.BuffValueMaterial = 0;
         weaponData.BuffValuePart = 0;
         weaponData.Slot1 = null;
@@ -234,6 +258,7 @@ public class CreatorWindow : EditorWindow
 
                 if (_type != ItemType.eWeapon)
                 {
+                  
                     ScriptableObjectData clone = Instantiate(objectData);
                     AssetDatabase.CreateAsset(clone, "Assets/Resources/BuiltItems/" + _dir + "/" + itemName + ".asset");
                     item.GetComponent<ScriptableObjectHolder>().data = (ScriptableObjectData)AssetDatabase.LoadAssetAtPath("Assets/Resources/BuiltItems/" + _dir + "/" + itemName + ".asset", typeof(ScriptableObjectData));

@@ -17,5 +17,6 @@ MonoBehaviour:
   Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
   Mesh: {fileID: 0}
   BuffValueMaterial: 0
-  type: 1
-  BuffValuePart: 4
+  Type: 1
+  Rarity: 0
+  BuffValuePart: 25

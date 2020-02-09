@@ -9,18 +9,16 @@ public class WeaponPartWindow : CreatorWindow
         ShowMaterialList("Materials");
         if (itemName != "" && itemDescription != "")
         {
-   
-
             if (GUILayout.Button("Build Weapon Part"))
             {
                 objectData.Sprite = itemTexture;
                 objectData.Name = itemName;
                 objectData.Description = itemDescription;
-                objectData.BuffValuePart = Mats[materialID].BuffValueMaterial;
+                objectData.BuffValuePart = Mats[materialID].BuffValueMaterial * rarityBuff;
                 objectData.BuffValueMaterial = 0;
-                objectData.type = ItemType.eWeaponPart;
+                objectData.Type = ItemType.eWeaponPart;
                 
-                BuildItem("WeaponParts",objectData.type);
+                BuildItem("WeaponParts",objectData.Type);
              
             }
         }

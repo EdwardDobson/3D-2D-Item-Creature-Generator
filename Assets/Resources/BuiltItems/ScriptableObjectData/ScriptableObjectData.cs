@@ -9,6 +9,16 @@ public enum ItemType
     eArmour,
     ePotion,
 }
+public enum Rarity
+{ 
+    eCommon,
+    eUncommon,
+    eRare,
+    eEpic,
+    eLegendary,
+    eUnique,
+}
+
 [CreateAssetMenu(fileName = "Object", menuName = "BaseData", order = 2)]
 public class ScriptableObjectData : ScriptableObject
 {
@@ -17,6 +27,7 @@ public class ScriptableObjectData : ScriptableObject
     public Sprite Sprite;
     public Mesh Mesh;
     public float BuffValueMaterial;
-    public ItemType type;
+    public ItemType Type;
+    public Rarity Rarity;
     public float BuffValuePart;
 }
