@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c8909bfcf64f6ea46b6907cfeb33728f, type: 3}
-  m_Name: Weapon
+  m_Name: Sword
   m_EditorClassIdentifier: 
-  Name: 
-  Description: 
+  Name: Sword
+  Description: Sword
   Sprite: {fileID: 0}
   Mesh: {fileID: 0}
   BuffValueMaterial: 0
@@ -22,9 +22,9 @@ MonoBehaviour:
   BuffValuePart: 0
   BuffValuePart2: 0
   WeaponType: 0
-  Slot1: {fileID: 0}
-  Slot2: {fileID: 0}
-  Slot3: {fileID: 0}
-  Slot4: {fileID: 0}
-  TotalDamage: 0
-  AttackSpeed: 0
+  Slot1: {fileID: 11400000, guid: 4131c1add28ad6544b52fe5c3cf4b167, type: 2}
+  Slot2: {fileID: 11400000, guid: 37691571f0d59b94a919b5a83c867f36, type: 2}
+  Slot3: {fileID: 11400000, guid: ccca32b5d26305e4699e664b6174594e, type: 2}
+  Slot4: {fileID: 11400000, guid: f981882f67a89f14c87a48735ed61d85, type: 2}
+  TotalDamage: 128
+  AttackSpeed: 36

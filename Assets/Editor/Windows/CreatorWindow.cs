@@ -239,11 +239,13 @@ public class CreatorWindow : EditorWindow
         weaponData.Rarity = Rarity.eCommon;
         weaponData.BuffValueMaterial = 0;
         weaponData.BuffValuePart = 0;
+        weaponData.BuffValuePart2 = 0;
         weaponData.Slot1 = null;
         weaponData.Slot2 = null;
         weaponData.Slot3 = null;
         weaponData.Slot4 = null;
         weaponData.TotalDamage = 0;
+        weaponData.AttackSpeed = 0;
     }
     //Handles building items/creature parts
     protected void BuildItem(string _dir, ItemType _type)

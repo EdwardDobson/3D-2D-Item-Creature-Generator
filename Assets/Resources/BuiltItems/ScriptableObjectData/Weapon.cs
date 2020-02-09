@@ -15,4 +15,5 @@ public class Weapon : ScriptableObjectData
     public ScriptableObjectData Slot3;
     public ScriptableObjectData Slot4;
     public float TotalDamage;
+    public float AttackSpeed;
 }

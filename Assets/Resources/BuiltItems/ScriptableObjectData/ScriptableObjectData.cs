@@ -30,4 +30,5 @@ public class ScriptableObjectData : ScriptableObject
     public ItemType Type;
     public Rarity Rarity;
     public float BuffValuePart;
+    public float BuffValuePart2;
 }

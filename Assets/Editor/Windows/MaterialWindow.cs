@@ -7,11 +7,8 @@ public class MaterialWindow : CreatorWindow
     {
         BaseFunction();
         m_buffValue = EditorGUILayout.FloatField("Buff Value: ", m_buffValue);
-    
-
         if (objectData != null)
         {
-           
             objectData.BuffValueMaterial = m_buffValue * RaritiesList[rarityID].BuffMuliplier;
             if (itemName != "" && itemDescription != "")
             {
