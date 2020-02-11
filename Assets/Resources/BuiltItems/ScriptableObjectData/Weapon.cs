@@ -10,6 +10,7 @@ public enum WeaponType
 public class Weapon : ScriptableObjectData
 {
     public WeaponType WeaponType;
+    public ScriptableObjectData[] Slots;
     public ScriptableObjectData Slot1;
     public ScriptableObjectData Slot2;
     public ScriptableObjectData Slot3;

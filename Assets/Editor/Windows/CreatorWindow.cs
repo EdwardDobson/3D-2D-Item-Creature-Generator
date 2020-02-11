@@ -13,9 +13,9 @@ public class CreatorWindow : EditorWindow
     bool m_aspectMode;
     List<string> m_MatNames = new List<string>();
     List<string> m_WeaponPartNames = new List<string>();
+    List<string> m_WeaponPartNames3D = new List<string>();
     bool m_loadData = true;
-
-
+    UnityEngine.Object[] m_parts;
     protected string currentWindowName = "";
     protected int screenID;
     protected string itemName;
@@ -112,9 +112,9 @@ public class CreatorWindow : EditorWindow
             {
                 if (!RaritiesList.Contains(r))
                     RaritiesList.Add(r);
-                Debug.Log("Rarities name " + r.name);
+
             }
-      
+
             Debug.Log("Loading data");
             m_loadData = false;
         }
@@ -180,32 +180,62 @@ public class CreatorWindow : EditorWindow
     }
     protected void ShowWeaponPartsList()
     {
-        UnityEngine.Object[] parts = Resources.LoadAll("BuiltItems/WeaponParts", typeof(ScriptableObjectData));
-        for (int i = 0; i < parts.Length; i++)
+        m_parts = Resources.LoadAll("BuiltItems/WeaponParts", typeof(ScriptableObjectData));
+        for (int i = 0; i < m_parts.Length; i++)
         {
-            if (!WeaponParts.Contains((ScriptableObjectData)parts[i]))
-                WeaponParts.Add((ScriptableObjectData)parts[i]);
+            if (!WeaponParts.Contains((ScriptableObjectData)m_parts[i]))
+                WeaponParts.Add((ScriptableObjectData)m_parts[i]);
         }
-        string[] PartsNames = Array.ConvertAll(parts, x => x.ToString());
+        string[] PartsNames = Array.ConvertAll(m_parts, x => x.ToString());
         for (int i = 0; i < PartsNames.Length; i++)
         {
+            if(!WeaponParts[i].AspectMode)
+            {
             if (!m_WeaponPartNames.Contains(PartsNames[i]))
                 m_WeaponPartNames.Add(PartsNames[i].Substring(0, PartsNames[i].IndexOf("(")));
+
+            }
+            if (WeaponParts[i].AspectMode)
+            {
+                if (!m_WeaponPartNames3D.Contains(PartsNames[i]))
+                    m_WeaponPartNames3D.Add(PartsNames[i].Substring(0, PartsNames[i].IndexOf("(")));
+
+            }
         }
         switch (weaponData.WeaponType)
         {
             case WeaponType.eSword:
-                WeaponPartsID[0] = EditorGUILayout.Popup("Slot 1", WeaponPartsID[0], m_WeaponPartNames.ToArray());
-                WeaponPartsID[1] = EditorGUILayout.Popup("Slot 2", WeaponPartsID[1], m_WeaponPartNames.ToArray());
-                WeaponPartsID[2] = EditorGUILayout.Popup("Slot 3", WeaponPartsID[2], m_WeaponPartNames.ToArray());
-                WeaponPartsID[3] = EditorGUILayout.Popup("Slot 4", WeaponPartsID[3], m_WeaponPartNames.ToArray());
+                if(!m_aspectMode)
+                {
+                    WeaponPartsID[0] = EditorGUILayout.Popup("Slot 1", WeaponPartsID[0], m_WeaponPartNames.ToArray());
+                    WeaponPartsID[1] = EditorGUILayout.Popup("Slot 2", WeaponPartsID[1], m_WeaponPartNames.ToArray());
+                    WeaponPartsID[2] = EditorGUILayout.Popup("Slot 3", WeaponPartsID[2], m_WeaponPartNames.ToArray());
+                    WeaponPartsID[3] = EditorGUILayout.Popup("Slot 4", WeaponPartsID[3], m_WeaponPartNames.ToArray());
+                }
+                else
+                {
+                    WeaponPartsID[0] = EditorGUILayout.Popup("Slot 1", WeaponPartsID[0], m_WeaponPartNames3D.ToArray());
+                    WeaponPartsID[1] = EditorGUILayout.Popup("Slot 2", WeaponPartsID[1], m_WeaponPartNames3D.ToArray());
+                    WeaponPartsID[2] = EditorGUILayout.Popup("Slot 3", WeaponPartsID[2], m_WeaponPartNames3D.ToArray());
+                    WeaponPartsID[3] = EditorGUILayout.Popup("Slot 4", WeaponPartsID[3], m_WeaponPartNames3D.ToArray());
+                }
+             
                 break;
             case WeaponType.eSpear:
             case WeaponType.eMace:
             case WeaponType.eAxe:
-                WeaponPartsID[0] = EditorGUILayout.Popup("Slot 1", WeaponPartsID[0], m_WeaponPartNames.ToArray());
-                WeaponPartsID[1] = EditorGUILayout.Popup("Slot 2", WeaponPartsID[1], m_WeaponPartNames.ToArray());
-                WeaponPartsID[2] = EditorGUILayout.Popup("Slot 3", WeaponPartsID[2], m_WeaponPartNames.ToArray());
+                if (!m_aspectMode)
+                {
+                    WeaponPartsID[0] = EditorGUILayout.Popup("Slot 1", WeaponPartsID[0], m_WeaponPartNames.ToArray());
+                    WeaponPartsID[1] = EditorGUILayout.Popup("Slot 2", WeaponPartsID[1], m_WeaponPartNames.ToArray());
+                    WeaponPartsID[2] = EditorGUILayout.Popup("Slot 3", WeaponPartsID[2], m_WeaponPartNames.ToArray());
+                }
+                else
+                {
+                    WeaponPartsID[0] = EditorGUILayout.Popup("Slot 1", WeaponPartsID[0], m_WeaponPartNames3D.ToArray());
+                    WeaponPartsID[1] = EditorGUILayout.Popup("Slot 2", WeaponPartsID[1], m_WeaponPartNames3D.ToArray());
+                    WeaponPartsID[2] = EditorGUILayout.Popup("Slot 3", WeaponPartsID[2], m_WeaponPartNames3D.ToArray());
+                }
                 break;
 
         }
@@ -244,7 +274,6 @@ public class CreatorWindow : EditorWindow
         weaponData.Slot2 = null;
         weaponData.Slot3 = null;
         weaponData.Slot4 = null;
-        weaponData.TotalDamage = 0;
         weaponData.AttackSpeed = 0;
     }
     //Handles building items/creature parts
@@ -272,11 +301,11 @@ public class CreatorWindow : EditorWindow
             item.AddComponent<ScriptableObjectHolder>();
             if (item.GetComponent<ScriptableObjectHolder>() != null)
             {
-
+                
                 if (_type != ItemType.eWeapon)
                 {
-
                     ScriptableObjectData clone = Instantiate(objectData);
+                    clone.AspectMode = m_aspectMode;
                     AssetDatabase.CreateAsset(clone, "Assets/Resources/BuiltItems/" + _dir + "/" + itemName + ".asset");
                     item.GetComponent<ScriptableObjectHolder>().data = (ScriptableObjectData)AssetDatabase.LoadAssetAtPath("Assets/Resources/BuiltItems/" + _dir + "/" + itemName + ".asset", typeof(ScriptableObjectData));
                     PrefabUtility.SaveAsPrefabAssetAndConnect(item, "Assets/Resources/BuiltItems/" + _dir + "/" + itemNameCombined, InteractionMode.UserAction);
@@ -284,6 +313,7 @@ public class CreatorWindow : EditorWindow
                 else
                 {
                     Weapon clone = Instantiate(weaponData);
+                    clone.AspectMode = m_aspectMode;
                     AssetDatabase.CreateAsset(clone, "Assets/Resources/BuiltItems/" + _dir + "/" + itemName + ".asset");
                     item.GetComponent<ScriptableObjectHolder>().data = (Weapon)AssetDatabase.LoadAssetAtPath("Assets/Resources/BuiltItems/" + _dir + "/" + itemName + ".asset", typeof(Weapon));
                     PrefabUtility.SaveAsPrefabAssetAndConnect(item, "Assets/Resources/BuiltItems/" + _dir + "/" + itemNameCombined, InteractionMode.UserAction);
@@ -297,6 +327,72 @@ public class CreatorWindow : EditorWindow
 
         }
     }
+    protected void ViewItem()
+    {
+        Camera camera = GameObject.Find("ItemViewCamera").GetComponent<Camera>();
+
+        if (camera != null)
+        {
+            Texture view = camera.activeTexture;
+            GUILayout.Label(view);
+            UnityEngine.Object[] parts = Resources.LoadAll("BuiltItems/WeaponParts", typeof(GameObject));
+            Transform holder = GameObject.Find("PartViewHolders").transform;
+            GameObject partHolderWeapon2D = holder.GetChild(0).gameObject;
+            GameObject partHolderWeapon3D = holder.GetChild(1).gameObject;
+
+            if (!m_aspectMode)
+            {
+                partHolderWeapon2D.SetActive(false);
+                partHolderWeapon3D.SetActive(true);
+            }
+            else
+            {
+                partHolderWeapon3D.SetActive(false);
+                partHolderWeapon2D.SetActive(true);
+            }
+            if (partHolderWeapon2D.activeSelf)
+            {
+                for (int i = 0; i < partHolderWeapon2D.transform.childCount; i++)
+                {
+                    if (partHolderWeapon2D.transform.GetChild(i).childCount < 1)
+                    {
+                        if (parts[i] != null)
+                        {
+                            switch (currentWindowName)
+                            {
+                                case "Weapon Builder":
+                                    partHolderWeapon2D.transform.GetChild(i).GetComponent<ScriptableObjectHolder>().data = WeaponParts[WeaponPartsID[i]];
+                                    break;
+
+                            }
+                            partHolderWeapon2D.transform.GetChild(i).GetComponent<ScriptableObjectHolder>().ResetValues();
+                        }
+                    }
+                }
+            }
+            if (partHolderWeapon3D.activeSelf)
+            {
+                for (int i = 0; i < partHolderWeapon3D.transform.childCount; i++)
+                {
+                    if (partHolderWeapon3D.transform.GetChild(i).childCount < 1)
+                    {
+                        if (parts[i] != null)
+                        {
+                            switch (currentWindowName)
+                            {
+                                case "Weapon Builder":
+                                    partHolderWeapon3D.transform.GetChild(i).GetComponent<ScriptableObjectHolder>().data = WeaponParts[WeaponPartsID[i]];
+                                    break;
+                            }
+                            partHolderWeapon3D.transform.GetChild(i).GetComponent<ScriptableObjectHolder>().ResetValues();
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+
 }
 
 

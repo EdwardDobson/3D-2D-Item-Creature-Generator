@@ -28,9 +28,19 @@ public class WeaponBuilderWindow : CreatorWindow
                 weaponData.WeaponType = WeaponType.eMace;
                 break;
         }
+
+    
         ShowWeaponPartsList();
         if (itemName != null && itemDescription != null)
         {
+            if (WeaponParts[0] != null)
+                weaponData.Slot1 = WeaponParts[WeaponPartsID[0]];
+            if (WeaponParts[1] != null)
+                weaponData.Slot2 = WeaponParts[WeaponPartsID[1]];
+            if (WeaponParts[2] != null)
+                weaponData.Slot3 = WeaponParts[WeaponPartsID[2]];
+            if (WeaponParts[3] != null)
+                weaponData.Slot4 = WeaponParts[WeaponPartsID[3]];
             if (GUILayout.Button("Build Weapon"))
             {
                 weaponData.Name = itemName;
@@ -59,14 +69,6 @@ public class WeaponBuilderWindow : CreatorWindow
                 }
 
 
-                if (WeaponParts[0] != null)
-                    weaponData.Slot1 = WeaponParts[WeaponPartsID[0]];
-                if (WeaponParts[1] != null)
-                    weaponData.Slot2 = WeaponParts[WeaponPartsID[1]];
-                if (WeaponParts[2] != null)
-                    weaponData.Slot3 = WeaponParts[WeaponPartsID[2]];
-                if (WeaponParts[3] != null)
-                    weaponData.Slot4 = WeaponParts[WeaponPartsID[3]];
                 if (m_weaponTypeID != 0)
                 {
                     weaponData.Slot4 = null;
@@ -91,6 +93,7 @@ public class WeaponBuilderWindow : CreatorWindow
                 DestroyImmediate(GameObject.Find(itemName));
             }
         }
+        ViewItem();
         CloseButton();
     }
 }

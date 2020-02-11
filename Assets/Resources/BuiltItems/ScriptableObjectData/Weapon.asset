@@ -16,15 +16,17 @@ MonoBehaviour:
   Description: 
   Sprite: {fileID: 0}
   Mesh: {fileID: 0}
+  Mat: {fileID: 0}
   BuffValueMaterial: 0
   Type: 3
   Rarity: 0
   BuffValuePart: 0
   BuffValuePart2: 0
   WeaponType: 0
-  Slot1: {fileID: 0}
-  Slot2: {fileID: 0}
-  Slot3: {fileID: 0}
-  Slot4: {fileID: 0}
-  TotalDamage: 0
+  Slots: []
+  Slot1: {fileID: 11400000, guid: b4ee4a194a4b5254f94afc1a1ff89394, type: 2}
+  Slot2: {fileID: 11400000, guid: b4ee4a194a4b5254f94afc1a1ff89394, type: 2}
+  Slot3: {fileID: 11400000, guid: b4ee4a194a4b5254f94afc1a1ff89394, type: 2}
+  Slot4: {fileID: 11400000, guid: b4ee4a194a4b5254f94afc1a1ff89394, type: 2}
+  TotalDamage: 128
   AttackSpeed: 0

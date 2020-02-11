@@ -26,9 +26,11 @@ public class ScriptableObjectData : ScriptableObject
     public string Description;
     public Sprite Sprite;
     public Mesh Mesh;
+    public Material Mat;
     public float BuffValueMaterial;
     public ItemType Type;
     public Rarity Rarity;
     public float BuffValuePart;
     public float BuffValuePart2;
+    public bool AspectMode;
 }

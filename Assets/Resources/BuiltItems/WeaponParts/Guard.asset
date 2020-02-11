@@ -14,8 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Guard
   Description: asd
-  Sprite: {fileID: 0}
-  Mesh: {fileID: 0}
+  Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  Mat: {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
   BuffValueMaterial: 0
   Type: 1
   Rarity: 0

@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7773514e10543974d87f318260e6da82, type: 3}
-  m_Name: Blade
+  m_Name: 3Dhandle
   m_EditorClassIdentifier: 
-  Name: Blade
-  Description: asd
-  Sprite: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
+  Name: 3Dhandle
+  Description: as
+  Sprite: {fileID: 0}
   Mesh: {fileID: 0}
   Mat: {fileID: 0}
   BuffValueMaterial: 0
   Type: 1
   Rarity: 0
   BuffValuePart: 16
-  BuffValuePart2: 8
+  BuffValuePart2: 2
