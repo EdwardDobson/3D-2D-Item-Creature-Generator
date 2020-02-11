@@ -15,10 +15,11 @@ MonoBehaviour:
   Name: 3Dhandle
   Description: as
   Sprite: {fileID: 0}
-  Mesh: {fileID: 0}
+  Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
   Mat: {fileID: 0}
   BuffValueMaterial: 0
   Type: 1
   Rarity: 0
   BuffValuePart: 16
   BuffValuePart2: 2
+  AspectMode: 1
