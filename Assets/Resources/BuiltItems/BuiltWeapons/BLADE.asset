@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c8909bfcf64f6ea46b6907cfeb33728f, type: 3}
-  m_Name: Weapon
+  m_Name: BLADE
   m_EditorClassIdentifier: 
-  Name: 
-  Description: 
+  Name: BLADE
+  Description: asd
   Sprite: {fileID: 0}
   Mesh: {fileID: 0}
   Mat: {fileID: 0}
@@ -25,8 +25,8 @@ MonoBehaviour:
   AspectMode: 0
   WeaponType: 0
   Slot1: {fileID: 11400000, guid: 0025e24dae9212e41abd24ea1bce49f8, type: 2}
-  Slot2: {fileID: 11400000, guid: 0025e24dae9212e41abd24ea1bce49f8, type: 2}
-  Slot3: {fileID: 11400000, guid: 0025e24dae9212e41abd24ea1bce49f8, type: 2}
-  Slot4: {fileID: 11400000, guid: dd4abaa693e7e874c9fc87b7f221460a, type: 2}
+  Slot2: {fileID: 11400000, guid: dd4abaa693e7e874c9fc87b7f221460a, type: 2}
+  Slot3: {fileID: 11400000, guid: c6532858c0a7b4e489e3a5c242a9c244, type: 2}
+  Slot4: {fileID: 11400000, guid: e5bfb579d6e2f1a4fac432df6f59c97b, type: 2}
   TotalDamage: 320
-  AttackSpeed: 0
+  AttackSpeed: 100060
