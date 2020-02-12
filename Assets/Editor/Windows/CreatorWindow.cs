@@ -101,7 +101,6 @@ public class CreatorWindow : EditorWindow
     //Contains the basic blocks for a window
     protected void BaseFunction()
     {
-
         CreateLabel(25, new RectOffset(15, 0, 15, 0), currentWindowName);
         if (m_loadData)
         {
@@ -125,7 +124,7 @@ public class CreatorWindow : EditorWindow
             CreateLabel(15, new RectOffset(15, 0, 25, 0), "Description");
             itemDescription = GUILayout.TextField(itemDescription);
 
-            itemTexture = (Sprite)EditorGUILayout.ObjectField("Icon", itemTexture, typeof(Sprite), true);
+            itemTexture = (Sprite)EditorGUILayout.ObjectField("Menu Icon", itemTexture, typeof(Sprite), true);
             GUIStyle styleB = new GUIStyle(GUI.skin.GetStyle("label"));
             styleB.fontSize = 15;
             styleB.padding = new RectOffset(15, 0, 15, 0);
