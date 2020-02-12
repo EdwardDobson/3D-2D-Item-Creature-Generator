@@ -189,10 +189,10 @@ public class CreatorWindow : EditorWindow
         string[] PartsNames = Array.ConvertAll(m_parts, x => x.ToString());
         for (int i = 0; i < PartsNames.Length; i++)
         {
-            if(!WeaponParts[i].AspectMode)
+            if (!WeaponParts[i].AspectMode)
             {
-            if (!m_WeaponPartNames.Contains(PartsNames[i]))
-                m_WeaponPartNames.Add(PartsNames[i].Substring(0, PartsNames[i].IndexOf("(")));
+                if (!m_WeaponPartNames.Contains(PartsNames[i]))
+                    m_WeaponPartNames.Add(PartsNames[i].Substring(0, PartsNames[i].IndexOf("(")));
 
             }
             if (WeaponParts[i].AspectMode)
@@ -205,7 +205,7 @@ public class CreatorWindow : EditorWindow
         switch (weaponData.WeaponType)
         {
             case WeaponType.eSword:
-                if(!m_aspectMode)
+                if (!m_aspectMode)
                 {
                     WeaponPartsID[0] = EditorGUILayout.Popup("Slot 1", WeaponPartsID[0], m_WeaponPartNames.ToArray());
                     WeaponPartsID[1] = EditorGUILayout.Popup("Slot 2", WeaponPartsID[1], m_WeaponPartNames.ToArray());
@@ -219,7 +219,7 @@ public class CreatorWindow : EditorWindow
                     WeaponPartsID[2] = EditorGUILayout.Popup("Slot 3", WeaponPartsID[2], m_WeaponPartNames3D.ToArray());
                     WeaponPartsID[3] = EditorGUILayout.Popup("Slot 4", WeaponPartsID[3], m_WeaponPartNames3D.ToArray());
                 }
-             
+
                 break;
             case WeaponType.eSpear:
             case WeaponType.eMace:
@@ -280,11 +280,24 @@ public class CreatorWindow : EditorWindow
     protected void BuildItem(string _dir, ItemType _type)
     {
         GameObject item = new GameObject();
+        if (!m_aspectMode)
+        {
+            item = GameObject.Find("PartViewHolders").transform.GetChild(0).gameObject;
+
+        }
+        else if (m_aspectMode)
+        {
+            item = GameObject.Find("PartViewHolders").transform.GetChild(1).gameObject;
+        }
+
+
         item.name = itemName;
         string itemNameCombined = itemName + ".prefab";
         if (itemNameCombined != null && objectData != null)
         {
+
             objectData.Sprite = itemTexture;
+            /*
             if (m_aspectMode)//3D Mode
             {
                 item.AddComponent<BoxCollider>();
@@ -299,16 +312,17 @@ public class CreatorWindow : EditorWindow
                 item.GetComponent<SpriteRenderer>().sprite = objectData.Sprite;
             }
             item.AddComponent<ScriptableObjectHolder>();
+            */
             if (item.GetComponent<ScriptableObjectHolder>() != null)
             {
-                
+
                 if (_type != ItemType.eWeapon)
                 {
                     ScriptableObjectData clone = Instantiate(objectData);
                     clone.AspectMode = m_aspectMode;
                     AssetDatabase.CreateAsset(clone, "Assets/Resources/BuiltItems/" + _dir + "/" + itemName + ".asset");
                     item.GetComponent<ScriptableObjectHolder>().data = (ScriptableObjectData)AssetDatabase.LoadAssetAtPath("Assets/Resources/BuiltItems/" + _dir + "/" + itemName + ".asset", typeof(ScriptableObjectData));
-                    PrefabUtility.SaveAsPrefabAssetAndConnect(item, "Assets/Resources/BuiltItems/" + _dir + "/" + itemNameCombined, InteractionMode.UserAction);
+                    PrefabUtility.SaveAsPrefabAsset(item, "Assets/Resources/BuiltItems/" + _dir + "/" + itemNameCombined);
                 }
                 else
                 {
@@ -316,15 +330,23 @@ public class CreatorWindow : EditorWindow
                     clone.AspectMode = m_aspectMode;
                     AssetDatabase.CreateAsset(clone, "Assets/Resources/BuiltItems/" + _dir + "/" + itemName + ".asset");
                     item.GetComponent<ScriptableObjectHolder>().data = (Weapon)AssetDatabase.LoadAssetAtPath("Assets/Resources/BuiltItems/" + _dir + "/" + itemName + ".asset", typeof(Weapon));
-                    PrefabUtility.SaveAsPrefabAssetAndConnect(item, "Assets/Resources/BuiltItems/" + _dir + "/" + itemNameCombined, InteractionMode.UserAction);
+                    PrefabUtility.SaveAsPrefabAsset(item, "Assets/Resources/BuiltItems/" + _dir + "/" + itemNameCombined);
                     Debug.Log("Building");
+
+                }
+                if (!m_aspectMode)
+                {
+                    GameObject.Find("PartViewHolders").transform.GetChild(0).gameObject.name = "PartHolderWeapon2D";
+                }
+                else
+                {
+                    GameObject.Find("PartViewHolders").transform.GetChild(1).gameObject.name = "PartHolderWeapon3D";
                 }
 
-                DestroyImmediate(GameObject.Find(itemName));
                 AssetDatabase.Refresh();
                 ClearObjectData();
             }
-
+            DestroyImmediate(GameObject.Find(itemName));
         }
     }
     protected void ViewItem()
@@ -342,13 +364,13 @@ public class CreatorWindow : EditorWindow
 
             if (!m_aspectMode)
             {
-                partHolderWeapon2D.SetActive(false);
-                partHolderWeapon3D.SetActive(true);
+                partHolderWeapon2D.SetActive(true);
+                partHolderWeapon3D.SetActive(false);
             }
             else
             {
-                partHolderWeapon3D.SetActive(false);
-                partHolderWeapon2D.SetActive(true);
+                partHolderWeapon3D.SetActive(true);
+                partHolderWeapon2D.SetActive(false);
             }
             if (partHolderWeapon2D.activeSelf)
             {
@@ -390,9 +412,7 @@ public class CreatorWindow : EditorWindow
                 }
             }
         }
-
     }
-
 }
 
 

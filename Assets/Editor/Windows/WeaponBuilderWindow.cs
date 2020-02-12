@@ -90,7 +90,7 @@ public class WeaponBuilderWindow : CreatorWindow
                     Debug.Log("Adding 4 slot damage");
                 }
                 BuildItem("BuiltWeapons", weaponData.Type);
-                DestroyImmediate(GameObject.Find(itemName));
+          
             }
         }
         ViewItem();
