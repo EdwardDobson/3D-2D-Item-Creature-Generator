@@ -78,7 +78,6 @@ public class WeaponBuilderWindow : CreatorWindow
                     WeaponParts[WeaponPartsID[2]].BuffValuePart) * RaritiesList[rarityID].BuffMuliplier;
                     weaponData.AttackSpeed = (WeaponParts[WeaponPartsID[0]].BuffValuePart2 + WeaponParts[WeaponPartsID[1]].BuffValuePart2 +
                     WeaponParts[WeaponPartsID[2]].BuffValuePart2) * RaritiesList[rarityID].BuffMuliplier;
-                    Debug.Log("Adding 3 slot damage");
                 }
                 else
                 {
@@ -86,7 +85,6 @@ public class WeaponBuilderWindow : CreatorWindow
                     WeaponParts[WeaponPartsID[2]].BuffValuePart + WeaponParts[WeaponPartsID[3]].BuffValuePart) * RaritiesList[rarityID].BuffMuliplier;
                     weaponData.AttackSpeed = (WeaponParts[WeaponPartsID[0]].BuffValuePart2 + WeaponParts[WeaponPartsID[1]].BuffValuePart2 +
                     WeaponParts[WeaponPartsID[2]].BuffValuePart2 + WeaponParts[WeaponPartsID[3]].BuffValuePart2) * RaritiesList[rarityID].BuffMuliplier;
-                    Debug.Log("Adding 4 slot damage");
                 }
                 BuildItem("BuiltWeapons", weaponData.Type);
 

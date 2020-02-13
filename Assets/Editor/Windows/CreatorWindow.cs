@@ -178,11 +178,18 @@ public class CreatorWindow : EditorWindow
     protected void ShowList(string _dir, List<ScriptableObjectData> _data, List<string> _partNames2D, List<string> _partNames3D, int[] _partIDs)
     {
         m_parts = Resources.LoadAll("BuiltItems/" + _dir, typeof(ScriptableObjectData));
-        for (int i = 0; i < m_parts.Length; i++)
+      
+        if(_data.Count != m_parts.Length)
         {
-            if (!_data.Contains((ScriptableObjectData)m_parts[i]))
-                _data.Add((ScriptableObjectData)m_parts[i]);
+            _data.Clear();
+            for (int i = 0; i < m_parts.Length; i++)
+            {
+                if (!_data.Contains((ScriptableObjectData)m_parts[i]))
+                    _data.Add((ScriptableObjectData)m_parts[i]);
+            }
         }
+    
+        Debug.Log("Data size of " + _dir + " = "  + _data.Count);
         string[] PartsNames = Array.ConvertAll(m_parts, x => x.ToString());
         for (int i = 0; i < PartsNames.Length; i++)
         {
@@ -346,35 +353,32 @@ public class CreatorWindow : EditorWindow
             if (!aspectMode)
             {
                 item = GameObject.Find("PartViewHolders").transform.GetChild(0).gameObject;
+       
             }
             else if (aspectMode)
             {
                 item = GameObject.Find("PartViewHolders").transform.GetChild(1).gameObject;
             }
         }
+        if(!aspectMode)
+        {
+            item.AddComponent<BoxCollider2D>();
+            item.AddComponent<SpriteRenderer>();
+            item.GetComponent<SpriteRenderer>().material = itemMaterial2D;
+            item.GetComponent<SpriteRenderer>().sprite = itemTexture;
+        }
+        else
+        {
+            item.AddComponent<BoxCollider>();
+            item.AddComponent<MeshRenderer>();
+            item.GetComponent<MeshRenderer>().material = itemMaterial;
+        }
+  
+        item.AddComponent<ScriptableObjectHolder>().data = objectData;
         item.name = itemName;
         string itemNameCombined = itemName + ".prefab";
         if (itemNameCombined != null && objectData != null)
-        {
-            if (currentWindowName == "Weapon Part Builder" || currentWindowName == "Armour Part Builder" || currentWindowName == "Material Builder")
-            {
-                if (aspectMode)//3D Mode
-                {
-                    item.AddComponent<BoxCollider>();
-                    item.AddComponent<MeshFilter>();
-                    item.AddComponent<MeshRenderer>();
-                    item.GetComponent<MeshFilter>().mesh = objectData.Mesh;
-                    item.GetComponent<MeshRenderer>().material = objectData.Mat;
-                }
-                else//2D Mode
-                {
-                    item.AddComponent<BoxCollider2D>();
-                    item.AddComponent<SpriteRenderer>();
-                    item.GetComponent<SpriteRenderer>().sprite = objectData.Sprite;
-                    item.GetComponent<SpriteRenderer>().material = objectData.Mat;
-                }
-                item.AddComponent<ScriptableObjectHolder>();
-            }
+        {  
             if (item.GetComponent<ScriptableObjectHolder>() != null)
             {
                 ScriptableObjectData itemData = CreateInstance<ScriptableObjectData>();
@@ -407,17 +411,12 @@ public class CreatorWindow : EditorWindow
                 itemData.AspectMode = aspectMode;
                 AssetDatabase.CreateAsset(itemData, "Assets/Resources/BuiltItems/" + _dir + "/" + itemName + ".asset");
                 item.GetComponent<ScriptableObjectHolder>().data = (ScriptableObjectData)AssetDatabase.LoadAssetAtPath("Assets/Resources/BuiltItems/" + _dir + "/" + itemName + ".asset", typeof(ScriptableObjectData));
-                foreach (Transform g in item.transform)
-                {
-                    if (!g.gameObject.activeSelf)
-                    {
-                        DestroyImmediate(g.gameObject);
-                    }
-                }
+                Debug.Log("Building item");
                 PrefabUtility.SaveAsPrefabAsset(item, "Assets/Resources/BuiltItems/" + _dir + "/" + itemNameCombined);
                 AssetDatabase.Refresh();
                 ClearObjectData();
             }
+       
             DestroyImmediate(GameObject.Find("New Game Object"));
             DestroyImmediate(GameObject.Find(itemName));
         }
@@ -425,7 +424,6 @@ public class CreatorWindow : EditorWindow
     protected void ViewItem()
     {
         Camera camera = GameObject.Find("ItemViewCamera").GetComponent<Camera>();
-
         if (camera != null)
         {
             Texture view = camera.activeTexture;
@@ -470,14 +468,20 @@ public class CreatorWindow : EditorWindow
                         switch (currentWindowName)
                         {
                             case "Weapon Builder":
-                                partHolderWeapon2D.transform.GetChild(i).GetComponent<ScriptableObjectHolder>().data = WeaponParts[WeaponPartsID[i]];
+                                if (WeaponParts.Count >= 4)
+                                {
+                                    partHolderWeapon2D.transform.GetChild(i).GetComponent<ScriptableObjectHolder>().data = WeaponParts[WeaponPartsID[i]];
+                                    partHolderWeapon2D.transform.GetChild(i).GetComponent<ScriptableObjectHolder>().ResetValues();
+                                }
+                           
                                 break;
                             case "Armour Builder":
                                 partHolderWeapon2D.transform.GetChild(i).GetComponent<ScriptableObjectHolder>().data = ArmourParts[ArmourPartsID[i]];
+                                partHolderWeapon2D.transform.GetChild(i).GetComponent<ScriptableObjectHolder>().ResetValues();
                                 break;
 
                         }
-                        partHolderWeapon2D.transform.GetChild(i).GetComponent<ScriptableObjectHolder>().ResetValues();
+                    
                     }
                 }
             }

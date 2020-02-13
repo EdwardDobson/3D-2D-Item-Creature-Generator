@@ -23,10 +23,10 @@ MonoBehaviour:
   BuffValuePart: 0
   BuffValuePart2: 0
   AspectMode: 0
-  Slot1: {fileID: 11400000, guid: 1171a204e1f66994da11ee48397f28ed, type: 2}
+  Slot1: {fileID: 11400000, guid: 1e3f72f3e41a7444ba5784d881f17acb, type: 2}
   Slot2: {fileID: 11400000, guid: faebbc77a93a76e45afeabb20d42584b, type: 2}
   Slot3: {fileID: 11400000, guid: e44bf816ad4a2794d9c702acaaceca4c, type: 2}
   Slot4: {fileID: 11400000, guid: aad9b3e5f899abe448a722b0572675cc, type: 2}
   Slot5: {fileID: 11400000, guid: 1e3f72f3e41a7444ba5784d881f17acb, type: 2}
   TotalDefencePhysical: 800
-  MoveSpeed: 220
+  MoveSpeed: 140
