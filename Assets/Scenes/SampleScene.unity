@@ -129,9 +129,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 14524587}
-  - component: {fileID: 14524591}
   - component: {fileID: 14524590}
-  - component: {fileID: 14524589}
   - component: {fileID: 14524588}
   m_Layer: 0
   m_Name: Slot3D
@@ -167,14 +165,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!33 &14524589
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 14524586}
-  m_Mesh: {fileID: 0}
 --- !u!23 &14524590
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -212,19 +202,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!114 &14524591
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 14524586}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b3799e923ab896e40a7782cd25b2ab76, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: 1e3f72f3e41a7444ba5784d881f17acb, type: 2}
 --- !u!1 &160923026
 GameObject:
   m_ObjectHideFlags: 0
@@ -365,7 +342,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3799e923ab896e40a7782cd25b2ab76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: aad9b3e5f899abe448a722b0572675cc, type: 2}
+  data: {fileID: 0}
 --- !u!65 &214750611
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -470,7 +447,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3799e923ab896e40a7782cd25b2ab76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: faebbc77a93a76e45afeabb20d42584b, type: 2}
+  data: {fileID: 0}
 --- !u!65 &323015247
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -575,7 +552,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3799e923ab896e40a7782cd25b2ab76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: 1171a204e1f66994da11ee48397f28ed, type: 2}
+  data: {fileID: 0}
 --- !u!65 &896628851
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -680,7 +657,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3799e923ab896e40a7782cd25b2ab76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: e44bf816ad4a2794d9c702acaaceca4c, type: 2}
+  data: {fileID: 0}
 --- !u!65 &994451481
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -790,7 +767,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 10915, guid: 0000000000000000f000000000000000, type: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -813,7 +790,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3799e923ab896e40a7782cd25b2ab76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: faebbc77a93a76e45afeabb20d42584b, type: 2}
+  data: {fileID: 11400000, guid: 1e3f72f3e41a7444ba5784d881f17acb, type: 2}
 --- !u!1 &1076590557
 GameObject:
   m_ObjectHideFlags: 0
@@ -1033,7 +1010,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 10915, guid: 0000000000000000f000000000000000, type: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1056,7 +1033,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3799e923ab896e40a7782cd25b2ab76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: aad9b3e5f899abe448a722b0572675cc, type: 2}
+  data: {fileID: 11400000, guid: 1e3f72f3e41a7444ba5784d881f17acb, type: 2}
 --- !u!1 &1455905919
 GameObject:
   m_ObjectHideFlags: 0
@@ -1225,16 +1202,16 @@ BoxCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
-    border: {x: 0.049999997, y: 0.049999997, z: 0.049999997, w: 0.049999997}
+    border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.16, y: 0.16}
-    newSize: {x: 0.16, y: 0.16}
+    oldSize: {x: 0.2, y: 0.2}
+    newSize: {x: 0.2, y: 0.2}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.16, y: 0.16}
+  m_Size: {x: 0.2, y: 0.2}
   m_EdgeRadius: 0
 --- !u!212 &1573123813
 SpriteRenderer:
@@ -1273,12 +1250,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 10915, guid: 0000000000000000f000000000000000, type: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.16, y: 0.16}
+  m_Size: {x: 0.2, y: 0.2}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -1296,7 +1273,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3799e923ab896e40a7782cd25b2ab76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: e44bf816ad4a2794d9c702acaaceca4c, type: 2}
+  data: {fileID: 11400000, guid: 1e3f72f3e41a7444ba5784d881f17acb, type: 2}
 --- !u!1 &1698494828
 GameObject:
   m_ObjectHideFlags: 0
@@ -1398,7 +1375,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1718984104
 Transform:
   m_ObjectHideFlags: 0
@@ -1631,4 +1608,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3799e923ab896e40a7782cd25b2ab76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: 5a846ebfd5ccb994ea7a0cadcf7b9758, type: 2}
+  data: {fileID: 11400000, guid: ad5e94084c32fd44db38d0c0320475e4, type: 2}
