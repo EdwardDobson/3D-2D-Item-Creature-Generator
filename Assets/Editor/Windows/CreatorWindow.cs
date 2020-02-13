@@ -476,8 +476,12 @@ public class CreatorWindow : EditorWindow
                            
                                 break;
                             case "Armour Builder":
-                                partHolderWeapon2D.transform.GetChild(i).GetComponent<ScriptableObjectHolder>().data = ArmourParts[ArmourPartsID[i]];
-                                partHolderWeapon2D.transform.GetChild(i).GetComponent<ScriptableObjectHolder>().ResetValues();
+                                if(ArmourParts.Count >= 5)
+                                {
+                                    partHolderWeapon2D.transform.GetChild(i).GetComponent<ScriptableObjectHolder>().data = ArmourParts[ArmourPartsID[i]];
+                                    partHolderWeapon2D.transform.GetChild(i).GetComponent<ScriptableObjectHolder>().ResetValues();
+                                }
+                         
                                 break;
 
                         }
