@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33b2744dec57ad242bebbf26b28f1ef6, type: 3}
+  m_Name: Set
+  m_EditorClassIdentifier: 
+  Name: Set
+  Description: Set
+  Sprite: {fileID: 0}
+  Mesh: {fileID: 0}
+  Mat: {fileID: 0}
+  BuffValueMaterial: 0
+  Type: 4
+  Rarity: 4
+  BuffValuePart: 0
+  BuffValuePart2: 0
+  AspectMode: 0
+  Slot1: {fileID: 11400000, guid: 55cc1c6f7689f314496ade654670a995, type: 2}
+  Slot2: {fileID: 11400000, guid: c393c23a325fd104884fb2a5f3d401db, type: 2}
+  Slot3: {fileID: 11400000, guid: dd5a020b22dd2d144a853461b2d2696f, type: 2}
+  Slot4: {fileID: 11400000, guid: 863b81c8460e4e4428e62755eea4d1b8, type: 2}
+  Slot5: {fileID: 11400000, guid: fbec7bc1c1b7cd54daa30b44d7451fde, type: 2}
+  TotalDefencePhysical: 0
+  MoveSpeed: 0

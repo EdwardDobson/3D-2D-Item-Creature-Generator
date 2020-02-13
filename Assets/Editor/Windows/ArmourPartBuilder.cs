@@ -14,7 +14,6 @@ public class ArmourPartBuilderWindow : CreatorWindow
         {
             if (GUILayout.Button("Build Armour Part"))
             {
-                objectData.Sprite = itemTexture;
                 objectData.Name = itemName;
                 objectData.Description = itemDescription;
                 objectData.BuffValuePart = Mats[materialID[0]].BuffValueMaterial * RaritiesList[rarityID].BuffMuliplier;

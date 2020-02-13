@@ -14,7 +14,6 @@ public class MaterialWindow : CreatorWindow
             {
                 if (GUILayout.Button("Build Material"))
                 {
-                    objectData.Sprite = itemTexture;
                     objectData.Name = itemName;
                     objectData.Description = itemDescription;
                     objectData.Type = ItemType.eMaterial;
