@@ -10,9 +10,7 @@ public class WeaponBuilderWindow : CreatorWindow
     void OnGUI()
     {
         BaseFunction();
-
         m_weaponTypeID = EditorGUILayout.Popup("Weapon Type", m_weaponTypeID, System.Enum.GetNames(typeof(WeaponType)));
-
         switch (m_weaponTypeID)
         {
             case 0:
@@ -28,11 +26,7 @@ public class WeaponBuilderWindow : CreatorWindow
                 weaponData.WeaponType = WeaponType.eMace;
                 break;
         }
-
-
         ShowList("WeaponParts", WeaponParts, WeaponPartNames, WeaponPartNames3D, WeaponPartsID);
-
-
         // ShowWeaponPartsList();
         if (itemName != "" && itemDescription != "" &&  WeaponParts.Count >= WeaponPartsID.Length)
         {
@@ -66,8 +60,6 @@ public class WeaponBuilderWindow : CreatorWindow
                         weaponData.Rarity = Rarity.eUnique;
                         break;
                 }
-
-
                 if (m_weaponTypeID != 0)
                 {
                     weaponData.Slot4 = null;

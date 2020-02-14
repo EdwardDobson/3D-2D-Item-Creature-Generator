@@ -10,17 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7773514e10543974d87f318260e6da82, type: 3}
-  m_Name: Material
+  m_Name: Health
   m_EditorClassIdentifier: 
-  Name: 
-  Description: 
-  Sprite: {fileID: 0}
+  Name: Health
+  Description: Health
+  Sprite: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
   Mesh: {fileID: 0}
-  Mat: {fileID: 0}
-  BuffValueMaterial: 0
-  Type: 0
+  Mat: {fileID: 2100000, guid: d3159de34d3116740bca629e9cc185b7, type: 2}
+  BuffValueMaterial: 5
+  Type: 5
   Rarity: 0
   BuffValuePart: 0
   BuffValuePart2: 0
-  Duration: 0
   AspectMode: 0

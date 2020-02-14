@@ -11,7 +11,7 @@ public class ScriptableObjectHolder : MonoBehaviour
     }
     public void ResetValues()
     {
-        if (GetComponent<SpriteRenderer>() != null && data != null)
+        if (GetComponent<SpriteRenderer>() != null && data != null && transform.childCount <= 0)
         {
             GetComponent<SpriteRenderer>().sprite = data.Sprite;
             if (GetComponent<BoxCollider2D>() != null && GetComponent<SpriteRenderer>().sprite != null)
@@ -22,7 +22,7 @@ public class ScriptableObjectHolder : MonoBehaviour
           
             }
         }
-        else if (GetComponent<MeshRenderer>() != null)
+        else if (GetComponent<MeshRenderer>() != null && transform.childCount <= 0)
         {
             GetComponent<MeshFilter>().mesh = data.Mesh;
         }

@@ -10,7 +10,7 @@ public class ArmourPartBuilderWindow : CreatorWindow
         m_speedModifer = EditorGUILayout.FloatField("Speed Value: ", m_speedModifer);
         if (m_speedModifer < 1)
             m_speedModifer = 1;
-        if (itemName != "" && itemDescription != "" && Mats.Count >= materialID.Length)
+        if (itemName != "" && itemDescription != "" && Mats.Count >= materialID.Length && objectData.Sprite != null || objectData.Mesh != null && objectData.Mat != null)
         {
             if (GUILayout.Button("Build Armour Part"))
             {

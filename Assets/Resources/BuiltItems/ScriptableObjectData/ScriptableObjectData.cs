@@ -32,5 +32,6 @@ public class ScriptableObjectData : ScriptableObject
     public Rarity Rarity;
     public float BuffValuePart;
     public float BuffValuePart2;
+    public float Duration;
     public bool AspectMode;
 }

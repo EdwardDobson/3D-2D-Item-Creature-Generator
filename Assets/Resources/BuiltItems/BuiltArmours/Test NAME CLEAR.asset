@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 33b2744dec57ad242bebbf26b28f1ef6, type: 3}
-  m_Name: Test Set
+  m_Name: Test NAME CLEAR
   m_EditorClassIdentifier: 
-  Name: Test Set
-  Description: adssadasdasdadsasd
+  Name: Test NAME CLEAR
+  Description: asdasdsad
   Sprite: {fileID: 0}
   Mesh: {fileID: 0}
   Mat: {fileID: 0}
@@ -22,11 +22,12 @@ MonoBehaviour:
   Rarity: 0
   BuffValuePart: 0
   BuffValuePart2: 0
+  Duration: 0
   AspectMode: 0
-  Slot1: {fileID: 11400000, guid: fbec7bc1c1b7cd54daa30b44d7451fde, type: 2}
-  Slot2: {fileID: 11400000, guid: 55cc1c6f7689f314496ade654670a995, type: 2}
-  Slot3: {fileID: 11400000, guid: dd5a020b22dd2d144a853461b2d2696f, type: 2}
-  Slot4: {fileID: 11400000, guid: 863b81c8460e4e4428e62755eea4d1b8, type: 2}
-  Slot5: {fileID: 11400000, guid: c393c23a325fd104884fb2a5f3d401db, type: 2}
-  TotalDefencePhysical: 0
-  MoveSpeed: 0
+  Slot1: {fileID: 11400000, guid: 1e3f72f3e41a7444ba5784d881f17acb, type: 2}
+  Slot2: {fileID: 11400000, guid: 1e3f72f3e41a7444ba5784d881f17acb, type: 2}
+  Slot3: {fileID: 11400000, guid: 1e3f72f3e41a7444ba5784d881f17acb, type: 2}
+  Slot4: {fileID: 11400000, guid: 1e3f72f3e41a7444ba5784d881f17acb, type: 2}
+  Slot5: {fileID: 11400000, guid: 1e3f72f3e41a7444ba5784d881f17acb, type: 2}
+  TotalDefencePhysical: 800
+  MoveSpeed: 100

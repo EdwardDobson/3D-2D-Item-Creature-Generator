@@ -147,7 +147,7 @@ public class CreatorWindow : EditorWindow
 
             rarityID = EditorGUILayout.Popup("Rarity", rarityID, Enum.GetNames(typeof(Rarity)));
             if (currentWindowName == "Weapon Part Builder" || currentWindowName == "Armour Part Builder" || currentWindowName == "Material Builder"
-                || currentWindowName == "Creature Part Builder")
+                || currentWindowName == "Creature Part Builder" || currentWindowName == "Potion Builder")
             {
                 DisplayItemSpriteMesh();
 
@@ -160,7 +160,9 @@ public class CreatorWindow : EditorWindow
                 case "Weapon Builder":
                     slotAmount = 4;
                     break;
-
+                case "Potion Builder":
+                    slotAmount = 1;
+                    break;
 
             }
         }
@@ -194,11 +196,15 @@ public class CreatorWindow : EditorWindow
         for (int i = 0; i < PartsNames.Length; i++)
         {
             if (!_data[i].AspectMode)
+            {
                 if (!_partNames2D.Contains(PartsNames[i]))
                     _partNames2D.Add(PartsNames[i].Substring(0, PartsNames[i].IndexOf("(")));
-                else
+            }
+            else
+            {
                 if (!_partNames3D.Contains(PartsNames[i]))
                     _partNames3D.Add(PartsNames[i].Substring(0, PartsNames[i].IndexOf("(")));
+            }
         }
         for (int i = 0; i < _partIDs.Length; i++)
         {
@@ -206,18 +212,11 @@ public class CreatorWindow : EditorWindow
             {
                 if (!aspectMode)
                     _partIDs[i] = EditorGUILayout.Popup("Slot " + (i + 1), _partIDs[i], _partNames2D.ToArray());
-                else
+                else if(aspectMode)
                     _partIDs[i] = EditorGUILayout.Popup("Slot " + (i + 1), _partIDs[i], _partNames3D.ToArray());
             }
         }
-        if (!aspectMode)
-        {
-            if (_data.Count < _partIDs.Length)
-            {
-                GUILayout.Label("You need more parts to build the item");
-            }
-        }
-        if (aspectMode)
+        if (!aspectMode || aspectMode)
         {
             if (_data.Count < _partIDs.Length)
             {
@@ -301,28 +300,62 @@ public class CreatorWindow : EditorWindow
     //Resets the values in the base scriptable objects to avoid old persisting
     protected void ClearObjectData()
     {
-        objectData.Name = "";
-        objectData.Description = "";
-        objectData.Sprite = null;
-        objectData.Mesh = null;
-        objectData.Type = ItemType.eMaterial;
-        weaponData.Rarity = Rarity.eCommon;
-        objectData.BuffValueMaterial = 0;
-        objectData.BuffValuePart = 0;
-        weaponData.Name = "";
-        weaponData.Description = "";
-        weaponData.Sprite = null;
-        weaponData.Mesh = null;
-        weaponData.Type = ItemType.eWeapon;
-        weaponData.Rarity = Rarity.eCommon;
-        weaponData.BuffValueMaterial = 0;
-        weaponData.BuffValuePart = 0;
-        weaponData.BuffValuePart2 = 0;
-        weaponData.Slot1 = null;
-        weaponData.Slot2 = null;
-        weaponData.Slot3 = null;
-        weaponData.Slot4 = null;
-        weaponData.AttackSpeed = 0;
+        if(objectData != null)
+        {
+            objectData.Name = "";
+            objectData.Description = "";
+            objectData.Sprite = null;
+            objectData.Mesh = null;
+            objectData.Mat = null;
+            objectData.Type = ItemType.eMaterial;
+            objectData.BuffValueMaterial = 0;
+            objectData.BuffValuePart = 0;
+            objectData.BuffValuePart2 = 0;
+            objectData.Duration = 0;
+        }
+        if(weaponData != null)
+        {
+            weaponData.Rarity = Rarity.eCommon;
+            weaponData.Name = "";
+            weaponData.Description = "";
+            weaponData.Sprite = null;
+            weaponData.Mesh = null;
+            weaponData.Type = ItemType.eWeapon;
+            weaponData.Rarity = Rarity.eCommon;
+            weaponData.BuffValueMaterial = 0;
+            weaponData.BuffValuePart = 0;
+            weaponData.BuffValuePart2 = 0;
+            weaponData.Slot1 = null;
+            weaponData.Slot2 = null;
+            weaponData.Slot3 = null;
+            weaponData.Slot4 = null;
+            weaponData.AttackSpeed = 0;
+        }
+    if(armourData != null)
+        {
+            armourData.Name = "";
+            armourData.Description = "";
+            armourData.Sprite = null;
+            armourData.Mesh = null;
+            armourData.Type = ItemType.eArmour;
+            armourData.Rarity = Rarity.eCommon;
+            armourData.BuffValueMaterial = 0;
+            armourData.BuffValuePart = 0;
+            armourData.BuffValuePart2 = 0;
+            armourData.Slot1 = null;
+            armourData.Slot2 = null;
+            armourData.Slot3 = null;
+            armourData.Slot4 = null;
+            armourData.Slot5 = null;
+            armourData.TotalDefencePhysical = 0;
+            armourData.MoveSpeed = 0;
+
+        }
+
+
+
+        itemDescription = "";
+        itemName = "";
     }
 
     //Adds a slot to the editor to add meshes and sprites to objects
@@ -330,19 +363,22 @@ public class CreatorWindow : EditorWindow
     {
         if (aspectMode)
         {
+            objectData.Sprite = null;
             itemTexture = null;
             itemMesh = (Mesh)EditorGUILayout.ObjectField("Mesh", itemMesh, typeof(Mesh), true);
             objectData.Mesh = itemMesh;
             objectData.Mat = itemMaterial;
+            itemMaterial = (Material)EditorGUILayout.ObjectField("Material", itemMaterial, typeof(Material), true);
         }
         else
         {
+            objectData.Mesh = null;
             itemMesh = null;
             itemTexture = (Sprite)EditorGUILayout.ObjectField("Sprite", itemTexture, typeof(Sprite), true);
             objectData.Sprite = itemTexture;
-            objectData.Mat = itemMaterial;
+            objectData.Mat = itemMaterial2D;
+            itemMaterial2D = (Material)EditorGUILayout.ObjectField("Material", itemMaterial2D, typeof(Material), true);
         }
-        itemMaterial = (Material)EditorGUILayout.ObjectField("Material", itemMaterial, typeof(Material), true);
     }
     //Handles building items/creature parts
     protected void BuildItem(string _dir, ItemType _type)
@@ -360,21 +396,22 @@ public class CreatorWindow : EditorWindow
                 item = GameObject.Find("PartViewHolders").transform.GetChild(1).gameObject;
             }
         }
-        if(!aspectMode)
+        if(currentWindowName == "Weapon Part Builder" || currentWindowName == "Potion Builder" || currentWindowName == "Armour Part Builder")
         {
-            item.AddComponent<BoxCollider2D>();
-            item.AddComponent<SpriteRenderer>();
-            item.GetComponent<SpriteRenderer>().material = itemMaterial2D;
-            item.GetComponent<SpriteRenderer>().sprite = itemTexture;
+            if(aspectMode)
+            {
+                item.AddComponent<MeshFilter>().mesh = objectData.Mesh;
+                item.AddComponent<MeshRenderer>().material = objectData.Mat;
+                item.AddComponent<BoxCollider>();
+            }
+            else
+            {
+                item.AddComponent<SpriteRenderer>().sprite = objectData.Sprite;
+                item.GetComponent<SpriteRenderer>().material = objectData.Mat;
+                item.AddComponent<BoxCollider2D>();
+            }
+            item.AddComponent<ScriptableObjectHolder>().data = objectData;
         }
-        else
-        {
-            item.AddComponent<BoxCollider>();
-            item.AddComponent<MeshRenderer>();
-            item.GetComponent<MeshRenderer>().material = itemMaterial;
-        }
-  
-        item.AddComponent<ScriptableObjectHolder>().data = objectData;
         item.name = itemName;
         string itemNameCombined = itemName + ".prefab";
         if (itemNameCombined != null && objectData != null)
@@ -399,6 +436,9 @@ public class CreatorWindow : EditorWindow
                     case ItemType.eMaterial:
                         itemData = Instantiate(objectData);
                         break;
+                    case ItemType.ePotion:
+                        itemData = Instantiate(objectData);
+                        break;
                 }
                 if (!aspectMode)
                 {
@@ -416,9 +456,13 @@ public class CreatorWindow : EditorWindow
                 AssetDatabase.Refresh();
                 ClearObjectData();
             }
+            if (currentWindowName == "Weapon Part Builder" || currentWindowName == "Potion Builder" || currentWindowName == "Armour Part Builder")
+            {
+                DestroyImmediate(GameObject.Find(item.name));
+            }
+                DestroyImmediate(GameObject.Find("New Game Object"));
+
        
-            DestroyImmediate(GameObject.Find("New Game Object"));
-            DestroyImmediate(GameObject.Find(itemName));
         }
     }
     protected void ViewItem()
@@ -481,9 +525,7 @@ public class CreatorWindow : EditorWindow
                                     partHolderWeapon2D.transform.GetChild(i).GetComponent<ScriptableObjectHolder>().data = ArmourParts[ArmourPartsID[i]];
                                     partHolderWeapon2D.transform.GetChild(i).GetComponent<ScriptableObjectHolder>().ResetValues();
                                 }
-                         
                                 break;
-
                         }
                     
                     }
@@ -499,18 +541,35 @@ public class CreatorWindow : EditorWindow
                         switch (currentWindowName)
                         {
                             case "Weapon Builder":
-                                partHolderWeapon3D.transform.GetChild(i).GetComponent<ScriptableObjectHolder>().data = WeaponParts[WeaponPartsID[i]];
+                                if (WeaponParts.Count >= 4)
+                                {
+                                    partHolderWeapon3D.transform.GetChild(i).GetComponent<ScriptableObjectHolder>().data = WeaponParts[WeaponPartsID[i]];
+                                    partHolderWeapon3D.transform.GetChild(i).GetComponent<ScriptableObjectHolder>().ResetValues();
+                                }
                                 break;
                             case "Armour Builder":
-                                partHolderWeapon3D.transform.GetChild(i).GetComponent<ScriptableObjectHolder>().data = ArmourParts[ArmourPartsID[i]];
+                                if (ArmourParts.Count >= 5)
+                                {
+                                    if(ArmourParts[ArmourPartsID[i]].AspectMode)
+                                    {
+                                        partHolderWeapon3D.transform.GetChild(i).GetComponent<ScriptableObjectHolder>().data = ArmourParts[ArmourPartsID[i]];
+                                        partHolderWeapon3D.transform.GetChild(i).GetComponent<ScriptableObjectHolder>().ResetValues();
+                                    }
+                               
+                                }
                                 break;
                         }
-                        partHolderWeapon3D.transform.GetChild(i).GetComponent<ScriptableObjectHolder>().ResetValues();
                     }
 
                 }
             }
         }
+    }
+
+    protected void OnDestroy()
+    {
+        ClearObjectData();
+        Debug.Log("Window Force Closed");
     }
 }
 
