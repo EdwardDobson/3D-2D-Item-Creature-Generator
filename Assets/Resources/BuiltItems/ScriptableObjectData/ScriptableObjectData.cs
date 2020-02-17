@@ -8,6 +8,8 @@ public enum ItemType
     eWeapon,
     eArmour,
     ePotion,
+    eCreature,
+    eCreaturePart,
 }
 public enum Rarity
 { 
@@ -29,6 +31,7 @@ public class ScriptableObjectData : ScriptableObject
     public Material Mat;
     public float BuffValueMaterial;
     public ItemType Type;
+    public CreatureParts CreaturePartType;
     public Rarity Rarity;
     public float BuffValuePart;
     public float BuffValuePart2;

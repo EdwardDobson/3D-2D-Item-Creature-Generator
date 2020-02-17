@@ -25,6 +25,7 @@ public class PotionBuilderWindow : CreatorWindow
                 objectData.Name = itemName;
                 objectData.Description = itemDescription;
                 objectData.BuffValuePart = m_buffValue * RaritiesList[rarityID].BuffMuliplier;
+              
                 objectData.Type = ItemType.ePotion;
                 objectData.Duration = m_duration * RaritiesList[rarityID].BuffMuliplier;
                 BuildItem("Potions", objectData.Type);

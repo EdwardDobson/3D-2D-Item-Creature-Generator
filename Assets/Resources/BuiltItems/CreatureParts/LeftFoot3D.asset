@@ -10,11 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7773514e10543974d87f318260e6da82, type: 3}
-  m_Name: WeaponPart
+  m_Name: LeftFoot3D
   m_EditorClassIdentifier: 
-  Name: 
-  Description: 
+  Name: LeftFoot3D
+  Description: LeftFoot3D
   Sprite: {fileID: 0}
-  Mesh: {fileID: 0}
-  BuffValue: 0
-  IsMaterial: 0
+  Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+  Mat: {fileID: 2100000, guid: e1be9651ff3024248bdf38cd0a3d1bd5, type: 2}
+  BuffValueMaterial: 0
+  Type: 7
+  CreaturePartType: 9
+  Rarity: 5
+  BuffValuePart: 50
+  BuffValuePart2: 5
+  Duration: 0
+  AspectMode: 1
