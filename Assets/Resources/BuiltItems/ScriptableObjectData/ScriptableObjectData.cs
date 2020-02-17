@@ -12,7 +12,7 @@ public enum ItemType
     eCreaturePart,
 }
 public enum Rarity
-{ 
+{
     eCommon,
     eUncommon,
     eRare,
@@ -37,4 +37,22 @@ public class ScriptableObjectData : ScriptableObject
     public float BuffValuePart2;
     public float Duration;
     public bool AspectMode;
+    public void Reset()
+    {
+        Name = "";
+        Description = "";
+        Sprite = null;
+        Mesh = null;
+        Mat = null;
+        BuffValueMaterial = 0;
+        Type = ItemType.eMaterial;
+        CreaturePartType = CreatureParts.eHead;
+        Rarity = Rarity.eCommon;
+        BuffValuePart = 0;
+        BuffValuePart2 = 0;
+        Duration = 0;
+        AspectMode = false;
+    }
+
+
 }

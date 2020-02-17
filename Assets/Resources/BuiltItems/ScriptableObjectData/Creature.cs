@@ -25,4 +25,10 @@ public enum CreatureParts
 public class Creature : ScriptableObjectData
 {
     public ScriptableObjectData[] Parts;
+
+    public void CreatureReset()
+    {
+        Reset();
+        Parts = null;
+    }
 }

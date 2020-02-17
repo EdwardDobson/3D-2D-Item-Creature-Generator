@@ -16,4 +16,15 @@ public class Weapon : ScriptableObjectData
     public ScriptableObjectData Slot4;
     public float TotalDamage;
     public float AttackSpeed;
+    public void WeaponReset()
+    {
+        Reset();
+        WeaponType = WeaponType.eSword;
+        Slot1 = null;
+        Slot2 = null;
+        Slot3 = null;
+        Slot4 = null;
+        TotalDamage = 0;
+        AttackSpeed = 0;
+    }
 }

@@ -13,11 +13,10 @@ public class CreatorWindow : EditorWindow
     int m_screenID;
     bool m_loadData = true;
     UnityEngine.Object[] m_parts;
-    Sprite itemTexture;
-    Mesh itemMesh;
-    Material itemMaterial;
-    Material itemMaterial2D;
-    List<string> PartsNames = new List<string>();
+    Sprite m_itemTexture;
+    Mesh m_itemMesh;
+    Material m_itemMaterial;
+    Material m_itemMaterial2D;
 
     protected string currentWindowName = "";
     protected string itemName;
@@ -233,23 +232,9 @@ public class CreatorWindow : EditorWindow
     //Resets the values in the base scriptable objects to avoid old persisting data
     protected void ClearObjectData()
     {
-        ScriptableObjectData resetObjectData = CreateInstance<ScriptableObjectData>();
-        AssetDatabase.DeleteAsset("Assets/Resources/BuiltItems/ScriptableObjectData/Material.asset");
-        AssetDatabase.CreateAsset(resetObjectData, "Assets/Resources/BuiltItems/ScriptableObjectData/Material.asset");
-
-        Weapon resetWeaponData = CreateInstance<Weapon>();
-        AssetDatabase.DeleteAsset("Assets/Resources/BuiltItems/ScriptableObjectData/Weapon.asset");
-        AssetDatabase.CreateAsset(resetWeaponData, "Assets/Resources/BuiltItems/ScriptableObjectData/Weapon.asset");
-
-
-        Armour resetArmourData = CreateInstance<Armour>();
-        AssetDatabase.DeleteAsset("Assets/Resources/BuiltItems/ScriptableObjectData/Armour.asset");
-        AssetDatabase.CreateAsset(resetArmourData, "Assets/Resources/BuiltItems/ScriptableObjectData/Armour.asset");
-
-
-        objectData = Resources.Load<ScriptableObjectData>("BuiltItems/ScriptableObjectData/Material");
-        weaponData = Resources.Load<Weapon>("BuiltItems/ScriptableObjectData/Weapon");
-        armourData = Resources.Load<Armour>("BuiltItems/ScriptableObjectData/Armour");
+        objectData.Reset();
+        weaponData.WeaponReset();
+        armourData.ArmourReset();
         itemDescription = "";
         itemName = "";
     }
@@ -260,20 +245,20 @@ public class CreatorWindow : EditorWindow
         if (aspectMode)
         {
             objectData.Sprite = null;
-            itemTexture = null;
-            itemMesh = (Mesh)EditorGUILayout.ObjectField("Mesh", itemMesh, typeof(Mesh), true);
-            objectData.Mesh = itemMesh;
-            objectData.Mat = itemMaterial;
-            itemMaterial = (Material)EditorGUILayout.ObjectField("Material", itemMaterial, typeof(Material), true);
+            m_itemTexture = null;
+            m_itemMesh = (Mesh)EditorGUILayout.ObjectField("Mesh", m_itemMesh, typeof(Mesh), true);
+            objectData.Mesh = m_itemMesh;
+            objectData.Mat = m_itemMaterial;
+            m_itemMaterial = (Material)EditorGUILayout.ObjectField("Material", m_itemMaterial, typeof(Material), true);
         }
         else
         {
             objectData.Mesh = null;
-            itemMesh = null;
-            itemTexture = (Sprite)EditorGUILayout.ObjectField("Sprite", itemTexture, typeof(Sprite), true);
-            objectData.Sprite = itemTexture;
-            objectData.Mat = itemMaterial2D;
-            itemMaterial2D = (Material)EditorGUILayout.ObjectField("Material", itemMaterial2D, typeof(Material), true);
+            m_itemMesh = null;
+            m_itemTexture = (Sprite)EditorGUILayout.ObjectField("Sprite", m_itemTexture, typeof(Sprite), true);
+            objectData.Sprite = m_itemTexture;
+            objectData.Mat = m_itemMaterial2D;
+            m_itemMaterial2D = (Material)EditorGUILayout.ObjectField("Material", m_itemMaterial2D, typeof(Material), true);
         }
     }
     //Handles building items/creature parts

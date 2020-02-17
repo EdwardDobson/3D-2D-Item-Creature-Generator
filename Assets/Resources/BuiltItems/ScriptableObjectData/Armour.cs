@@ -12,4 +12,16 @@ public class Armour : ScriptableObjectData
     public ScriptableObjectData Slot5;
     public float TotalDefencePhysical;
     public float MoveSpeed;
+
+    public void ArmourReset()
+    {
+        Reset();
+        Slot1 = null;
+        Slot2 = null;
+        Slot3 = null;
+        Slot4 = null;
+        Slot5 = null;
+        TotalDefencePhysical = 0;
+        MoveSpeed = 0;
+    }
 }
