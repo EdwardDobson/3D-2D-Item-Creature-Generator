@@ -4,18 +4,18 @@ using UnityEngine;
 using UnityEditor;
 public class ArmourBuilderWindow : CreatorWindow
 {
-    int m_armourTypeID;
     void OnGUI()
     {
         BaseFunction();
-        ShowList("ArmourParts", ArmourParts, ArmourPartNames, ArmourPartNames3D, ArmourPartsID);
-        if (itemName != "" && itemDescription != "")
+        ShowList("ArmourParts", ArmourParts, ArmourPartNames, ArmourPartsID);
+        armourData.Slot1 = ArmourParts[ArmourPartsID[0]];
+        armourData.Slot2 = ArmourParts[ArmourPartsID[1]];
+        armourData.Slot3 = ArmourParts[ArmourPartsID[2]];
+        armourData.Slot4 = ArmourParts[ArmourPartsID[3]];
+        armourData.Slot5 = ArmourParts[ArmourPartsID[4]];
+        if (itemName != "" && itemDescription != "" && ArmourParts.Count >= ArmourPartsID.Length)
         {
-            armourData.Slot1 = ArmourParts[ArmourPartsID[0]];
-            armourData.Slot2 = ArmourParts[ArmourPartsID[1]];
-            armourData.Slot3 = ArmourParts[ArmourPartsID[2]];
-            armourData.Slot4 = ArmourParts[ArmourPartsID[3]];
-            armourData.Slot5 = ArmourParts[ArmourPartsID[4]];
+          
             if (GUILayout.Button("Build Armour"))
             {
                 armourData.Name = itemName;

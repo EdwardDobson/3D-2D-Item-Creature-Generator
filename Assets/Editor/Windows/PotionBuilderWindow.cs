@@ -7,7 +7,7 @@ public class PotionBuilderWindow : CreatorWindow
     void OnGUI()
     {
         BaseFunction();
-        ShowList("Materials", Mats, MatNames, MatNames3D, materialID);
+        ShowList("Materials", Mats, MatNames,materialID);
         m_buffValue = EditorGUILayout.FloatField("Applied Value",m_buffValue);
         m_duration = EditorGUILayout.FloatField("Duration", m_duration);
         if(m_duration < 0)

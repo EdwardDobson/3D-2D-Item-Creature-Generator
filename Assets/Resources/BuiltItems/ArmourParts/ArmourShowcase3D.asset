@@ -10,18 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7773514e10543974d87f318260e6da82, type: 3}
-  m_Name: Material
+  m_Name: ArmourShowcase3D
   m_EditorClassIdentifier: 
-  Name: 
-  Description: 
+  Name: ArmourShowcase3D
+  Description: ArmourShowcase3D
   Sprite: {fileID: 0}
-  Mesh: {fileID: 0}
-  Mat: {fileID: 0}
+  Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  Mat: {fileID: 2100000, guid: e1be9651ff3024248bdf38cd0a3d1bd5, type: 2}
   BuffValueMaterial: 0
-  Type: 0
+  Type: 2
   CreaturePartType: 0
-  Rarity: 0
-  BuffValuePart: 0
-  BuffValuePart2: 0
+  Rarity: 4
+  BuffValuePart: 100
+  BuffValuePart2: 1000
   Duration: 0
-  AspectMode: 0
+  AspectMode: 1

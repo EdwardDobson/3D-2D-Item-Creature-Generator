@@ -9,26 +9,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c8909bfcf64f6ea46b6907cfeb33728f, type: 3}
-  m_Name: Weapon
+  m_Script: {fileID: 11500000, guid: 7773514e10543974d87f318260e6da82, type: 3}
+  m_Name: try
   m_EditorClassIdentifier: 
-  Name: 
-  Description: 
-  Sprite: {fileID: 0}
+  Name: try
+  Description: try
+  Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
   Mesh: {fileID: 0}
   Mat: {fileID: 0}
   BuffValueMaterial: 0
-  Type: 0
+  Type: 1
   CreaturePartType: 0
   Rarity: 0
-  BuffValuePart: 0
-  BuffValuePart2: 0
+  BuffValuePart: 8
+  BuffValuePart2: 2
   Duration: 0
   AspectMode: 0
-  WeaponType: 0
-  Slot1: {fileID: 0}
-  Slot2: {fileID: 0}
-  Slot3: {fileID: 0}
-  Slot4: {fileID: 0}
-  TotalDamage: 0
-  AttackSpeed: 0

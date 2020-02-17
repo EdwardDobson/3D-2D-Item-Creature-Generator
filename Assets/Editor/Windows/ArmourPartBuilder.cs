@@ -6,7 +6,7 @@ public class ArmourPartBuilderWindow : CreatorWindow
     void OnGUI()
     {
         BaseFunction();
-        ShowList("Materials", Mats, MatNames, MatNames3D, materialID);
+        ShowList("Materials", Mats, MatNames, materialID);
         m_speedModifer = EditorGUILayout.FloatField("Speed Value: ", m_speedModifer);
         if (m_speedModifer < 1)
             m_speedModifer = 1;

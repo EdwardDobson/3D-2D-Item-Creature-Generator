@@ -26,7 +26,8 @@ public class WeaponBuilderWindow : CreatorWindow
                 weaponData.WeaponType = WeaponType.eMace;
                 break;
         }
-        ShowList("WeaponParts", WeaponParts, WeaponPartNames, WeaponPartNames3D, WeaponPartsID);
+      ShowList("WeaponParts", WeaponParts, WeaponPartNames, WeaponPartsID);
+
         // ShowWeaponPartsList();
         if (itemName != "" && itemDescription != "" &&  WeaponParts.Count >= WeaponPartsID.Length)
         {

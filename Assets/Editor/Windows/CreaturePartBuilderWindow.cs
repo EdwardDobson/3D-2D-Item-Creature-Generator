@@ -10,7 +10,7 @@ public class CreaturePartBuilderWindow : CreatorWindow
     {
         BaseFunction();
  
-        ShowList("Materials", Mats, MatNames, MatNames3D, materialID);
+        ShowList("Materials", Mats, MatNames, materialID);
         m_speedModifer = EditorGUILayout.FloatField("Speed Value: ", m_speedModifer);
         m_creaturePartID = EditorGUILayout.Popup("Part Type", m_creaturePartID, System.Enum.GetNames(typeof(CreatureParts)));
         foreach (int i in System.Enum.GetValues(typeof(CreatureParts)))
