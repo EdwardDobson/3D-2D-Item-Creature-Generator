@@ -18,5 +18,6 @@ public class RarityWindow : CreatorWindow
             if (RaritiesList[i].BuffMuliplier < 0)
                 RaritiesList[i].BuffMuliplier = 0;
         }
+        CloseButton();
     }
 }
