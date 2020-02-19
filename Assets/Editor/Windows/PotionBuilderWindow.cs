@@ -6,7 +6,7 @@ public class PotionBuilderWindow : SubWindowHandler
     float m_duration;
     void OnGUI()
     {
-        Handle("Materials", Mats, MatNames, materialID);
+        Handle("Materials");
 
         m_buffValue = EditorGUILayout.FloatField("Applied Value",m_buffValue);
         m_duration = EditorGUILayout.FloatField("Duration", m_duration);

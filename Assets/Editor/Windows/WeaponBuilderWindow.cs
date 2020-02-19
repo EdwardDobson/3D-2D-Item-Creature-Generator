@@ -25,60 +25,32 @@ public class WeaponBuilderWindow : CreatorWindow
             case 3:
                 weaponData.WeaponType = WeaponType.eMace;
                 break;
+            default:
+                break;
         }
-      ShowList("WeaponParts", WeaponParts, WeaponPartNames, WeaponPartsID);
-
-        // ShowWeaponPartsList();
-        if (itemName != "" && itemDescription != "" &&  WeaponParts.Count >= WeaponPartsID.Length)
+        ShowList("WeaponParts");
+         
+        Debug.Log(WeaponParts[PartIDs[0]]);
+        if (itemName != "" && itemDescription != "")
         {
-            weaponData.Slot1 = WeaponParts[WeaponPartsID[0]];
-            weaponData.Slot2 = WeaponParts[WeaponPartsID[1]];
-            weaponData.Slot3 = WeaponParts[WeaponPartsID[2]];
-            weaponData.Slot4 = WeaponParts[WeaponPartsID[3]];
+            weaponData.Slot1 = WeaponParts[PartIDs[0]];
+            weaponData.Slot2 = WeaponParts[PartIDs[1]];
+            weaponData.Slot3 = WeaponParts[PartIDs[2]];
+            weaponData.Slot4 = WeaponParts[PartIDs[3]];
             if (GUILayout.Button("Build Weapon"))
             {
                 weaponData.Name = itemName;
                 weaponData.Description = itemDescription;
                 weaponData.Type = ItemType.eWeapon;
-                switch (rarityID)
-                {
-                    case 0:
-                        weaponData.Rarity = Rarity.eCommon;
-                        break;
-                    case 1:
-                        weaponData.Rarity = Rarity.eUncommon;
-                        break;
-                    case 2:
-                        weaponData.Rarity = Rarity.eRare;
-                        break;
-                    case 3:
-                        weaponData.Rarity = Rarity.eEpic;
-                        break;
-                    case 4:
-                        weaponData.Rarity = Rarity.eLegendary;
-                        break;
-                    case 5:
-                        weaponData.Rarity = Rarity.eUnique;
-                        break;
-                }
+                AssignRarity();
                 if (m_weaponTypeID != 0)
                 {
                     weaponData.Slot4 = null;
                 }
-                if (weaponData.Slot4 == null)
-                {
-                    weaponData.TotalDamage = (WeaponParts[WeaponPartsID[0]].BuffValuePart + WeaponParts[WeaponPartsID[1]].BuffValuePart +
-                    WeaponParts[WeaponPartsID[2]].BuffValuePart) * RaritiesList[rarityID].BuffMuliplier;
-                    weaponData.AttackSpeed = (WeaponParts[WeaponPartsID[0]].BuffValuePart2 + WeaponParts[WeaponPartsID[1]].BuffValuePart2 +
-                    WeaponParts[WeaponPartsID[2]].BuffValuePart2) * RaritiesList[rarityID].BuffMuliplier;
-                }
-                else
-                {
-                    weaponData.TotalDamage = (WeaponParts[WeaponPartsID[0]].BuffValuePart + WeaponParts[WeaponPartsID[1]].BuffValuePart +
-                    WeaponParts[WeaponPartsID[2]].BuffValuePart + WeaponParts[WeaponPartsID[3]].BuffValuePart) * RaritiesList[rarityID].BuffMuliplier;
-                    weaponData.AttackSpeed = (WeaponParts[WeaponPartsID[0]].BuffValuePart2 + WeaponParts[WeaponPartsID[1]].BuffValuePart2 +
-                    WeaponParts[WeaponPartsID[2]].BuffValuePart2 + WeaponParts[WeaponPartsID[3]].BuffValuePart2) * RaritiesList[rarityID].BuffMuliplier;
-                }
+                    weaponData.TotalDamage = (WeaponParts[PartIDs[0]].BuffValuePart + WeaponParts[PartIDs[1]].BuffValuePart +
+                    WeaponParts[PartIDs[2]].BuffValuePart) * RaritiesList[rarityID].BuffMuliplier;
+                    weaponData.AttackSpeed = (WeaponParts[PartIDs[0]].BuffValuePart2 + WeaponParts[PartIDs[1]].BuffValuePart2 +
+                    WeaponParts[PartIDs[2]].BuffValuePart2) * RaritiesList[rarityID].BuffMuliplier;
                 BuildItem("BuiltWeapons", weaponData.Type);
 
             }

@@ -5,7 +5,7 @@ public class ArmourPartBuilderWindow : SubWindowHandler
     float m_speedModifer;
     void OnGUI()
     {
-        Handle("Materials", Mats, MatNames, materialID);
+        Handle("Materials");
         m_speedModifer = EditorGUILayout.FloatField("Speed Value: ", m_speedModifer);
         if (m_speedModifer < 1)
             m_speedModifer = 1;
