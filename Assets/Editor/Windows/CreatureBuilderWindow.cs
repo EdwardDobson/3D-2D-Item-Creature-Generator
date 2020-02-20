@@ -1,9 +1,11 @@
 ﻿
-public class CreatureBuilderWindow : CreatorWindow
+public class CreatureBuilderWindow : SubWindowHandler
 {
     void OnGUI()
     {
         BaseFunction();
-        CloseButton();
+        ShowList("CreatureParts");
+        ViewItem();
+        BuildHandleItem("Creature", ItemType.eCreature, "BuiltCreatures", ItemBaseParts);
     }
 }

@@ -11,6 +11,11 @@ public enum ItemType
     eCreature,
     eCreaturePart,
 }
+public struct ItemTypeStruct
+{
+    public ItemType itemType;
+    public bool isFullItem;
+}
 public enum Rarity
 {
     eCommon,
@@ -31,6 +36,7 @@ public class ScriptableObjectData : ScriptableObject
     public Material Mat;
     public float BuffValueMaterial;
     public ItemType Type;
+    public ItemTypeStruct Struct;
     public CreatureParts CreaturePartType;
     public Rarity Rarity;
     public float BuffValuePart;
