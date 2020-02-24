@@ -6,7 +6,6 @@ public class WeaponPartWindow : SubWindowHandler
    void OnGUI()
     {
         Handle("Materials");
-
         m_speedModifer = EditorGUILayout.FloatField("Speed Value: ", m_speedModifer);
         if (m_speedModifer < 1)
             m_speedModifer = 1;

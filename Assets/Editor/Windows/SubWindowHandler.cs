@@ -7,8 +7,7 @@ public class SubWindowHandler : CreatorWindow
     protected void Handle(string _dir)
     {
         BaseFunction();
-        ShowList(_dir);
-
+        ShowList();
     }
     //_dir example "Potions" _TypeName example "Potion" Make sure that the _dir is all one word
     protected void BuildHandle(string _TypeName, ItemType _type, string _dir, float _duration)

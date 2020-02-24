@@ -9,13 +9,18 @@ public class CreatorWindow : EditorWindow
 
     static CreatorWindow m_window;
     static string[] m_buttonNames = { "Material Builder", "Weapon Builder", "Weapon Part Builder", "Armour Builder", "Armour Part Builder","Creature Builder",
-    "Creature Part Builder","Potion Builder", "Rarity Window" };
+    "Creature Part Builder","Potion Builder", "Rarity Window" , "Folder Window" };
+    List<string> m_folderNames = new List<string>();
+    int m_saveDirIndex;
     Rect m_buttonSize;
     int m_screenID;
     bool m_loadData = true;
     Sprite m_itemTexture;
     Mesh m_itemMesh;
     Material m_itemMaterial;
+    string m_aspectName;
+    ItemType m_type;
+    Vector3[] m_itemPos = new Vector3[6];
     protected string currentWindowName = "";
     protected string itemName;
     protected string itemDescription;
@@ -36,15 +41,16 @@ public class CreatorWindow : EditorWindow
     {
         m_window = (CreatorWindow)GetWindow(typeof(CreatorWindow));
         m_window.currentWindowName = "Builder";
-        m_window.maxSize = new Vector2(200, 600);
+        m_window.maxSize = new Vector2(200, 700);
         m_window.minSize = m_window.maxSize;
         m_window.Show();
+       
     }
     void OnGUI()
     {
         EditorGUILayout.BeginHorizontal();
 
-        CreateLabel(20, new RectOffset(15, 0, 15, 0), "Item + Creature \nBuilder\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCreated by\nEdward Dobson");
+        CreateLabel(20, new RectOffset(15, 0, 15, 0), "Item + Creature \nBuilder\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCreated by\nEdward Dobson");
         Buttons();
         EditorGUILayout.EndHorizontal();
     }
@@ -86,6 +92,9 @@ public class CreatorWindow : EditorWindow
                     case 9:
                         m_window = (CreatorWindow)GetWindow(typeof(RarityWindow));
                         break;
+                    case 10:
+                        m_window = (FolderWindow)GetWindow(typeof(FolderWindow));
+                        break;
                 }
                 if (m_window != null)
                 {
@@ -98,12 +107,23 @@ public class CreatorWindow : EditorWindow
     //Contains the basic blocks for a window
     protected void BaseFunction()
     {
+        
         CreateLabel(25, new RectOffset(15, 0, 15, 0), currentWindowName);
+        DirectoryInfo dir = new DirectoryInfo("Assets/Resources/BuiltItems/");
+        DirectoryInfo[] fileNames = dir.GetDirectories();
+        foreach (DirectoryInfo f in fileNames)
+        {
+            if(!m_folderNames.Contains(f.Name) && f.Name != "Utility")
+            {
+                m_folderNames.Add(f.Name);
+            }
+         
+        }
         if (m_loadData)
         {
-            objectData = Resources.Load<ScriptableObjectData>("BuiltItems/ScriptableObjectData/Material");
-            Rarities = Resources.LoadAll("BuiltItems/ScriptableObjectData/RarityData/", typeof(RarityBaseData));
-            itemBaseData = Resources.Load<ItemBase>("BuiltItems/ScriptableObjectData/ItemBase");
+            objectData = Resources.Load<ScriptableObjectData>("BuiltItems/Utility/ScriptableObjectData/Material");
+            Rarities = Resources.LoadAll("BuiltItems/Utility/ScriptableObjectData/RarityData/", typeof(RarityBaseData));
+            itemBaseData = Resources.Load<ItemBase>("BuiltItems/Utility/ScriptableObjectData/ItemBase");
             foreach (RarityBaseData r in Rarities)
             {
                 if (!RaritiesList.Contains(r))
@@ -113,61 +133,80 @@ public class CreatorWindow : EditorWindow
             Debug.Log("Loading data");
             m_loadData = false;
         }
-
-        if (currentWindowName != "Rarity Window")
+        for(int i = 0; i < m_buttonNames.Length - 2; ++i)
         {
-            CreateLabel(15, new RectOffset(15, 0, 15, 0), "Item + Creature Name");
-            itemName = GUILayout.TextField(itemName);
-            CreateLabel(15, new RectOffset(15, 0, 25, 0), "Description");
-            itemDescription = GUILayout.TextField(itemDescription);
-            GUIStyle styleB = GUI.skin.GetStyle("label");
-            styleB.fontSize = 15;
-            styleB.padding = new RectOffset(15, 0, 15, 0);
-            if (aspectMode)
+            if(m_buttonNames[i].Contains(currentWindowName))
             {
-                GUILayout.Label("Current Mode 3D", styleB);
-                aspectMode = GUILayout.Toggle(aspectMode, "3D");
-            }
-            else
-            {
-                GUILayout.Label("Current Mode 2D", styleB);
-                aspectMode = GUILayout.Toggle(aspectMode, "2D");
-            }
+                CreateLabel(15, new RectOffset(15, 0, 15, 0), "Item + Creature Name");
+                itemName = GUILayout.TextField(itemName);
+                CreateLabel(15, new RectOffset(15, 0, 25, 0), "Description");
+                itemDescription = GUILayout.TextField(itemDescription);
+                GUIStyle styleB = GUI.skin.GetStyle("label");
+                styleB.fontSize = 15;
+                styleB.padding = new RectOffset(15, 0, 15, 0);
+                GUILayout.Label("Current aspect mode " + m_aspectName);
+                if(aspectMode)
+                {
+                    m_aspectName = "3D";
+                }
+                else
+                {
+                    m_aspectName = "2D";
+                }
+                if (GUILayout.Button("Change Aspect Mode"))
+                {
+                    if(aspectMode)
+                    {
+                        aspectMode = false;
+                        EditorGUILayout.LabelField("Current Mode 2D");
+                    }
+                    else
+                    {
+                        aspectMode = true;
+                    }
+                    PartIDs = new int[slotAmount];
+                }
+           
+                rarityID = EditorGUILayout.Popup("Rarity", rarityID, Enum.GetNames(typeof(Rarity)));
+                if (currentWindowName == "Weapon Part Builder" || currentWindowName == "Armour Part Builder" || currentWindowName == "Material Builder"
+                    || currentWindowName == "Creature Part Builder" || currentWindowName == "Potion Builder")
+                {
+                    DisplayItemSpriteMesh();
 
-            rarityID = EditorGUILayout.Popup("Rarity", rarityID, Enum.GetNames(typeof(Rarity)));
-            if (currentWindowName == "Weapon Part Builder" || currentWindowName == "Armour Part Builder" || currentWindowName == "Material Builder"
-                || currentWindowName == "Creature Part Builder" || currentWindowName == "Potion Builder")
-            {
-                DisplayItemSpriteMesh();
+                }
+                switch (currentWindowName)
+                {
+                    case "Armour Builder":
+                        m_type = ItemType.eArmourPart;
+                        slotAmount = 5;
+                        break;
+                    case "Weapon Builder":
+                        m_type = ItemType.eWeaponPart;
+                        slotAmount = 4;
+                        break;
+                    case "Creature Builder":
+                        m_type = ItemType.eCreaturePart;
+                        slotAmount = 6;
+                        break;
+                    case "Potion Builder":
+                    case "Material Builder":
+                    case "Weapon Part Builder":
+                    case "Armour Part Builder":
+                        m_type = ItemType.eMaterial;
+                        slotAmount = 1;
+                        break;
+                    default:
+                        break;
+
+                }
+                CreateLabel(15, new RectOffset(0, 0, 15, 0), "Save To:");
+                m_saveDirIndex = EditorGUILayout.Popup("", m_saveDirIndex, m_folderNames.ToArray());
 
             }
-            switch (currentWindowName)
-            {
-                case "Armour Builder":
-                    slotAmount = 5;
-                    break;
-                case "Weapon Builder":
-                    slotAmount = 4;
-                    break;
-                case "Creature Builder":
-                    slotAmount = 6;
-                    break;
-                case "Potion Builder":
-                case "Material Builder":
-                case "Weapon Part Builder":
-                case "Armour Part Builder":
-                    slotAmount = 1;
-                    break;
-                default:
-                    break;
-
-            }
-
         }
     }
     public void CloseButton()
     {
-        GUILayout.FlexibleSpace();
         if (GUILayout.Button("Close"))
         {
             m_screenID = 0;
@@ -185,11 +224,14 @@ public class CreatorWindow : EditorWindow
             }
         }
     }
-    protected void ShowList(string _dir)
+    protected void ShowList()
     {
-        UnityEngine.Object[] m_parts = Resources.LoadAll("BuiltItems/" + _dir, typeof(ScriptableObjectData));
+
+        UnityEngine.Object[] m_parts = Resources.LoadAll("BuiltItems/", typeof(ScriptableObjectData));
         List<ScriptableObjectData> _items = new List<ScriptableObjectData>();
+      
         PartNames.Clear();
+        Parts.Clear();
         if (Parts.Count != m_parts.Length)
         {
             Parts.Clear();
@@ -203,8 +245,10 @@ public class CreatorWindow : EditorWindow
         {
             if (Parts[i].AspectMode == aspectMode)
             {
+                if(Parts[i].Type == m_type)
                 _items.Add(Parts[i]);
             }
+              
         }
         for (int i = 0; i < _items.Count; i++)
         {
@@ -213,6 +257,8 @@ public class CreatorWindow : EditorWindow
         for (int i = 0; i < slotAmount; i++)
         {
             PartIDs[i] = EditorGUILayout.Popup("Slot " + (i + 1), PartIDs[i], PartNames.ToArray());
+            m_itemPos[i] = EditorGUILayout.Vector3Field("", m_itemPos[i]);
+
         }
         ItemBaseParts = _items;
         if (!aspectMode || aspectMode)
@@ -275,22 +321,31 @@ public class CreatorWindow : EditorWindow
                 item = GameObject.Find("PartViewHolders").transform.GetChild(1).gameObject;
             }
         }
-        if (currentWindowName.Contains("Part") || currentWindowName == "Potion Builder")
+      
+        if (currentWindowName.Contains("Part") || currentWindowName == "Potion Builder" || currentWindowName == "Material Builder")
         {
             if (aspectMode)
             {
-                item.AddComponent<MeshFilter>().mesh = objectData.Mesh;
-                item.AddComponent<MeshRenderer>().material = objectData.Mat;
-                item.AddComponent<BoxCollider>();
+                if (item.GetComponent<MeshFilter>() == null)
+                    item.AddComponent<MeshFilter>().mesh = objectData.Mesh;
+                if (item.GetComponent<MeshRenderer>() == null)
+                    item.AddComponent<MeshRenderer>().material = objectData.Mat;
+                if (item.GetComponent<BoxCollider>() == null)
+                    item.AddComponent<BoxCollider>();
             }
             else
             {
-                item.AddComponent<SpriteRenderer>().sprite = objectData.Sprite;
+                if (item.GetComponent<SpriteRenderer>() == null)
+                    item.AddComponent<SpriteRenderer>().sprite = objectData.Sprite;
                 item.GetComponent<SpriteRenderer>().material = objectData.Mat;
-                item.AddComponent<BoxCollider2D>();
+                if (item.GetComponent<BoxCollider2D>() == null)
+                    item.AddComponent<BoxCollider2D>();
             }
             item.AddComponent<ScriptableObjectHolder>().data = objectData;
         }
+       
+      
+ 
         item.name = itemName;
         string itemNameCombined = itemName + ".prefab";
         if (itemNameCombined != "" && objectData != null)
@@ -323,19 +378,31 @@ public class CreatorWindow : EditorWindow
                         itemData.Rarity = (Rarity)i;
                     }
                 }
-                AssetDatabase.CreateAsset(itemData, "Assets/Resources/BuiltItems/" + _dir + "/" + itemName + ".asset");
-                item.GetComponent<ScriptableObjectHolder>().data = (ScriptableObjectData)AssetDatabase.LoadAssetAtPath("Assets/Resources/BuiltItems/" + _dir + "/" + itemName + ".asset", typeof(ScriptableObjectData));
+                AssetDatabase.CreateAsset(itemData, "Assets/Resources/BuiltItems/" + m_folderNames[m_saveDirIndex] + "/" + itemName + ".asset");
+                item.GetComponent<ScriptableObjectHolder>().data = (ScriptableObjectData)AssetDatabase.LoadAssetAtPath("Assets/Resources/BuiltItems/" + m_folderNames[m_saveDirIndex] + "/" + itemName + ".asset", typeof(ScriptableObjectData));
                 Debug.Log("Building item");
-                PrefabUtility.SaveAsPrefabAsset(item, "Assets/Resources/BuiltItems/" + _dir + "/" + itemNameCombined);
+                PrefabUtility.SaveAsPrefabAsset(item, "Assets/Resources/BuiltItems/" + m_folderNames[m_saveDirIndex] + "/" + itemNameCombined);
                 AssetDatabase.Refresh();
+                for(int i =0; i < m_itemPos.Length; ++i)
+                {
+                    m_itemPos[i] = new Vector3(0, 0, 0);
+                }
             }
-            if (currentWindowName.Contains("Part") || currentWindowName == "Potion Builder")
+            if (currentWindowName.Contains("Part") || currentWindowName == "Potion Builder" || currentWindowName == "Material Builder")
             {
                 DestroyImmediate(GameObject.Find(item.name));
             }
             DestroyImmediate(GameObject.Find("New Game Object"));
             ClearObjectData();
         }
+    }
+    public void CreateFolder(string _folderName)
+    {
+        AssetDatabase.CreateFolder("Assets/Resources/Builtitems", _folderName);
+        string newFolderPath = AssetDatabase.GUIDToAssetPath(_folderName);
+        m_folderNames.Add(_folderName);
+        Debug.Log("Building folder : " + _folderName);
+        Debug.Log("Folder Count: " + m_folderNames.Count);
     }
     protected void ViewItem()
     {
@@ -372,6 +439,30 @@ public class CreatorWindow : EditorWindow
                 partHolderWeapon2D.SetActive(false);
             }
 
+            for (int i = 0; i < partHolderWeapon3D.transform.childCount; i++)
+            {
+              
+                    if (partHolderWeapon3D.transform.GetChild(i).GetComponent<BoxCollider>() == null)
+                        partHolderWeapon3D.transform.GetChild(i).gameObject.AddComponent<BoxCollider>();
+                    if (partHolderWeapon3D.transform.GetChild(i).GetComponent<ScriptableObjectHolder>() == null)
+                        partHolderWeapon3D.transform.GetChild(i).gameObject.AddComponent<ScriptableObjectHolder>();
+                    if (partHolderWeapon3D.transform.GetChild(i).GetComponent<MeshFilter>() == null)
+                        partHolderWeapon3D.transform.GetChild(i).gameObject.AddComponent<MeshFilter>();
+                    if (partHolderWeapon3D.transform.GetChild(i).GetComponent<MeshRenderer>() == null)
+                        partHolderWeapon3D.transform.GetChild(i).gameObject.AddComponent<MeshRenderer>();
+              
+            }
+            for (int i = 0; i < partHolderWeapon2D.transform.childCount; i++)
+            {
+
+                if (partHolderWeapon2D.transform.GetChild(i).GetComponent<BoxCollider2D>() == null)
+                    partHolderWeapon2D.transform.GetChild(i).gameObject.AddComponent<BoxCollider2D>();
+                if (partHolderWeapon2D.transform.GetChild(i).GetComponent<ScriptableObjectHolder>() == null)
+                    partHolderWeapon2D.transform.GetChild(i).gameObject.AddComponent<ScriptableObjectHolder>();
+                if (partHolderWeapon2D.transform.GetChild(i).GetComponent<SpriteRenderer>() == null)
+                    partHolderWeapon2D.transform.GetChild(i).gameObject.AddComponent<SpriteRenderer>();
+
+            }
             for (int i = 0; i < slotAmount; i++)
             {
                 if (aspectMode)
@@ -381,8 +472,13 @@ public class CreatorWindow : EditorWindow
                         partHolderWeapon3D.transform.GetChild(i).gameObject.SetActive(true);
                         if (!currentWindowName.Contains("Part"))
                         {
-                            partHolderWeapon3D.transform.GetChild(i).GetComponent<ScriptableObjectHolder>().data = ItemBaseParts[PartIDs[i]];
-                            partHolderWeapon3D.transform.GetChild(i).GetComponent<ScriptableObjectHolder>().ResetValues();
+                            if (ItemBaseParts.Count > 0)
+                            {
+                                partHolderWeapon3D.transform.GetChild(i).transform.position = m_itemPos[i];
+                                partHolderWeapon3D.transform.GetChild(i).GetComponent<ScriptableObjectHolder>().data = ItemBaseParts[PartIDs[i]];
+                                partHolderWeapon3D.transform.GetChild(i).GetComponent<ScriptableObjectHolder>().ResetValues();
+                            }
+                           
                         }
                     }
                 }
@@ -395,8 +491,12 @@ public class CreatorWindow : EditorWindow
                             partHolderWeapon2D.transform.GetChild(i).gameObject.SetActive(true);
                             if (!currentWindowName.Contains("Part"))
                             {
-                                partHolderWeapon2D.transform.GetChild(i).GetComponent<ScriptableObjectHolder>().data = ItemBaseParts[PartIDs[i]];
-                                partHolderWeapon2D.transform.GetChild(i).GetComponent<ScriptableObjectHolder>().ResetValues();
+                                if (ItemBaseParts.Count > 0)
+                                {
+                                    partHolderWeapon2D.transform.GetChild(i).transform.position = m_itemPos[i];
+                                        partHolderWeapon2D.transform.GetChild(i).GetComponent<ScriptableObjectHolder>().data = ItemBaseParts[PartIDs[i]];
+                                    partHolderWeapon2D.transform.GetChild(i).GetComponent<ScriptableObjectHolder>().ResetValues();
+                                }
                             }
                         }
                     }
