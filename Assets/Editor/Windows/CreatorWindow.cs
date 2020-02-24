@@ -6,7 +6,6 @@ using System;
 using System.IO;
 public class CreatorWindow : EditorWindow
 {
-
     static CreatorWindow m_window;
     static string[] m_buttonNames = { "Material Builder", "Weapon Builder", "Weapon Part Builder", "Armour Builder", "Armour Part Builder","Creature Builder",
     "Creature Part Builder","Potion Builder", "Rarity Window" , "Folder Window" };
@@ -21,6 +20,10 @@ public class CreatorWindow : EditorWindow
     string m_aspectName;
     ItemType m_type;
     Vector3[] m_itemPos = new Vector3[6];
+    Camera m_viewCamera;
+    Transform m_viewCameraTransform;
+    Transform m_viewCameraStart;
+    bool m_viewItem;
     protected string currentWindowName = "";
     protected string itemName;
     protected string itemDescription;
@@ -45,11 +48,11 @@ public class CreatorWindow : EditorWindow
         m_window.minSize = m_window.maxSize;
         m_window.Show();
        
+       
     }
     void OnGUI()
     {
         EditorGUILayout.BeginHorizontal();
-
         CreateLabel(20, new RectOffset(15, 0, 15, 0), "Item + Creature \nBuilder\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCreated by\nEdward Dobson");
         Buttons();
         EditorGUILayout.EndHorizontal();
@@ -133,9 +136,9 @@ public class CreatorWindow : EditorWindow
             Debug.Log("Loading data");
             m_loadData = false;
         }
-        for(int i = 0; i < m_buttonNames.Length - 2; ++i)
+        for (int i = 0; i < m_buttonNames.Length - 2; ++i)
         {
-            if(m_buttonNames[i].Contains(currentWindowName))
+            if (m_buttonNames[i].Contains(currentWindowName))
             {
                 CreateLabel(15, new RectOffset(15, 0, 15, 0), "Item + Creature Name");
                 itemName = GUILayout.TextField(itemName);
@@ -145,7 +148,7 @@ public class CreatorWindow : EditorWindow
                 styleB.fontSize = 15;
                 styleB.padding = new RectOffset(15, 0, 15, 0);
                 GUILayout.Label("Current aspect mode " + m_aspectName);
-                if(aspectMode)
+                if (aspectMode)
                 {
                     m_aspectName = "3D";
                 }
@@ -155,10 +158,9 @@ public class CreatorWindow : EditorWindow
                 }
                 if (GUILayout.Button("Change Aspect Mode"))
                 {
-                    if(aspectMode)
+                    if (aspectMode)
                     {
                         aspectMode = false;
-                        EditorGUILayout.LabelField("Current Mode 2D");
                     }
                     else
                     {
@@ -166,7 +168,7 @@ public class CreatorWindow : EditorWindow
                     }
                     PartIDs = new int[slotAmount];
                 }
-           
+
                 rarityID = EditorGUILayout.Popup("Rarity", rarityID, Enum.GetNames(typeof(Rarity)));
                 if (currentWindowName == "Weapon Part Builder" || currentWindowName == "Armour Part Builder" || currentWindowName == "Material Builder"
                     || currentWindowName == "Creature Part Builder" || currentWindowName == "Potion Builder")
@@ -201,9 +203,54 @@ public class CreatorWindow : EditorWindow
                 }
                 CreateLabel(15, new RectOffset(0, 0, 15, 0), "Save To:");
                 m_saveDirIndex = EditorGUILayout.Popup("", m_saveDirIndex, m_folderNames.ToArray());
-
+            
+                if(GUILayout.Button("Show Camera"))
+                {
+                    if(m_viewItem)
+                    {
+                        m_viewItem = false;
+                    }
+                    else
+                    {
+                        m_viewItem = true;
+                    }
+                    
+                }
             }
         }
+    }
+    protected void Camera()
+    {
+        m_viewCameraStart = GameObject.Find("ItemViewCamera").transform;
+        if (m_viewItem)
+        {
+           
+            if (GUILayout.Button("Rotate Right"))
+            {
+                m_viewCamera = GameObject.Find("ItemViewCamera").GetComponent<Camera>();
+                m_viewCameraTransform = GameObject.Find("ViewCenter").transform;
+                m_viewCamera.transform.LookAt(m_viewCameraTransform);
+                m_viewCamera.transform.RotateAround(m_viewCameraTransform.position, Vector3.down, 15f);
+            }
+            if (GUILayout.Button("Rotate Left"))
+            {
+                m_viewCamera = GameObject.Find("ItemViewCamera").GetComponent<Camera>();
+                m_viewCameraTransform = GameObject.Find("ViewCenter").transform;
+                m_viewCamera.transform.LookAt(m_viewCameraTransform);
+                m_viewCamera.transform.RotateAround(m_viewCameraTransform.position, Vector3.up, 15f);
+
+            }
+            if (GUILayout.Button("Reset Rotation"))
+            {
+                m_viewCamera = GameObject.Find("ItemViewCamera").GetComponent<Camera>();
+                m_viewCameraTransform = GameObject.Find("ViewCenter").transform;
+
+                m_viewCamera.transform.position = new Vector3(0, 0, -5);
+                m_viewCamera.transform.rotation = new Quaternion(0, 0, 0, 0);
+            }
+            ViewItem();
+        }
+       
     }
     public void CloseButton()
     {
@@ -364,11 +411,11 @@ public class CreatorWindow : EditorWindow
               
                 if (!aspectMode)
                 {
-                    GameObject.Find("PartViewHolders").transform.GetChild(0).gameObject.name = "PartHolderWeapon2D";
+                    GameObject.Find("PartViewHolders").transform.GetChild(0).gameObject.name = "PartHolder2D";
                 }
                 else
                 {
-                    GameObject.Find("PartViewHolders").transform.GetChild(1).gameObject.name = "PartHolderWeapon3D";
+                    GameObject.Find("PartViewHolders").transform.GetChild(1).gameObject.name = "PartHolder3D";
                 }
                 itemData.AspectMode = aspectMode;
                 foreach (int i in Enum.GetValues(typeof(Rarity)))

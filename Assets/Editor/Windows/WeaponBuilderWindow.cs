@@ -8,8 +8,8 @@ public class WeaponBuilderWindow : SubWindowHandler
     void OnGUI()
     {
         BaseFunction();
+        Camera();
         ShowList();
-        ViewItem();
         BuildHandleItem("Weapon", ItemType.eWeapon, "BuiltWeapons", ItemBaseParts);
         
     }

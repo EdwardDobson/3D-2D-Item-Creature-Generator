@@ -4,8 +4,8 @@ public class CreatureBuilderWindow : SubWindowHandler
     void OnGUI()
     {
         BaseFunction();
+        Camera();
         ShowList();
-        ViewItem();
         BuildHandleItem("Creature", ItemType.eCreature, "BuiltCreatures", ItemBaseParts);
     }
 }

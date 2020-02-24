@@ -7,8 +7,8 @@ public class ArmourBuilderWindow : SubWindowHandler
     void OnGUI()
     {
         BaseFunction();
+        Camera();
         ShowList();
-        ViewItem();
         BuildHandleItem("Armour", ItemType.eArmour, "BuiltArmours", ItemBaseParts);
 
     }
