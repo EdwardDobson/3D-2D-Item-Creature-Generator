@@ -24,6 +24,7 @@ public class CreatorWindow : EditorWindow
     Transform m_viewCameraTransform;
     Transform m_viewCameraStart;
     bool m_viewItem;
+    string m_cameraStateName = "Show Camera";
     protected string currentWindowName = "";
     protected string itemName;
     protected string itemDescription;
@@ -204,23 +205,28 @@ public class CreatorWindow : EditorWindow
                 CreateLabel(15, new RectOffset(0, 0, 15, 0), "Save To:");
                 m_saveDirIndex = EditorGUILayout.Popup("", m_saveDirIndex, m_folderNames.ToArray());
             
-                if(GUILayout.Button("Show Camera"))
-                {
-                    if(m_viewItem)
-                    {
-                        m_viewItem = false;
-                    }
-                    else
-                    {
-                        m_viewItem = true;
-                    }
-                    
-                }
+           
             }
         }
     }
     protected void Camera()
     {
+        
+
+        if (GUILayout.Button(m_cameraStateName))
+        {
+            if (m_viewItem)
+            {
+                m_viewItem = false;
+                m_cameraStateName = "Show Camera";
+            }
+            else
+            {
+                m_viewItem = true;
+                m_cameraStateName = "Hide Camera";
+            }
+
+        }
         m_viewCameraStart = GameObject.Find("ItemViewCamera").transform;
         if (m_viewItem)
         {
