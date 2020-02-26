@@ -224,7 +224,6 @@ public class CreatorWindow : EditorWindow
         m_viewCameraStart = GameObject.Find("ItemViewCamera").transform;
         if (m_viewItem)
         {
-           
             if (GUILayout.Button("Rotate Right"))
             {
                 m_viewCamera = GameObject.Find("ItemViewCamera").GetComponent<Camera>();
@@ -238,19 +237,30 @@ public class CreatorWindow : EditorWindow
                 m_viewCameraTransform = GameObject.Find("ViewCenter").transform;
                 m_viewCamera.transform.LookAt(m_viewCameraTransform);
                 m_viewCamera.transform.RotateAround(m_viewCameraTransform.position, Vector3.up, 15f);
-
+            }
+            if (GUILayout.Button("Rotate Forward"))
+            {
+                m_viewCamera = GameObject.Find("ItemViewCamera").GetComponent<Camera>();
+                m_viewCameraTransform = GameObject.Find("ViewCenter").transform;
+                m_viewCamera.transform.LookAt(m_viewCameraTransform);
+                m_viewCamera.transform.RotateAround(m_viewCameraTransform.position, Vector3.right, 15f);
+            }
+            if (GUILayout.Button("Rotate Backwards"))
+            {
+                m_viewCamera = GameObject.Find("ItemViewCamera").GetComponent<Camera>();
+                m_viewCameraTransform = GameObject.Find("ViewCenter").transform;
+                m_viewCamera.transform.LookAt(m_viewCameraTransform);
+                m_viewCamera.transform.RotateAround(m_viewCameraTransform.position, Vector3.left, 15f);
             }
             if (GUILayout.Button("Reset Rotation"))
             {
                 m_viewCamera = GameObject.Find("ItemViewCamera").GetComponent<Camera>();
                 m_viewCameraTransform = GameObject.Find("ViewCenter").transform;
-
                 m_viewCamera.transform.position = new Vector3(0, 0, -5);
                 m_viewCamera.transform.rotation = new Quaternion(0, 0, 0, 0);
             }
             ViewItem();
         }
-       
     }
     public void CloseButton()
     {
@@ -390,9 +400,6 @@ public class CreatorWindow : EditorWindow
             }
             item.AddComponent<ScriptableObjectHolder>().data = objectData;
         }
-       
-      
- 
         item.name = itemName;
         string itemNameCombined = itemName + ".prefab";
         if (itemNameCombined != "" && objectData != null)
