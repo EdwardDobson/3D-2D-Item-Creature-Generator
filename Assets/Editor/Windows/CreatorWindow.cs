@@ -6,6 +6,7 @@ using System;
 using System.IO;
 public class CreatorWindow : EditorWindow
 {
+ 
     static CreatorWindow m_window;
     static string[] m_buttonNames = { "Material Builder", "Weapon Builder", "Weapon Part Builder", "Armour Builder", "Armour Part Builder","Creature Builder",
     "Creature Part Builder","Potion Builder", "Rarity Window" , "Folder Window" };
@@ -54,7 +55,8 @@ public class CreatorWindow : EditorWindow
     void OnGUI()
     {
         EditorGUILayout.BeginHorizontal();
-        CreateLabel(20, new RectOffset(15, 0, 15, 0), "Item + Creature \nBuilder\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCreated by\nEdward Dobson");
+        CreateLabel(15, new RectOffset(15, 0, 15, 0), "Item + Creature \nBuilder");
+        CreateLabel(15, new RectOffset(-150, 0, 650, 0), "Created by Edward Dobson");
         Buttons();
         EditorGUILayout.EndHorizontal();
     }
@@ -112,7 +114,7 @@ public class CreatorWindow : EditorWindow
     protected void BaseFunction()
     {
         
-        CreateLabel(25, new RectOffset(15, 0, 15, 0), currentWindowName);
+        CreateLabel(25, new RectOffset(5, 0, 5, 0), currentWindowName);
         DirectoryInfo dir = new DirectoryInfo("Assets/Resources/BuiltItems/");
         DirectoryInfo[] fileNames = dir.GetDirectories();
         foreach (DirectoryInfo f in fileNames)
@@ -141,14 +143,12 @@ public class CreatorWindow : EditorWindow
         {
             if (m_buttonNames[i].Contains(currentWindowName))
             {
-                CreateLabel(15, new RectOffset(15, 0, 15, 0), "Item + Creature Name");
+                CreateLabel(15, new RectOffset(5, 0, 15, 0), "Item + Creature Name");
                 itemName = GUILayout.TextField(itemName);
-                CreateLabel(15, new RectOffset(15, 0, 25, 0), "Description");
+                CreateLabel(15, new RectOffset(5, 0, 25, 0), "Description");
                 itemDescription = GUILayout.TextField(itemDescription);
-                GUIStyle styleB = GUI.skin.GetStyle("label");
-                styleB.fontSize = 15;
-                styleB.padding = new RectOffset(15, 0, 15, 0);
-                GUILayout.Label("Current aspect mode " + m_aspectName);
+                CreateLabel(15, new RectOffset(5, 0, 15, 0), "Current aspect mode " + m_aspectName);
+            
                 if (aspectMode)
                 {
                     m_aspectName = "3D";
@@ -202,7 +202,7 @@ public class CreatorWindow : EditorWindow
                         break;
 
                 }
-                CreateLabel(15, new RectOffset(0, 0, 15, 0), "Save To:");
+                CreateLabel(15, new RectOffset(5, 0, 15, 0), "Save To:");
                 m_saveDirIndex = EditorGUILayout.Popup("", m_saveDirIndex, m_folderNames.ToArray());
             
            
@@ -228,43 +228,38 @@ public class CreatorWindow : EditorWindow
 
         }
         m_viewCameraStart = GameObject.Find("ItemViewCamera").transform;
+        m_viewCamera = GameObject.Find("ItemViewCamera").GetComponent<Camera>();
+        m_viewCameraTransform = GameObject.Find("ViewCenter").transform;
         if (m_viewItem)
         {
+            m_viewCamera.transform.LookAt(m_viewCameraTransform);
             if (GUILayout.Button("Rotate Right"))
             {
-                m_viewCamera = GameObject.Find("ItemViewCamera").GetComponent<Camera>();
-                m_viewCameraTransform = GameObject.Find("ViewCenter").transform;
-                m_viewCamera.transform.LookAt(m_viewCameraTransform);
                 m_viewCamera.transform.RotateAround(m_viewCameraTransform.position, Vector3.down, 15f);
             }
             if (GUILayout.Button("Rotate Left"))
             {
-                m_viewCamera = GameObject.Find("ItemViewCamera").GetComponent<Camera>();
-                m_viewCameraTransform = GameObject.Find("ViewCenter").transform;
-                m_viewCamera.transform.LookAt(m_viewCameraTransform);
                 m_viewCamera.transform.RotateAround(m_viewCameraTransform.position, Vector3.up, 15f);
             }
             if (GUILayout.Button("Rotate Forward"))
             {
-                m_viewCamera = GameObject.Find("ItemViewCamera").GetComponent<Camera>();
-                m_viewCameraTransform = GameObject.Find("ViewCenter").transform;
-                m_viewCamera.transform.LookAt(m_viewCameraTransform);
                 m_viewCamera.transform.RotateAround(m_viewCameraTransform.position, Vector3.right, 15f);
             }
             if (GUILayout.Button("Rotate Backwards"))
             {
-                m_viewCamera = GameObject.Find("ItemViewCamera").GetComponent<Camera>();
-                m_viewCameraTransform = GameObject.Find("ViewCenter").transform;
-                m_viewCamera.transform.LookAt(m_viewCameraTransform);
+                
                 m_viewCamera.transform.RotateAround(m_viewCameraTransform.position, Vector3.left, 15f);
             }
-            if (GUILayout.Button("Reset Rotation"))
+            if (GUILayout.Button("Reset Camera"))
             {
-                m_viewCamera = GameObject.Find("ItemViewCamera").GetComponent<Camera>();
-                m_viewCameraTransform = GameObject.Find("ViewCenter").transform;
                 m_viewCamera.transform.position = new Vector3(0, 0, -5);
                 m_viewCamera.transform.rotation = new Quaternion(0, 0, 0, 0);
+                m_viewCamera.fieldOfView = 60;
             }
+    
+            CreateLabel(15, new RectOffset(5, 0, 0, 0), "Camera Zoom");
+            m_viewCamera.orthographicSize = GUILayout.HorizontalSlider(m_viewCamera.orthographicSize, 1,15);
+       
             ViewItem();
         }
     }
