@@ -6,8 +6,18 @@ public class SubWindowHandler : CreatorWindow
 {
     protected void Handle(string _dir)
     {
+        ScrollbarStart();
         BaseFunction();
         ShowList();
+        EndView();
+    }
+    protected void BuilderHandle()
+    {
+        ScrollbarStart();
+        BaseFunction();
+        Camera();
+        ShowList();
+        EndView();
     }
     //_dir example "Potions" _TypeName example "Potion" Make sure that the _dir is all one word
     protected void BuildHandle(string _TypeName, ItemType _type, string _dir, float _duration)

@@ -3,9 +3,7 @@ public class CreatureBuilderWindow : SubWindowHandler
 {
     void OnGUI()
     {
-        BaseFunction();
-        Camera();
-        ShowList();
+        BuilderHandle();
         BuildHandleItem("Creature", ItemType.eCreature, "BuiltCreatures", ItemBaseParts);
     }
 }

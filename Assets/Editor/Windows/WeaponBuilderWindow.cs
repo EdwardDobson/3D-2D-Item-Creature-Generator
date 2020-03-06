@@ -7,9 +7,7 @@ public class WeaponBuilderWindow : SubWindowHandler
 {
     void OnGUI()
     {
-        BaseFunction();
-        Camera();
-        ShowList();
+        BuilderHandle();
         BuildHandleItem("Weapon", ItemType.eWeapon, "BuiltWeapons", ItemBaseParts);
         
     }

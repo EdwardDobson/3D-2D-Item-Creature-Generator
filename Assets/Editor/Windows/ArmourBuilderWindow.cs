@@ -6,9 +6,7 @@ public class ArmourBuilderWindow : SubWindowHandler
 {
     void OnGUI()
     {
-        BaseFunction();
-        Camera();
-        ShowList();
+        BuilderHandle();
         BuildHandleItem("Armour", ItemType.eArmour, "BuiltArmours", ItemBaseParts);
 
     }

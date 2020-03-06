@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEditor;
 using System;
 using System.IO;
+[ExecuteInEditMode]
 public class CreatorWindow : EditorWindow
 {
     static CreatorWindow m_window;
@@ -22,7 +23,9 @@ public class CreatorWindow : EditorWindow
     Vector3[] m_itemPos = new Vector3[6];
     Camera m_viewCamera;
     Transform m_viewCameraTransform;
+    Vector2 m_scrollPos;
     bool m_viewItem;
+    float m_windowSizeX;
     string m_cameraStateName = "Show Camera";
     protected string currentWindowName = "";
     protected string itemName;
@@ -50,11 +53,10 @@ public class CreatorWindow : EditorWindow
     }
     void OnGUI()
     {
-        EditorGUILayout.BeginHorizontal();
         CreateLabel(15, new RectOffset(35, 0, 15, 0), "Item + Creature Builder");
         CreateLabel(15, new RectOffset(-215, 0, 650, 0), "Created by Edward Dobson");
         Buttons();
-        EditorGUILayout.EndHorizontal();
+       
     }
 
     void Buttons()
@@ -68,31 +70,31 @@ public class CreatorWindow : EditorWindow
                 switch (m_screenID)
                 {
                     case 1:
-                        m_window = (CreatorWindow)GetWindow(typeof(MaterialWindow));
+                        m_window = (MaterialWindow)GetWindow(typeof(MaterialWindow));
                         break;
                     case 2:
-                        m_window = (CreatorWindow)GetWindow(typeof(WeaponBuilderWindow));
+                        m_window = (WeaponBuilderWindow)GetWindow(typeof(WeaponBuilderWindow));
                         break;
                     case 3:
-                        m_window = (CreatorWindow)GetWindow(typeof(WeaponPartWindow));
+                        m_window = (WeaponPartWindow)GetWindow(typeof(WeaponPartWindow));
                         break;
                     case 4:
-                        m_window = (CreatorWindow)GetWindow(typeof(ArmourBuilderWindow));
+                        m_window = (ArmourBuilderWindow)GetWindow(typeof(ArmourBuilderWindow));
                         break;
                     case 5:
-                        m_window = (CreatorWindow)GetWindow(typeof(ArmourPartBuilderWindow));
+                        m_window = (ArmourPartBuilderWindow)GetWindow(typeof(ArmourPartBuilderWindow));
                         break;
                     case 6:
-                        m_window = (CreatorWindow)GetWindow(typeof(CreatureBuilderWindow));
+                        m_window = (CreatureBuilderWindow)GetWindow(typeof(CreatureBuilderWindow));
                         break;
                     case 7:
-                        m_window = (CreatorWindow)GetWindow(typeof(CreaturePartBuilderWindow));
+                        m_window = (CreaturePartBuilderWindow)GetWindow(typeof(CreaturePartBuilderWindow));
                         break;
                     case 8:
-                        m_window = (CreatorWindow)GetWindow(typeof(PotionBuilderWindow));
+                        m_window = (PotionBuilderWindow)GetWindow(typeof(PotionBuilderWindow));
                         break;
                     case 9:
-                        m_window = (CreatorWindow)GetWindow(typeof(RarityWindow));
+                        m_window = (RarityWindow)GetWindow(typeof(RarityWindow));
                         break;
                     case 10:
                         m_window = (FolderWindow)GetWindow(typeof(FolderWindow));
@@ -101,15 +103,18 @@ public class CreatorWindow : EditorWindow
                 if (m_window != null)
                 {
                     m_window.currentWindowName = m_buttonNames[i];
+
+                    m_windowSizeX = m_window.maxSize.x;
                     m_window.Show();
                 }
             }
+       
         }
     }
     //Contains the basic blocks for a window
     protected void BaseFunction()
     {
-        
+      
         CreateLabel(25, new RectOffset(5, 0, 5, 0), currentWindowName);
         DirectoryInfo dir = new DirectoryInfo("Assets/Resources/BuiltItems/");
         DirectoryInfo[] fileNames = dir.GetDirectories();
@@ -200,10 +205,26 @@ public class CreatorWindow : EditorWindow
                 }
                 CreateLabel(15, new RectOffset(5, 0, 15, 0), "Save To:");
                 m_saveDirIndex = EditorGUILayout.Popup("", m_saveDirIndex, m_folderNames.ToArray());
-            
+                Debug.Log("Window current name: " + currentWindowName);
+                break;
            
             }
+     
+
         }
+
+    }
+    protected void ScrollbarStart()
+    {
+        EditorGUILayout.BeginHorizontal();
+
+        m_scrollPos = GUILayout.BeginScrollView(m_scrollPos, false, true, GUILayout.Width(m_windowSizeX), GUILayout.MinHeight(200), GUILayout.MaxHeight(1000), GUILayout.ExpandHeight(true));
+
+    }
+    protected void EndView()
+    {
+        EditorGUILayout.EndHorizontal();
+        GUILayout.EndScrollView();
     }
     protected void Camera()
     {
@@ -249,12 +270,12 @@ public class CreatorWindow : EditorWindow
                 m_viewCamera.transform.rotation = new Quaternion(0, 0, 0, 0);
                 m_viewCamera.fieldOfView = 60;
             }
-    
             CreateLabel(15, new RectOffset(5, 0, 0, 0), "Camera Zoom");
             m_viewCamera.orthographicSize = GUILayout.HorizontalSlider(m_viewCamera.orthographicSize, 1,15);
        
             ViewItem();
         }
+  
     }
     public void CloseButton()
     {
@@ -265,6 +286,7 @@ public class CreatorWindow : EditorWindow
             Close();
         }
     }
+ 
     protected void AssignRarity()
     {
         for (int i = 0; i < Enum.GetValues(typeof(Rarity)).Length; i++)
@@ -557,6 +579,7 @@ public class CreatorWindow : EditorWindow
     {
         ClearObjectData();
         Debug.Log("Window Force Closed");
+       
     }
 }
 
