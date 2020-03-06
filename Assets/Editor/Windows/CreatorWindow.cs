@@ -54,9 +54,8 @@ public class CreatorWindow : EditorWindow
     void OnGUI()
     {
         CreateLabel(15, new RectOffset(35, 0, 15, 0), "Item + Creature Builder");
-        CreateLabel(15, new RectOffset(-215, 0, 650, 0), "Created by Edward Dobson");
+        CreateLabel(15, new RectOffset(18, 0, 635, 0), "Created by Edward Dobson");
         Buttons();
-       
     }
 
     void Buttons()
@@ -80,6 +79,7 @@ public class CreatorWindow : EditorWindow
                         break;
                     case 4:
                         m_window = (ArmourBuilderWindow)GetWindow(typeof(ArmourBuilderWindow));
+
                         break;
                     case 5:
                         m_window = (ArmourPartBuilderWindow)GetWindow(typeof(ArmourPartBuilderWindow));
@@ -100,10 +100,10 @@ public class CreatorWindow : EditorWindow
                         m_window = (FolderWindow)GetWindow(typeof(FolderWindow));
                         break;
                 }
+   
                 if (m_window != null)
                 {
                     m_window.currentWindowName = m_buttonNames[i];
-
                     m_windowSizeX = m_window.maxSize.x;
                     m_window.Show();
                 }
@@ -205,7 +205,6 @@ public class CreatorWindow : EditorWindow
                 }
                 CreateLabel(15, new RectOffset(5, 0, 15, 0), "Save To:");
                 m_saveDirIndex = EditorGUILayout.Popup("", m_saveDirIndex, m_folderNames.ToArray());
-                Debug.Log("Window current name: " + currentWindowName);
                 break;
            
             }
