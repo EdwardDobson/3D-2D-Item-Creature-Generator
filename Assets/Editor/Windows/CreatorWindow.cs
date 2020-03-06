@@ -6,7 +6,6 @@ using System;
 using System.IO;
 public class CreatorWindow : EditorWindow
 {
- 
     static CreatorWindow m_window;
     static string[] m_buttonNames = { "Material Builder", "Weapon Builder", "Weapon Part Builder", "Armour Builder", "Armour Part Builder","Creature Builder",
     "Creature Part Builder","Potion Builder", "Rarity Window" , "Folder Window" };
@@ -23,7 +22,6 @@ public class CreatorWindow : EditorWindow
     Vector3[] m_itemPos = new Vector3[6];
     Camera m_viewCamera;
     Transform m_viewCameraTransform;
-    Transform m_viewCameraStart;
     bool m_viewItem;
     string m_cameraStateName = "Show Camera";
     protected string currentWindowName = "";
@@ -46,17 +44,15 @@ public class CreatorWindow : EditorWindow
     {
         m_window = (CreatorWindow)GetWindow(typeof(CreatorWindow));
         m_window.currentWindowName = "Builder";
-        m_window.maxSize = new Vector2(200, 700);
+        m_window.maxSize = new Vector2(250, 700);
         m_window.minSize = m_window.maxSize;
         m_window.Show();
-       
-       
     }
     void OnGUI()
     {
         EditorGUILayout.BeginHorizontal();
-        CreateLabel(15, new RectOffset(15, 0, 15, 0), "Item + Creature \nBuilder");
-        CreateLabel(15, new RectOffset(-150, 0, 650, 0), "Created by Edward Dobson");
+        CreateLabel(15, new RectOffset(35, 0, 15, 0), "Item + Creature Builder");
+        CreateLabel(15, new RectOffset(-215, 0, 650, 0), "Created by Edward Dobson");
         Buttons();
         EditorGUILayout.EndHorizontal();
     }
@@ -65,7 +61,7 @@ public class CreatorWindow : EditorWindow
     {
         for (int i = 0; i < m_buttonNames.Length; ++i)
         {
-            m_buttonSize = new Rect(20, 95 + i * 50, 140, 30);
+            m_buttonSize = new Rect(50, 95 + i * 50, 140, 30);
             if (GUI.Button(m_buttonSize, m_buttonNames[i]))
             {
                 m_screenID = i + 1;
@@ -211,8 +207,6 @@ public class CreatorWindow : EditorWindow
     }
     protected void Camera()
     {
-        
-
         if (GUILayout.Button(m_cameraStateName))
         {
             if (m_viewItem)
@@ -227,7 +221,6 @@ public class CreatorWindow : EditorWindow
             }
 
         }
-        m_viewCameraStart = GameObject.Find("ItemViewCamera").transform;
         m_viewCamera = GameObject.Find("ItemViewCamera").GetComponent<Camera>();
         m_viewCameraTransform = GameObject.Find("ViewCenter").transform;
         if (m_viewItem)
