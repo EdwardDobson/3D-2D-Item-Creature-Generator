@@ -21,6 +21,8 @@ public class CreatorWindow : EditorWindow
     string m_aspectName;
     ItemType m_type;
     Vector3[] m_itemPos = new Vector3[6];
+    Vector3[] m_itemScale = new Vector3[6];
+    Vector3[] m_itemRotation = new Vector3[6];
     Camera m_viewCamera;
     Transform m_viewCameraTransform;
     Vector2 m_scrollPos;
@@ -149,7 +151,7 @@ public class CreatorWindow : EditorWindow
                 CreateLabel(15, new RectOffset(5, 0, 25, 0), "Description");
                 itemDescription = GUILayout.TextField(itemDescription);
                 CreateLabel(15, new RectOffset(5, 0, 15, 0), "Current aspect mode " + m_aspectName);
-            
+
                 if (aspectMode)
                 {
                     m_aspectName = "3D";
@@ -206,19 +208,14 @@ public class CreatorWindow : EditorWindow
                 CreateLabel(15, new RectOffset(5, 0, 15, 0), "Save To:");
                 m_saveDirIndex = EditorGUILayout.Popup("", m_saveDirIndex, m_folderNames.ToArray());
                 break;
-           
+
             }
-     
-
         }
-
     }
     protected void ScrollbarStart()
     {
         EditorGUILayout.BeginHorizontal();
-
         m_scrollPos = GUILayout.BeginScrollView(m_scrollPos, false, true, GUILayout.Width(m_windowSizeX), GUILayout.MinHeight(200), GUILayout.MaxHeight(1000), GUILayout.ExpandHeight(true));
-
     }
     protected void EndView()
     {
@@ -330,7 +327,37 @@ public class CreatorWindow : EditorWindow
         {
             PartIDs[i] = EditorGUILayout.Popup("Slot " + (i + 1), PartIDs[i], PartNames.ToArray());
             m_itemPos[i] = EditorGUILayout.Vector3Field("", m_itemPos[i]);
-
+            m_itemRotation[i] = EditorGUILayout.Vector3Field("", m_itemRotation[i]);
+            m_itemScale[i] = EditorGUILayout.Vector3Field("", m_itemScale[i]);
+            if (m_itemScale[i].x < 1)
+            {
+                m_itemScale[i].x = 1;
+            }
+            if (m_itemScale[i].y < 1)
+            {
+                m_itemScale[i].y = 1;
+            }
+            if (m_itemScale[i].z < 1)
+            {
+                m_itemScale[i].z = 1;
+            }
+            if(m_itemRotation[i].x > 360 || m_itemRotation[i].x < -360)
+            {
+                m_itemRotation[i].x = 0;
+            }
+            if (m_itemRotation[i].y > 360 || m_itemRotation[i].y < -360)
+            {
+                m_itemRotation[i].y = 0;
+            }
+            if (m_itemRotation[i].z > 360 || m_itemRotation[i].z < -360)
+            {
+                m_itemRotation[i].z = 0;
+            }
+            if (GUILayout.Button("Reset Slot " + (i + 1)))
+            {
+                ResetSlotValues(i);
+            }
+         
         }
         ItemBaseParts = _items;
         if (!aspectMode || aspectMode)
@@ -339,6 +366,14 @@ public class CreatorWindow : EditorWindow
                 GUILayout.Label("You need more parts to build the item");
         }
 
+    }
+    //Resets the parameters of the slots
+    void ResetSlotValues(int _index)
+    {
+   
+        m_itemScale[_index] = new Vector3(1, 1, 1);
+        m_itemRotation[_index] = new Vector3(0, 0, 0);
+        m_itemPos[_index] = new Vector3(0, 0, 0);
     }
     public void CreateLabel(int _fontSize, RectOffset _rect, string _labelText)
     {
@@ -461,6 +496,10 @@ public class CreatorWindow : EditorWindow
             {
                 DestroyImmediate(GameObject.Find(item.name));
             }
+            for(int i =0; i < slotAmount; ++i)
+            {
+                ResetSlotValues(i);
+            }
             DestroyImmediate(GameObject.Find("New Game Object"));
             ClearObjectData();
         }
@@ -544,6 +583,11 @@ public class CreatorWindow : EditorWindow
                             if (ItemBaseParts.Count > 0)
                             {
                                 partHolderWeapon3D.transform.GetChild(i).transform.position = m_itemPos[i];
+                                if(m_itemScale[i].x >= 1 || m_itemScale[i].y >= 1 || m_itemScale[i].z >= 1)
+                                {
+                                    partHolderWeapon3D.transform.GetChild(i).transform.localScale = m_itemScale[i];
+                                }
+                                partHolderWeapon3D.transform.GetChild(i).localEulerAngles = new Vector3(m_itemRotation[i].x, m_itemRotation[i].y, m_itemRotation[i].z);
                                 partHolderWeapon3D.transform.GetChild(i).GetComponent<ScriptableObjectHolder>().data = ItemBaseParts[PartIDs[i]];
                                 partHolderWeapon3D.transform.GetChild(i).GetComponent<ScriptableObjectHolder>().ResetValues();
                             }
@@ -563,7 +607,12 @@ public class CreatorWindow : EditorWindow
                                 if (ItemBaseParts.Count > 0)
                                 {
                                     partHolderWeapon2D.transform.GetChild(i).transform.position = m_itemPos[i];
-                                        partHolderWeapon2D.transform.GetChild(i).GetComponent<ScriptableObjectHolder>().data = ItemBaseParts[PartIDs[i]];
+                                    if (m_itemScale[i].x >= 1 || m_itemScale[i].y >= 1 || m_itemScale[i].z >= 1)
+                                    {
+                                        partHolderWeapon2D.transform.GetChild(i).transform.localScale = m_itemScale[i];
+                                    }
+                                    partHolderWeapon2D.transform.GetChild(i).localEulerAngles = new Vector3(m_itemRotation[i].x, m_itemRotation[i].y, m_itemRotation[i].z);
+                                    partHolderWeapon2D.transform.GetChild(i).GetComponent<ScriptableObjectHolder>().data = ItemBaseParts[PartIDs[i]];
                                     partHolderWeapon2D.transform.GetChild(i).GetComponent<ScriptableObjectHolder>().ResetValues();
                                 }
                             }
