@@ -26,10 +26,13 @@ public class ScriptableObjectHolder : MonoBehaviour
           
             }
         }
-        else if (GetComponent<MeshRenderer>() != null && transform.childCount <= 0)
+        else if (GetComponent<MeshRenderer>() != null && data.Mesh != null && transform.childCount <= 0)
         {
             GetComponent<MeshFilter>().mesh = data.Mesh;
-        }
+                Vector3 Size = data.Mesh.bounds.size;
+                GetComponent<BoxCollider>().size = Size;
+       
+            }
         foreach (Transform t in gameObject.transform)
         {
             if (!t.gameObject.activeSelf)

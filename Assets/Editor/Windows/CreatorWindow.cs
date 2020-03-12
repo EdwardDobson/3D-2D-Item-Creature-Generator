@@ -10,7 +10,7 @@ public class CreatorWindow : EditorWindow
     static CreatorWindow m_window;
     static string[] m_buttonNames = { "Material Builder", "Weapon Builder", "Weapon Part Builder", "Armour Builder", "Armour Part Builder","Creature Builder",
     "Creature Part Builder","Potion Builder", "Rarity Window" , "Folder Window" };
-    List<string> m_folderNames = new List<string>();
+
     int m_saveDirIndex;
     Rect m_buttonSize;
     int m_screenID;
@@ -25,10 +25,13 @@ public class CreatorWindow : EditorWindow
     Vector3[] m_itemRotation = new Vector3[6];
     Camera m_viewCamera;
     Transform m_viewCameraTransform;
+    Transform m_holder;
     Vector2 m_scrollPos;
     bool m_viewItem;
     float m_windowSizeX;
     string m_cameraStateName = "Show Camera";
+    int m_slotIndex;
+    List<string> m_slotNames = new List<string>();
     protected string currentWindowName = "";
     protected string itemName;
     protected string itemDescription;
@@ -43,7 +46,7 @@ public class CreatorWindow : EditorWindow
     protected bool aspectMode;
     protected List<string> PartNames = new List<string>();
     protected int slotAmount;
-
+    protected List<string> folderNames = new List<string>();
     [MenuItem("Item + Creature Builder/Builder")]
     static void Init()
     {
@@ -59,7 +62,7 @@ public class CreatorWindow : EditorWindow
         CreateLabel(15, new RectOffset(18, 0, 635, 0), "Created by Edward Dobson");
         Buttons();
     }
-
+    //Handles creating buttons
     void Buttons()
     {
         for (int i = 0; i < m_buttonNames.Length; ++i)
@@ -81,7 +84,6 @@ public class CreatorWindow : EditorWindow
                         break;
                     case 4:
                         m_window = (ArmourBuilderWindow)GetWindow(typeof(ArmourBuilderWindow));
-
                         break;
                     case 5:
                         m_window = (ArmourPartBuilderWindow)GetWindow(typeof(ArmourPartBuilderWindow));
@@ -102,7 +104,7 @@ public class CreatorWindow : EditorWindow
                         m_window = (FolderWindow)GetWindow(typeof(FolderWindow));
                         break;
                 }
-   
+
                 if (m_window != null)
                 {
                     m_window.currentWindowName = m_buttonNames[i];
@@ -110,37 +112,36 @@ public class CreatorWindow : EditorWindow
                     m_window.Show();
                 }
             }
-       
+
         }
     }
     //Contains the basic blocks for a window
     protected void BaseFunction()
     {
-      
         CreateLabel(25, new RectOffset(5, 0, 5, 0), currentWindowName);
-        DirectoryInfo dir = new DirectoryInfo("Assets/Resources/BuiltItems/");
-        DirectoryInfo[] fileNames = dir.GetDirectories();
-        foreach (DirectoryInfo f in fileNames)
-        {
-            if(!m_folderNames.Contains(f.Name) && f.Name != "Utility")
-            {
-                m_folderNames.Add(f.Name);
-            }
-         
-        }
+        LoadFolders();
         if (m_loadData)
         {
             objectData = Resources.Load<ScriptableObjectData>("BuiltItems/Utility/ScriptableObjectData/Material");
             Rarities = Resources.LoadAll("BuiltItems/Utility/ScriptableObjectData/RarityData/", typeof(RarityBaseData));
             itemBaseData = Resources.Load<ItemBase>("BuiltItems/Utility/ScriptableObjectData/ItemBase");
+            m_holder = GameObject.Find("PartViewHolders").transform;
             foreach (RarityBaseData r in Rarities)
             {
                 if (!RaritiesList.Contains(r))
                     RaritiesList.Add(r);
             }
-
+            ViewItem(m_holder.GetChild(0).gameObject);
             Debug.Log("Loading data");
             m_loadData = false;
+        }
+
+        for (int i = 0; i < slotAmount; ++i)
+        {
+            if(!m_slotNames.Contains("Slot " + (i+1)))
+            {
+                m_slotNames.Add("Slot " + (i + 1));
+            }
         }
         for (int i = 0; i < m_buttonNames.Length - 2; ++i)
         {
@@ -151,7 +152,6 @@ public class CreatorWindow : EditorWindow
                 CreateLabel(15, new RectOffset(5, 0, 25, 0), "Description");
                 itemDescription = GUILayout.TextField(itemDescription);
                 CreateLabel(15, new RectOffset(5, 0, 15, 0), "Current aspect mode " + m_aspectName);
-
                 if (aspectMode)
                 {
                     m_aspectName = "3D";
@@ -172,13 +172,11 @@ public class CreatorWindow : EditorWindow
                     }
                     PartIDs = new int[slotAmount];
                 }
-
                 rarityID = EditorGUILayout.Popup("Rarity", rarityID, Enum.GetNames(typeof(Rarity)));
                 if (currentWindowName == "Weapon Part Builder" || currentWindowName == "Armour Part Builder" || currentWindowName == "Material Builder"
                     || currentWindowName == "Creature Part Builder" || currentWindowName == "Potion Builder")
                 {
                     DisplayItemSpriteMesh();
-
                 }
                 switch (currentWindowName)
                 {
@@ -206,12 +204,26 @@ public class CreatorWindow : EditorWindow
 
                 }
                 CreateLabel(15, new RectOffset(5, 0, 15, 0), "Save To:");
-                m_saveDirIndex = EditorGUILayout.Popup("", m_saveDirIndex, m_folderNames.ToArray());
+                m_saveDirIndex = EditorGUILayout.Popup("", m_saveDirIndex, folderNames.ToArray());
                 break;
-
             }
         }
     }
+    //Loads folders
+    void LoadFolders()
+    {
+        folderNames.Clear();
+        DirectoryInfo dir = new DirectoryInfo("Assets/Resources/BuiltItems/");
+        DirectoryInfo[] fileNames = dir.GetDirectories();
+        foreach (DirectoryInfo f in fileNames)
+        {
+            if (!folderNames.Contains(f.Name) && f.Name != "Utility")
+            {
+                folderNames.Add(f.Name);
+            }
+        }
+    }
+
     protected void ScrollbarStart()
     {
         EditorGUILayout.BeginHorizontal();
@@ -242,23 +254,34 @@ public class CreatorWindow : EditorWindow
         m_viewCameraTransform = GameObject.Find("ViewCenter").transform;
         if (m_viewItem)
         {
-            m_viewCamera.transform.LookAt(m_viewCameraTransform);
+
             if (GUILayout.Button("Rotate Right"))
             {
                 m_viewCamera.transform.RotateAround(m_viewCameraTransform.position, Vector3.down, 15f);
+                m_viewCamera.transform.LookAt(m_viewCameraTransform);
             }
             if (GUILayout.Button("Rotate Left"))
             {
                 m_viewCamera.transform.RotateAround(m_viewCameraTransform.position, Vector3.up, 15f);
+                m_viewCamera.transform.LookAt(m_viewCameraTransform);
             }
             if (GUILayout.Button("Rotate Forward"))
             {
                 m_viewCamera.transform.RotateAround(m_viewCameraTransform.position, Vector3.right, 15f);
+                m_viewCamera.transform.LookAt(m_viewCameraTransform);
             }
             if (GUILayout.Button("Rotate Backwards"))
             {
-                
                 m_viewCamera.transform.RotateAround(m_viewCameraTransform.position, Vector3.left, 15f);
+                m_viewCamera.transform.LookAt(m_viewCameraTransform);
+            }
+            if (GUILayout.Button("Move Up"))
+            {
+                m_viewCamera.transform.position += Vector3.up * 1f;
+            }
+            if (GUILayout.Button("Move Down"))
+            {
+                m_viewCamera.transform.position -= Vector3.up * 1f;
             }
             if (GUILayout.Button("Reset Camera"))
             {
@@ -267,11 +290,21 @@ public class CreatorWindow : EditorWindow
                 m_viewCamera.fieldOfView = 60;
             }
             CreateLabel(15, new RectOffset(5, 0, 0, 0), "Camera Zoom");
-            m_viewCamera.orthographicSize = GUILayout.HorizontalSlider(m_viewCamera.orthographicSize, 1,15);
-       
-            ViewItem();
+            m_viewCamera.orthographicSize = GUILayout.HorizontalSlider(m_viewCamera.orthographicSize, 1, 15);
+            if (!aspectMode)
+            {
+                ViewItem(m_holder.GetChild(0).gameObject);
+                m_holder.GetChild(0).gameObject.SetActive(true);
+                m_holder.GetChild(1).gameObject.SetActive(false);
+            }
+            else if (aspectMode)
+            {
+                ViewItem(m_holder.GetChild(1).gameObject);
+                m_holder.GetChild(0).gameObject.SetActive(false);
+                m_holder.GetChild(1).gameObject.SetActive(true);
+            }
         }
-  
+
     }
     public void CloseButton()
     {
@@ -282,10 +315,10 @@ public class CreatorWindow : EditorWindow
             Close();
         }
     }
- 
+    //Handles applying rairties to items
     protected void AssignRarity()
     {
-        for (int i = 0; i < Enum.GetValues(typeof(Rarity)).Length; i++)
+        for (int i = 0; i < Enum.GetValues(typeof(Rarity)).Length; ++i)
         {
             if (rarityID == i)
             {
@@ -293,71 +326,78 @@ public class CreatorWindow : EditorWindow
             }
         }
     }
+    //Handles showing each of the parts the user can use
     protected void ShowList()
     {
-
         UnityEngine.Object[] m_parts = Resources.LoadAll("BuiltItems/", typeof(ScriptableObjectData));
         List<ScriptableObjectData> _items = new List<ScriptableObjectData>();
-      
         PartNames.Clear();
         Parts.Clear();
         if (Parts.Count != m_parts.Length)
         {
             Parts.Clear();
-            for (int i = 0; i < m_parts.Length; i++)
+            for (int i = 0; i < m_parts.Length; ++i)
             {
                 if (!Parts.Contains((ScriptableObjectData)m_parts[i]))
                     Parts.Add((ScriptableObjectData)m_parts[i]);
             }
         }
-        for (int i = 0; i < Parts.Count; i++)
+        for (int i = 0; i < Parts.Count; ++i)
         {
             if (Parts[i].AspectMode == aspectMode)
             {
-                if(Parts[i].Type == m_type)
-                _items.Add(Parts[i]);
+                if (Parts[i].Type == m_type)
+                    _items.Add(Parts[i]);
             }
-              
         }
-        for (int i = 0; i < _items.Count; i++)
+        for (int i = 0; i < _items.Count; ++i)
         {
             PartNames.Add(_items[i].Name);
         }
-        for (int i = 0; i < slotAmount; i++)
+        m_slotIndex = EditorGUILayout.Popup("", m_slotIndex, m_slotNames.ToArray());
+        
+        for (int i = 0; i < slotAmount; ++i)
         {
-            PartIDs[i] = EditorGUILayout.Popup("Slot " + (i + 1), PartIDs[i], PartNames.ToArray());
-            m_itemPos[i] = EditorGUILayout.Vector3Field("", m_itemPos[i]);
-            m_itemRotation[i] = EditorGUILayout.Vector3Field("", m_itemRotation[i]);
-            m_itemScale[i] = EditorGUILayout.Vector3Field("", m_itemScale[i]);
-            if (m_itemScale[i].x < 1)
+            if (i == m_slotIndex && m_slotIndex <= slotAmount)
             {
-                m_itemScale[i].x = 1;
-            }
-            if (m_itemScale[i].y < 1)
-            {
-                m_itemScale[i].y = 1;
-            }
-            if (m_itemScale[i].z < 1)
-            {
-                m_itemScale[i].z = 1;
-            }
-            if(m_itemRotation[i].x > 360 || m_itemRotation[i].x < -360)
-            {
-                m_itemRotation[i].x = 0;
-            }
-            if (m_itemRotation[i].y > 360 || m_itemRotation[i].y < -360)
-            {
-                m_itemRotation[i].y = 0;
-            }
-            if (m_itemRotation[i].z > 360 || m_itemRotation[i].z < -360)
-            {
-                m_itemRotation[i].z = 0;
-            }
-            if (GUILayout.Button("Reset Slot " + (i + 1)))
-            {
-                ResetSlotValues(i);
+                PartIDs[i] = EditorGUILayout.Popup("Slot " + (i + 1), PartIDs[i], PartNames.ToArray());
+                m_itemPos[i] = EditorGUILayout.Vector3Field("Position", m_itemPos[i]);
+                m_itemRotation[i] = EditorGUILayout.Vector3Field("Rotation", m_itemRotation[i]);
+                m_itemScale[i] = EditorGUILayout.Vector3Field("Scale", m_itemScale[i]);
+                if (m_itemScale[i].x < 1)
+                {
+                    m_itemScale[i].x = 1;
+                }
+                if (m_itemScale[i].y < 1)
+                {
+                    m_itemScale[i].y = 1;
+                }
+                if (m_itemScale[i].z < 1)
+                {
+                    m_itemScale[i].z = 1;
+                }
+                if (m_itemRotation[i].x > 360 || m_itemRotation[i].x < -360)
+                {
+                    m_itemRotation[i].x = 0;
+                }
+                if (m_itemRotation[i].y > 360 || m_itemRotation[i].y < -360)
+                {
+                    m_itemRotation[i].y = 0;
+                }
+                if (m_itemRotation[i].z > 360 || m_itemRotation[i].z < -360)
+                {
+                    m_itemRotation[i].z = 0;
+                }
+                if (GUILayout.Button("Reset Slot " + (i+1)))
+                {
+                    ResetSingleSlotValues(i);
+                }
             }
          
+        }
+        if (GUILayout.Button("Reset All Slots"))
+        {
+            ResetSlotValues();
         }
         ItemBaseParts = _items;
         if (!aspectMode || aspectMode)
@@ -365,12 +405,20 @@ public class CreatorWindow : EditorWindow
             if (_items.Count < 1)
                 GUILayout.Label("You need more parts to build the item");
         }
-
     }
     //Resets the parameters of the slots
-    void ResetSlotValues(int _index)
+    void ResetSlotValues()
     {
-   
+        for (int i = 0; i < slotAmount; ++i)
+        {
+            m_itemScale[i] = new Vector3(1, 1, 1);
+            m_itemRotation[i] = new Vector3(0, 0, 0);
+            m_itemPos[i] = new Vector3(0, 0, 0);
+        }
+    }
+    //Resets only a single slot
+    void ResetSingleSlotValues(int _index)
+    {
         m_itemScale[_index] = new Vector3(1, 1, 1);
         m_itemRotation[_index] = new Vector3(0, 0, 0);
         m_itemPos[_index] = new Vector3(0, 0, 0);
@@ -428,7 +476,7 @@ public class CreatorWindow : EditorWindow
                 item = GameObject.Find("PartViewHolders").transform.GetChild(1).gameObject;
             }
         }
-      
+
         if (currentWindowName.Contains("Part") || currentWindowName == "Potion Builder" || currentWindowName == "Material Builder")
         {
             if (aspectMode)
@@ -457,7 +505,7 @@ public class CreatorWindow : EditorWindow
             if (item.GetComponent<ScriptableObjectHolder>() != null)
             {
                 ScriptableObjectData itemData = CreateInstance<ScriptableObjectData>();
-                if(_ItemStruct.isFullItem)
+                if (_ItemStruct.isFullItem)
                 {
                     itemData = Instantiate(itemBaseData);
                 }
@@ -465,7 +513,7 @@ public class CreatorWindow : EditorWindow
                 {
                     itemData = Instantiate(objectData);
                 }
-              
+
                 if (!aspectMode)
                 {
                     GameObject.Find("PartViewHolders").transform.GetChild(0).gameObject.name = "PartHolder2D";
@@ -482,12 +530,12 @@ public class CreatorWindow : EditorWindow
                         itemData.Rarity = (Rarity)i;
                     }
                 }
-                AssetDatabase.CreateAsset(itemData, "Assets/Resources/BuiltItems/" + m_folderNames[m_saveDirIndex] + "/" + itemName + ".asset");
-                item.GetComponent<ScriptableObjectHolder>().data = (ScriptableObjectData)AssetDatabase.LoadAssetAtPath("Assets/Resources/BuiltItems/" + m_folderNames[m_saveDirIndex] + "/" + itemName + ".asset", typeof(ScriptableObjectData));
+                AssetDatabase.CreateAsset(itemData, "Assets/Resources/BuiltItems/" + folderNames[m_saveDirIndex] + "/" + itemName + ".asset");
+                item.GetComponent<ScriptableObjectHolder>().data = (ScriptableObjectData)AssetDatabase.LoadAssetAtPath("Assets/Resources/BuiltItems/" + folderNames[m_saveDirIndex] + "/" + itemName + ".asset", typeof(ScriptableObjectData));
                 Debug.Log("Building item");
-                PrefabUtility.SaveAsPrefabAsset(item, "Assets/Resources/BuiltItems/" + m_folderNames[m_saveDirIndex] + "/" + itemNameCombined);
+                PrefabUtility.SaveAsPrefabAsset(item, "Assets/Resources/BuiltItems/" + folderNames[m_saveDirIndex] + "/" + itemNameCombined);
                 AssetDatabase.Refresh();
-                for(int i =0; i < m_itemPos.Length; ++i)
+                for (int i = 0; i < m_itemPos.Length; ++i)
                 {
                     m_itemPos[i] = new Vector3(0, 0, 0);
                 }
@@ -496,10 +544,9 @@ public class CreatorWindow : EditorWindow
             {
                 DestroyImmediate(GameObject.Find(item.name));
             }
-            for(int i =0; i < slotAmount; ++i)
-            {
-                ResetSlotValues(i);
-            }
+
+            ResetSlotValues();
+
             DestroyImmediate(GameObject.Find("New Game Object"));
             ClearObjectData();
         }
@@ -507,119 +554,96 @@ public class CreatorWindow : EditorWindow
     public void CreateFolder(string _folderName)
     {
         AssetDatabase.CreateFolder("Assets/Resources/Builtitems", _folderName);
-        string newFolderPath = AssetDatabase.GUIDToAssetPath(_folderName);
-        m_folderNames.Add(_folderName);
+        folderNames.Add(_folderName);
         Debug.Log("Building folder : " + _folderName);
-        Debug.Log("Folder Count: " + m_folderNames.Count);
+        Debug.Log("Folder Count: " + folderNames.Count);
+        LoadFolders();
     }
-    protected void ViewItem()
+    public void DeleteFolder(string _folderName)
+    {
+        LoadFolders();
+        if (folderNames.Count > 1)
+        {
+            AssetDatabase.DeleteAsset("Assets/Resources/Builtitems/" + _folderName);
+            folderNames.Remove(_folderName);
+        }
+    }
+    //Handles the viewing of each slot
+    protected void ViewItem(GameObject _holderTransform)
     {
         Camera camera = GameObject.Find("ItemViewCamera").GetComponent<Camera>();
         if (camera != null)
         {
             Texture view = camera.activeTexture;
             GUILayout.Label(view);
-            Transform holder = GameObject.Find("PartViewHolders").transform;
-            GameObject partHolderWeapon2D = holder.GetChild(0).gameObject;
-            GameObject partHolderWeapon3D = holder.GetChild(1).gameObject;
-            for (int i = 0; i < partHolderWeapon2D.transform.childCount; i++)
+            foreach (Transform t in _holderTransform.transform)
             {
-                if (partHolderWeapon2D.transform.GetChild(i).childCount < 1)
+                if (t.GetSiblingIndex() < slotAmount)
                 {
-                    partHolderWeapon2D.transform.GetChild(i).gameObject.SetActive(false);
+                   t.gameObject.SetActive(true);
+                }
+                else
+                {
+                    t.gameObject.SetActive(false);
                 }
             }
-            for (int i = 0; i < partHolderWeapon3D.transform.childCount; i++)
+            for (int i = 0; i < slotAmount; ++i)
             {
-                if (partHolderWeapon3D.transform.GetChild(i).childCount < 1)
+                if (!currentWindowName.Contains("Part") && ItemBaseParts.Count > 0)
                 {
-                    partHolderWeapon3D.transform.GetChild(i).gameObject.SetActive(false);
-                }
-            }
-            if (!aspectMode)
-            {
-                partHolderWeapon2D.SetActive(true);
-                partHolderWeapon3D.SetActive(false);
-            }
-            else
-            {
-                partHolderWeapon3D.SetActive(true);
-                partHolderWeapon2D.SetActive(false);
-            }
-
-            for (int i = 0; i < partHolderWeapon3D.transform.childCount; i++)
-            {
-              
-                    if (partHolderWeapon3D.transform.GetChild(i).GetComponent<BoxCollider>() == null)
-                        partHolderWeapon3D.transform.GetChild(i).gameObject.AddComponent<BoxCollider>();
-                    if (partHolderWeapon3D.transform.GetChild(i).GetComponent<ScriptableObjectHolder>() == null)
-                        partHolderWeapon3D.transform.GetChild(i).gameObject.AddComponent<ScriptableObjectHolder>();
-                    if (partHolderWeapon3D.transform.GetChild(i).GetComponent<MeshFilter>() == null)
-                        partHolderWeapon3D.transform.GetChild(i).gameObject.AddComponent<MeshFilter>();
-                    if (partHolderWeapon3D.transform.GetChild(i).GetComponent<MeshRenderer>() == null)
-                        partHolderWeapon3D.transform.GetChild(i).gameObject.AddComponent<MeshRenderer>();
-              
-            }
-            for (int i = 0; i < partHolderWeapon2D.transform.childCount; i++)
-            {
-
-                if (partHolderWeapon2D.transform.GetChild(i).GetComponent<BoxCollider2D>() == null)
-                    partHolderWeapon2D.transform.GetChild(i).gameObject.AddComponent<BoxCollider2D>();
-                if (partHolderWeapon2D.transform.GetChild(i).GetComponent<ScriptableObjectHolder>() == null)
-                    partHolderWeapon2D.transform.GetChild(i).gameObject.AddComponent<ScriptableObjectHolder>();
-                if (partHolderWeapon2D.transform.GetChild(i).GetComponent<SpriteRenderer>() == null)
-                    partHolderWeapon2D.transform.GetChild(i).gameObject.AddComponent<SpriteRenderer>();
-
-            }
-            for (int i = 0; i < slotAmount; i++)
-            {
-                if (aspectMode)
-                {
-                    if (partHolderWeapon3D.transform.GetChild(i).childCount < 1)
+                    _holderTransform.transform.GetChild(i).transform.position = m_itemPos[i];
+                    if (m_itemScale[i].x >= 1 || m_itemScale[i].y >= 1 || m_itemScale[i].z >= 1)
                     {
-                        partHolderWeapon3D.transform.GetChild(i).gameObject.SetActive(true);
-                        if (!currentWindowName.Contains("Part"))
-                        {
-                            if (ItemBaseParts.Count > 0)
-                            {
-                                partHolderWeapon3D.transform.GetChild(i).transform.position = m_itemPos[i];
-                                if(m_itemScale[i].x >= 1 || m_itemScale[i].y >= 1 || m_itemScale[i].z >= 1)
-                                {
-                                    partHolderWeapon3D.transform.GetChild(i).transform.localScale = m_itemScale[i];
-                                }
-                                partHolderWeapon3D.transform.GetChild(i).localEulerAngles = new Vector3(m_itemRotation[i].x, m_itemRotation[i].y, m_itemRotation[i].z);
-                                partHolderWeapon3D.transform.GetChild(i).GetComponent<ScriptableObjectHolder>().data = ItemBaseParts[PartIDs[i]];
-                                partHolderWeapon3D.transform.GetChild(i).GetComponent<ScriptableObjectHolder>().ResetValues();
-                            }
-                           
-                        }
+                        _holderTransform.transform.GetChild(i).transform.localScale = m_itemScale[i];
+                    }
+                    _holderTransform.transform.GetChild(i).localEulerAngles = new Vector3(m_itemRotation[i].x, m_itemRotation[i].y, m_itemRotation[i].z);
+                    _holderTransform.transform.GetChild(i).GetComponent<ScriptableObjectHolder>().data = ItemBaseParts[PartIDs[i]];
+                    _holderTransform.transform.GetChild(i).GetComponent<ScriptableObjectHolder>().ResetValues();
+                }
+                if (_holderTransform.name == "PartHolder3D")
+                {
+                    if (_holderTransform.transform.GetChild(i).GetComponent<BoxCollider>() == null)
+                        _holderTransform.transform.GetChild(i).gameObject.AddComponent<BoxCollider>();
+                    if (_holderTransform.transform.GetChild(i).GetComponent<MeshFilter>() == null)
+                        _holderTransform.transform.GetChild(i).gameObject.AddComponent<MeshFilter>();
+                    if (_holderTransform.transform.GetChild(i).GetComponent<MeshRenderer>() == null)
+                        _holderTransform.transform.GetChild(i).gameObject.AddComponent<MeshRenderer>();
+                }
+                else
+                {
+                    if (_holderTransform.transform.GetChild(i).GetComponent<BoxCollider2D>() == null)
+                        _holderTransform.transform.GetChild(i).gameObject.AddComponent<BoxCollider2D>();
+
+                    if (_holderTransform.transform.GetChild(i).GetComponent<SpriteRenderer>() == null)
+                        _holderTransform.transform.GetChild(i).gameObject.AddComponent<SpriteRenderer>();
+                }
+                if (_holderTransform.transform.GetChild(i).GetComponent<ScriptableObjectHolder>() == null)
+                    _holderTransform.transform.GetChild(i).gameObject.AddComponent<ScriptableObjectHolder>();
+                if (i == m_slotIndex)
+                {
+                    if (_holderTransform.transform.GetChild(m_slotIndex).GetComponent<SpriteRenderer>() != null)
+                    {
+                        _holderTransform.transform.GetChild(m_slotIndex).GetComponent<SpriteRenderer>().color = new Color(1, 0, 0);
+                    }
+                    else if (_holderTransform.transform.GetChild(m_slotIndex).GetComponent<MeshRenderer>() != null)
+                    {
+                        _holderTransform.transform.GetChild(m_slotIndex).gameObject.GetComponent<MeshRenderer>().material.SetColor("_Color", Color.red);
                     }
                 }
                 else
                 {
-                    if (partHolderWeapon2D.activeSelf)
+                    if (_holderTransform.transform.GetChild(i).GetComponent<SpriteRenderer>() != null)
                     {
-                        if (partHolderWeapon2D.transform.GetChild(i).childCount < 1)
-                        {
-                            partHolderWeapon2D.transform.GetChild(i).gameObject.SetActive(true);
-                            if (!currentWindowName.Contains("Part"))
-                            {
-                                if (ItemBaseParts.Count > 0)
-                                {
-                                    partHolderWeapon2D.transform.GetChild(i).transform.position = m_itemPos[i];
-                                    if (m_itemScale[i].x >= 1 || m_itemScale[i].y >= 1 || m_itemScale[i].z >= 1)
-                                    {
-                                        partHolderWeapon2D.transform.GetChild(i).transform.localScale = m_itemScale[i];
-                                    }
-                                    partHolderWeapon2D.transform.GetChild(i).localEulerAngles = new Vector3(m_itemRotation[i].x, m_itemRotation[i].y, m_itemRotation[i].z);
-                                    partHolderWeapon2D.transform.GetChild(i).GetComponent<ScriptableObjectHolder>().data = ItemBaseParts[PartIDs[i]];
-                                    partHolderWeapon2D.transform.GetChild(i).GetComponent<ScriptableObjectHolder>().ResetValues();
-                                }
-                            }
-                        }
+                        _holderTransform.transform.GetChild(i).GetComponent<SpriteRenderer>().color = new Color(1, 1, 1);
+                    }
+                    else if (_holderTransform.transform.GetChild(i).GetComponent<MeshRenderer>() != null)
+                    {
+                        _holderTransform.transform.GetChild(i).gameObject.GetComponent<MeshRenderer>().material.SetColor("_Color", Color.white);
                     }
                 }
+
             }
+          
         }
     }
 
@@ -627,7 +651,7 @@ public class CreatorWindow : EditorWindow
     {
         ClearObjectData();
         Debug.Log("Window Force Closed");
-       
+
     }
 }
 

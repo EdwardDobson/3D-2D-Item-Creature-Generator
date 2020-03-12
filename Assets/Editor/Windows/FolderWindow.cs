@@ -6,6 +6,7 @@ using UnityEditor;
 public class FolderWindow : CreatorWindow
 {
    string m_folderName;
+    int m_deleteIndex;
    void OnGUI()
     {
         BaseFunction();
@@ -14,6 +15,16 @@ public class FolderWindow : CreatorWindow
         {
             CreateFolder(m_folderName);
         }
+        m_deleteIndex = EditorGUILayout.Popup("", m_deleteIndex, folderNames.ToArray());
+        string folderName = folderNames[m_deleteIndex];
+        if(folderName != "")
+        {
+            if (GUILayout.Button("Delete Folder") && folderNames.Count > 1)
+            {
+                DeleteFolder(folderName);
+            }
+        }
+  
         CloseButton();
     }
 }
