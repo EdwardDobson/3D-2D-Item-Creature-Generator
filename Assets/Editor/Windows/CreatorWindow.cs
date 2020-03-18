@@ -627,7 +627,7 @@ public class CreatorWindow : EditorWindow
                     }
                     else if (_holderTransform.transform.GetChild(m_slotIndex).GetComponent<MeshRenderer>() != null)
                     {
-                        _holderTransform.transform.GetChild(m_slotIndex).gameObject.GetComponent<MeshRenderer>().material.SetColor("_Color", Color.red);
+                        _holderTransform.transform.GetChild(m_slotIndex).gameObject.GetComponent<MeshRenderer>().sharedMaterial.SetColor("_Color", Color.red);
                     }
                 }
                 else
@@ -638,7 +638,7 @@ public class CreatorWindow : EditorWindow
                     }
                     else if (_holderTransform.transform.GetChild(i).GetComponent<MeshRenderer>() != null)
                     {
-                        _holderTransform.transform.GetChild(i).gameObject.GetComponent<MeshRenderer>().material.SetColor("_Color", Color.white);
+                        _holderTransform.transform.GetChild(i).gameObject.GetComponent<MeshRenderer>().sharedMaterial.SetColor("_Color", Color.white);
                     }
                 }
 
