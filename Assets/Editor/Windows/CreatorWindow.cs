@@ -254,7 +254,7 @@ public class CreatorWindow : EditorWindow
         m_viewCameraTransform = GameObject.Find("ViewCenter").transform;
         if (m_viewItem)
         {
-
+            ShowCamera();
             if (GUILayout.Button("Rotate Right"))
             {
                 m_viewCamera.transform.RotateAround(m_viewCameraTransform.position, Vector3.down, 15f);
@@ -291,20 +291,25 @@ public class CreatorWindow : EditorWindow
             }
             CreateLabel(15, new RectOffset(5, 0, 0, 0), "Camera Zoom");
             m_viewCamera.orthographicSize = GUILayout.HorizontalSlider(m_viewCamera.orthographicSize, 1, 15);
-            if (!aspectMode)
-            {
-                ViewItem(m_holder.GetChild(0).gameObject);
-                m_holder.GetChild(0).gameObject.SetActive(true);
-                m_holder.GetChild(1).gameObject.SetActive(false);
-            }
-            else if (aspectMode)
-            {
-                ViewItem(m_holder.GetChild(1).gameObject);
-                m_holder.GetChild(0).gameObject.SetActive(false);
-                m_holder.GetChild(1).gameObject.SetActive(true);
-            }
+      
         }
-
+        if (!aspectMode)
+        {
+            ViewItem(m_holder.GetChild(0).gameObject);
+            m_holder.GetChild(0).gameObject.SetActive(true);
+            m_holder.GetChild(1).gameObject.SetActive(false);
+        }
+        else if (aspectMode)
+        {
+            ViewItem(m_holder.GetChild(1).gameObject);
+            m_holder.GetChild(0).gameObject.SetActive(false);
+            m_holder.GetChild(1).gameObject.SetActive(true);
+        }
+        for(int i =0;i < slotAmount; ++i)
+        {
+            m_holder.transform.GetChild(0).GetChild(i).gameObject.SetActive(true);
+        }
+       
     }
     public void CloseButton()
     {
@@ -484,7 +489,8 @@ public class CreatorWindow : EditorWindow
                 if (item.GetComponent<MeshFilter>() == null)
                     item.AddComponent<MeshFilter>().mesh = objectData.Mesh;
                 if (item.GetComponent<MeshRenderer>() == null)
-                    item.AddComponent<MeshRenderer>().material = objectData.Mat;
+                    item.AddComponent<MeshRenderer>().material = Resources.Load<Material>("BuiltItems/Utility/" + objectData.Mat.name);
+                Debug.Log(item.GetComponent<MeshRenderer>().material);
                 if (item.GetComponent<BoxCollider>() == null)
                     item.AddComponent<BoxCollider>();
             }
@@ -569,13 +575,15 @@ public class CreatorWindow : EditorWindow
         }
     }
     //Handles the viewing of each slot
-    protected void ViewItem(GameObject _holderTransform)
+    void ShowCamera()
     {
         Camera camera = GameObject.Find("ItemViewCamera").GetComponent<Camera>();
-        if (camera != null)
-        {
-            Texture view = camera.activeTexture;
-            GUILayout.Label(view);
+        Texture view = camera.activeTexture;
+        GUILayout.Label(view);
+    }
+    protected void ViewItem(GameObject _holderTransform)
+    {
+ 
             foreach (Transform t in _holderTransform.transform)
             {
                 if (t.GetSiblingIndex() < slotAmount)
@@ -597,6 +605,8 @@ public class CreatorWindow : EditorWindow
                         _holderTransform.transform.GetChild(i).transform.localScale = m_itemScale[i];
                     }
                     _holderTransform.transform.GetChild(i).localEulerAngles = new Vector3(m_itemRotation[i].x, m_itemRotation[i].y, m_itemRotation[i].z);
+                    if (_holderTransform.transform.GetChild(i).GetComponent<ScriptableObjectHolder>() == null)
+                        _holderTransform.transform.GetChild(i).gameObject.AddComponent<ScriptableObjectHolder>();
                     _holderTransform.transform.GetChild(i).GetComponent<ScriptableObjectHolder>().data = ItemBaseParts[PartIDs[i]];
                     _holderTransform.transform.GetChild(i).GetComponent<ScriptableObjectHolder>().ResetValues();
                 }
@@ -617,8 +627,7 @@ public class CreatorWindow : EditorWindow
                     if (_holderTransform.transform.GetChild(i).GetComponent<SpriteRenderer>() == null)
                         _holderTransform.transform.GetChild(i).gameObject.AddComponent<SpriteRenderer>();
                 }
-                if (_holderTransform.transform.GetChild(i).GetComponent<ScriptableObjectHolder>() == null)
-                    _holderTransform.transform.GetChild(i).gameObject.AddComponent<ScriptableObjectHolder>();
+        
                 if (i == m_slotIndex)
                 {
                     if (_holderTransform.transform.GetChild(m_slotIndex).GetComponent<SpriteRenderer>() != null)
@@ -642,7 +651,7 @@ public class CreatorWindow : EditorWindow
                     }
                 }
 
-            }
+            
           
         }
     }
