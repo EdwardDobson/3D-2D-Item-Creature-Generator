@@ -138,7 +138,7 @@ public class CreatorWindow : EditorWindow
 
         for (int i = 0; i < slotAmount; ++i)
         {
-            if(!m_slotNames.Contains("Slot " + (i+1)))
+            if (!m_slotNames.Contains("Slot " + (i + 1)))
             {
                 m_slotNames.Add("Slot " + (i + 1));
             }
@@ -293,16 +293,19 @@ public class CreatorWindow : EditorWindow
             m_viewCamera.orthographicSize = GUILayout.HorizontalSlider(m_viewCamera.orthographicSize, 1, 15);
             if (!aspectMode)
             {
+                AddSlots(m_holder.GetChild(0).gameObject);
                 ViewItem(m_holder.GetChild(0).gameObject);
                 m_holder.GetChild(0).gameObject.SetActive(true);
                 m_holder.GetChild(1).gameObject.SetActive(false);
             }
             else if (aspectMode)
             {
+                AddSlots(m_holder.GetChild(1).gameObject);
                 ViewItem(m_holder.GetChild(1).gameObject);
                 m_holder.GetChild(0).gameObject.SetActive(false);
                 m_holder.GetChild(1).gameObject.SetActive(true);
             }
+
         }
 
     }
@@ -354,8 +357,18 @@ public class CreatorWindow : EditorWindow
         {
             PartNames.Add(_items[i].Name);
         }
+
+
+        ItemBaseParts = _items;
+        if (!aspectMode || aspectMode)
+        {
+            if (_items.Count < 1)
+                GUILayout.Label("You need more parts to build the item");
+        }
+    }
+    protected void Slots()
+    {
         m_slotIndex = EditorGUILayout.Popup("", m_slotIndex, m_slotNames.ToArray());
-        
         for (int i = 0; i < slotAmount; ++i)
         {
             if (i == m_slotIndex && m_slotIndex <= slotAmount)
@@ -388,22 +401,16 @@ public class CreatorWindow : EditorWindow
                 {
                     m_itemRotation[i].z = 0;
                 }
-                if (GUILayout.Button("Reset Slot " + (i+1)))
+                if (GUILayout.Button("Reset Slot " + (i + 1)))
                 {
                     ResetSingleSlotValues(i);
                 }
             }
-         
+
         }
         if (GUILayout.Button("Reset All Slots"))
         {
             ResetSlotValues();
-        }
-        ItemBaseParts = _items;
-        if (!aspectMode || aspectMode)
-        {
-            if (_items.Count < 1)
-                GUILayout.Label("You need more parts to build the item");
         }
     }
     //Resets the parameters of the slots
@@ -580,7 +587,7 @@ public class CreatorWindow : EditorWindow
             {
                 if (t.GetSiblingIndex() < slotAmount)
                 {
-                   t.gameObject.SetActive(true);
+                    t.gameObject.SetActive(true);
                 }
                 else
                 {
@@ -643,10 +650,47 @@ public class CreatorWindow : EditorWindow
                 }
 
             }
-          
+
         }
     }
+    protected void AddSlots(GameObject _holderTransform)
+    {
+        for (int i = 0; i < slotAmount; ++i)
+        {
+            if (_holderTransform.transform.childCount < slotAmount)
+            {
+                if (!aspectMode)//2D
+                {
+                    GameObject slotClone = new GameObject();
+                    slotClone.name = "Slot2D";
+                    if (slotClone.GetComponent<BoxCollider2D>() == null)
+                        slotClone.AddComponent<BoxCollider2D>();
 
+                    if (slotClone.GetComponent<SpriteRenderer>() == null)
+                        slotClone.gameObject.AddComponent<SpriteRenderer>();
+                    if (slotClone.GetComponent<ScriptableObjectHolder>() == null)
+                        slotClone.AddComponent<ScriptableObjectHolder>();
+                    slotClone.transform.SetParent(_holderTransform.transform);
+                }
+                if (aspectMode)//3D
+                {
+                    GameObject slotClone = new GameObject();
+                    slotClone.name = "Slot3D";
+                    if (slotClone.GetComponent<BoxCollider>() == null)
+                        slotClone.AddComponent<BoxCollider>();
+                    if (slotClone.GetComponent<MeshFilter>() == null)
+                        slotClone.AddComponent<MeshFilter>();
+                    if (slotClone.GetComponent<MeshRenderer>() == null)
+                        slotClone.AddComponent<MeshRenderer>();
+                    slotClone.GetComponent<MeshRenderer>().material = Resources.Load("BuiltItems/Utility/Base", typeof(Material)) as Material;
+                    if (slotClone.GetComponent<ScriptableObjectHolder>() == null)
+                        slotClone.AddComponent<ScriptableObjectHolder>();
+                    slotClone.transform.SetParent(_holderTransform.transform);
+                }
+             
+            }
+        }
+    }
     protected void OnDestroy()
     {
         ClearObjectData();
