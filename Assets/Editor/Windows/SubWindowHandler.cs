@@ -16,6 +16,7 @@ public class SubWindowHandler : CreatorWindow
         ScrollbarStart();
         BaseFunction();
         Camera();
+        Slots();
         ShowList();
         EndView();
     }

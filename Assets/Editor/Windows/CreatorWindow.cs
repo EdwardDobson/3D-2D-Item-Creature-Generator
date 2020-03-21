@@ -331,34 +331,9 @@ public class CreatorWindow : EditorWindow
             }
         }
     }
-    //Handles showing each of the parts the user can use
-    protected void ShowList()
+    //Handles displaying the slot info
+    protected void Slots()
     {
-        UnityEngine.Object[] m_parts = Resources.LoadAll("BuiltItems/", typeof(ScriptableObjectData));
-        List<ScriptableObjectData> _items = new List<ScriptableObjectData>();
-        PartNames.Clear();
-        Parts.Clear();
-        if (Parts.Count != m_parts.Length)
-        {
-            Parts.Clear();
-            for (int i = 0; i < m_parts.Length; ++i)
-            {
-                if (!Parts.Contains((ScriptableObjectData)m_parts[i]))
-                    Parts.Add((ScriptableObjectData)m_parts[i]);
-            }
-        }
-        for (int i = 0; i < Parts.Count; ++i)
-        {
-            if (Parts[i].AspectMode == aspectMode)
-            {
-                if (Parts[i].Type == m_type)
-                    _items.Add(Parts[i]);
-            }
-        }
-        for (int i = 0; i < _items.Count; ++i)
-        {
-            PartNames.Add(_items[i].Name);
-        }
         m_slotIndex = EditorGUILayout.Popup("", m_slotIndex, m_slotNames.ToArray());
 
         for (int i = 0; i < slotAmount; ++i)
@@ -404,6 +379,36 @@ public class CreatorWindow : EditorWindow
         {
             ResetSlotValues();
         }
+    }
+    //Handles showing each of the parts the user can use
+    protected void ShowList()
+    {
+        UnityEngine.Object[] m_parts = Resources.LoadAll("BuiltItems/", typeof(ScriptableObjectData));
+        List<ScriptableObjectData> _items = new List<ScriptableObjectData>();
+        PartNames.Clear();
+        Parts.Clear();
+        if (Parts.Count != m_parts.Length)
+        {
+            Parts.Clear();
+            for (int i = 0; i < m_parts.Length; ++i)
+            {
+                if (!Parts.Contains((ScriptableObjectData)m_parts[i]))
+                    Parts.Add((ScriptableObjectData)m_parts[i]);
+            }
+        }
+        for (int i = 0; i < Parts.Count; ++i)
+        {
+            if (Parts[i].AspectMode == aspectMode)
+            {
+                if (Parts[i].Type == m_type)
+                    _items.Add(Parts[i]);
+            }
+        }
+        for (int i = 0; i < _items.Count; ++i)
+        {
+            PartNames.Add(_items[i].Name);
+        }
+      
         ItemBaseParts = _items;
         if (!aspectMode || aspectMode)
         {
@@ -543,11 +548,8 @@ public class CreatorWindow : EditorWindow
                     {
                       
                         m_holder.transform.GetChild(0).GetChild(m_slotIndex).GetComponent<SpriteRenderer>().color = Color.white;
-                    Debug.Log("Fixing material");
+             
                     }
-                
-            
-
                 PrefabUtility.SaveAsPrefabAsset(item, "Assets/Resources/BuiltItems/" + folderNames[m_saveDirIndex] + "/" + itemNameCombined);
                 AssetDatabase.Refresh();
                 for (int i = 0; i < m_itemPos.Length; ++i)
