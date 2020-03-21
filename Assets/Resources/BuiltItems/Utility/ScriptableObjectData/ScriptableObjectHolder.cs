@@ -8,13 +8,14 @@ public class ScriptableObjectHolder : MonoBehaviour
     void Start()
     {
         ResetValues();
+
     }
     public void ResetValues()
     {
+
         if(data != null)
         {
 
-        
         if (GetComponent<SpriteRenderer>() != null && data != null && transform.childCount <= 0)
         {
             GetComponent<SpriteRenderer>().sprite = data.Sprite;
@@ -29,6 +30,7 @@ public class ScriptableObjectHolder : MonoBehaviour
         else if (GetComponent<MeshRenderer>() != null && data.Mesh != null && transform.childCount <= 0)
         {
             GetComponent<MeshFilter>().mesh = data.Mesh;
+                GetComponent<MeshRenderer>().sharedMaterial = data.Mat;
                 Vector3 Size = data.Mesh.bounds.size;
                 GetComponent<BoxCollider>().size = Size;
        

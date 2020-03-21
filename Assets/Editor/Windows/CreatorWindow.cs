@@ -138,7 +138,7 @@ public class CreatorWindow : EditorWindow
 
         for (int i = 0; i < slotAmount; ++i)
         {
-            if(!m_slotNames.Contains("Slot " + (i+1)))
+            if (!m_slotNames.Contains("Slot " + (i + 1)))
             {
                 m_slotNames.Add("Slot " + (i + 1));
             }
@@ -291,7 +291,7 @@ public class CreatorWindow : EditorWindow
             }
             CreateLabel(15, new RectOffset(5, 0, 0, 0), "Camera Zoom");
             m_viewCamera.orthographicSize = GUILayout.HorizontalSlider(m_viewCamera.orthographicSize, 1, 15);
-      
+
         }
         if (!aspectMode)
         {
@@ -305,11 +305,11 @@ public class CreatorWindow : EditorWindow
             m_holder.GetChild(0).gameObject.SetActive(false);
             m_holder.GetChild(1).gameObject.SetActive(true);
         }
-        for(int i =0;i < slotAmount; ++i)
+        for (int i = 0; i < slotAmount; ++i)
         {
             m_holder.transform.GetChild(0).GetChild(i).gameObject.SetActive(true);
         }
-       
+
     }
     public void CloseButton()
     {
@@ -360,7 +360,7 @@ public class CreatorWindow : EditorWindow
             PartNames.Add(_items[i].Name);
         }
         m_slotIndex = EditorGUILayout.Popup("", m_slotIndex, m_slotNames.ToArray());
-        
+
         for (int i = 0; i < slotAmount; ++i)
         {
             if (i == m_slotIndex && m_slotIndex <= slotAmount)
@@ -393,12 +393,12 @@ public class CreatorWindow : EditorWindow
                 {
                     m_itemRotation[i].z = 0;
                 }
-                if (GUILayout.Button("Reset Slot " + (i+1)))
+                if (GUILayout.Button("Reset Slot " + (i + 1)))
                 {
                     ResetSingleSlotValues(i);
                 }
             }
-         
+
         }
         if (GUILayout.Button("Reset All Slots"))
         {
@@ -489,8 +489,7 @@ public class CreatorWindow : EditorWindow
                 if (item.GetComponent<MeshFilter>() == null)
                     item.AddComponent<MeshFilter>().mesh = objectData.Mesh;
                 if (item.GetComponent<MeshRenderer>() == null)
-                    item.AddComponent<MeshRenderer>().material = Resources.Load<Material>("BuiltItems/Utility/" + objectData.Mat.name);
-                Debug.Log(item.GetComponent<MeshRenderer>().material);
+                    item.AddComponent<MeshRenderer>().material = objectData.Mat;
                 if (item.GetComponent<BoxCollider>() == null)
                     item.AddComponent<BoxCollider>();
             }
@@ -539,6 +538,16 @@ public class CreatorWindow : EditorWindow
                 AssetDatabase.CreateAsset(itemData, "Assets/Resources/BuiltItems/" + folderNames[m_saveDirIndex] + "/" + itemName + ".asset");
                 item.GetComponent<ScriptableObjectHolder>().data = (ScriptableObjectData)AssetDatabase.LoadAssetAtPath("Assets/Resources/BuiltItems/" + folderNames[m_saveDirIndex] + "/" + itemName + ".asset", typeof(ScriptableObjectData));
                 Debug.Log("Building item");
+              
+                    if (m_holder.transform.GetChild(0).GetChild(m_slotIndex).GetComponent<SpriteRenderer>() != null)
+                    {
+                      
+                        m_holder.transform.GetChild(0).GetChild(m_slotIndex).GetComponent<SpriteRenderer>().color = Color.white;
+                    Debug.Log("Fixing material");
+                    }
+                
+            
+
                 PrefabUtility.SaveAsPrefabAsset(item, "Assets/Resources/BuiltItems/" + folderNames[m_saveDirIndex] + "/" + itemNameCombined);
                 AssetDatabase.Refresh();
                 for (int i = 0; i < m_itemPos.Length; ++i)
@@ -583,77 +592,115 @@ public class CreatorWindow : EditorWindow
     }
     protected void ViewItem(GameObject _holderTransform)
     {
- 
-            foreach (Transform t in _holderTransform.transform)
+
+        foreach (Transform t in _holderTransform.transform)
+        {
+            if (t.GetSiblingIndex() < slotAmount)
             {
-                if (t.GetSiblingIndex() < slotAmount)
+                t.gameObject.SetActive(true);
+            }
+            else
+            {
+                t.gameObject.SetActive(false);
+            }
+        }
+        for (int i = 0; i < slotAmount; ++i)
+        {
+            if (!currentWindowName.Contains("Part") && ItemBaseParts.Count > 0)
+            {
+                _holderTransform.transform.GetChild(i).transform.position = m_itemPos[i];
+                if (m_itemScale[i].x >= 1 || m_itemScale[i].y >= 1 || m_itemScale[i].z >= 1)
                 {
-                   t.gameObject.SetActive(true);
+                    _holderTransform.transform.GetChild(i).transform.localScale = m_itemScale[i];
                 }
-                else
+                _holderTransform.transform.GetChild(i).localEulerAngles = new Vector3(m_itemRotation[i].x, m_itemRotation[i].y, m_itemRotation[i].z);
+                if (_holderTransform.transform.GetChild(i).GetComponent<ScriptableObjectHolder>() == null)
+                    _holderTransform.transform.GetChild(i).gameObject.AddComponent<ScriptableObjectHolder>();
+                _holderTransform.transform.GetChild(i).GetComponent<ScriptableObjectHolder>().data = ItemBaseParts[PartIDs[i]];
+                _holderTransform.transform.GetChild(i).GetComponent<ScriptableObjectHolder>().ResetValues();
+            }
+            if (_holderTransform.name == "PartHolder3D")
+            {
+                if (_holderTransform.transform.GetChild(i).GetComponent<BoxCollider>() == null)
+                    _holderTransform.transform.GetChild(i).gameObject.AddComponent<BoxCollider>();
+                if (_holderTransform.transform.GetChild(i).GetComponent<MeshFilter>() == null)
+                    _holderTransform.transform.GetChild(i).gameObject.AddComponent<MeshFilter>();
+                if (_holderTransform.transform.GetChild(i).GetComponent<MeshRenderer>() == null)
+                    _holderTransform.transform.GetChild(i).gameObject.AddComponent<MeshRenderer>();
+            }
+            else
+            {
+                if (_holderTransform.transform.GetChild(i).GetComponent<BoxCollider2D>() == null)
+                    _holderTransform.transform.GetChild(i).gameObject.AddComponent<BoxCollider2D>();
+
+                if (_holderTransform.transform.GetChild(i).GetComponent<SpriteRenderer>() == null)
+                    _holderTransform.transform.GetChild(i).gameObject.AddComponent<SpriteRenderer>();
+            }
+
+        
+                
+        }
+
+
+        if (_holderTransform.transform.GetChild(m_slotIndex).GetComponent<MeshRenderer>() != null)
+        {
+            var tempMaterial = new Material(_holderTransform.transform.GetChild(m_slotIndex).GetComponent<MeshRenderer>().sharedMaterial);
+            tempMaterial.color = Color.red;
+            _holderTransform.transform.GetChild(m_slotIndex).GetComponent<MeshRenderer>().sharedMaterial = tempMaterial;
+        }
+        for(int i = 0; i < _holderTransform.transform.childCount; ++i)
+        {
+            if(i == m_slotIndex)
+            {
+                if (_holderTransform.transform.GetChild(m_slotIndex).GetComponent<SpriteRenderer>() != null)
                 {
-                    t.gameObject.SetActive(false);
+                    _holderTransform.transform.GetChild(m_slotIndex).GetComponent<SpriteRenderer>().color = new Color(1, 0, 0);
                 }
             }
-            for (int i = 0; i < slotAmount; ++i)
+            else
             {
-                if (!currentWindowName.Contains("Part") && ItemBaseParts.Count > 0)
+                if (_holderTransform.transform.GetChild(i).GetComponent<SpriteRenderer>() != null)
                 {
-                    _holderTransform.transform.GetChild(i).transform.position = m_itemPos[i];
-                    if (m_itemScale[i].x >= 1 || m_itemScale[i].y >= 1 || m_itemScale[i].z >= 1)
-                    {
-                        _holderTransform.transform.GetChild(i).transform.localScale = m_itemScale[i];
-                    }
-                    _holderTransform.transform.GetChild(i).localEulerAngles = new Vector3(m_itemRotation[i].x, m_itemRotation[i].y, m_itemRotation[i].z);
-                    if (_holderTransform.transform.GetChild(i).GetComponent<ScriptableObjectHolder>() == null)
-                        _holderTransform.transform.GetChild(i).gameObject.AddComponent<ScriptableObjectHolder>();
-                    _holderTransform.transform.GetChild(i).GetComponent<ScriptableObjectHolder>().data = ItemBaseParts[PartIDs[i]];
-                    _holderTransform.transform.GetChild(i).GetComponent<ScriptableObjectHolder>().ResetValues();
+                    _holderTransform.transform.GetChild(i).GetComponent<SpriteRenderer>().color = new Color(1,1, 1);
                 }
-                if (_holderTransform.name == "PartHolder3D")
-                {
-                    if (_holderTransform.transform.GetChild(i).GetComponent<BoxCollider>() == null)
-                        _holderTransform.transform.GetChild(i).gameObject.AddComponent<BoxCollider>();
-                    if (_holderTransform.transform.GetChild(i).GetComponent<MeshFilter>() == null)
-                        _holderTransform.transform.GetChild(i).gameObject.AddComponent<MeshFilter>();
-                    if (_holderTransform.transform.GetChild(i).GetComponent<MeshRenderer>() == null)
-                        _holderTransform.transform.GetChild(i).gameObject.AddComponent<MeshRenderer>();
-                }
-                else
-                {
-                    if (_holderTransform.transform.GetChild(i).GetComponent<BoxCollider2D>() == null)
-                        _holderTransform.transform.GetChild(i).gameObject.AddComponent<BoxCollider2D>();
-
-                    if (_holderTransform.transform.GetChild(i).GetComponent<SpriteRenderer>() == null)
-                        _holderTransform.transform.GetChild(i).gameObject.AddComponent<SpriteRenderer>();
-                }
-        
-                if (i == m_slotIndex)
-                {
-                    if (_holderTransform.transform.GetChild(m_slotIndex).GetComponent<SpriteRenderer>() != null)
-                    {
-                        _holderTransform.transform.GetChild(m_slotIndex).GetComponent<SpriteRenderer>().color = new Color(1, 0, 0);
-                    }
-                    else if (_holderTransform.transform.GetChild(m_slotIndex).GetComponent<MeshRenderer>() != null)
-                    {
-                        _holderTransform.transform.GetChild(m_slotIndex).gameObject.GetComponent<MeshRenderer>().sharedMaterial.SetColor("_Color", Color.red);
-                    }
-                }
-                else
-                {
-                    if (_holderTransform.transform.GetChild(i).GetComponent<SpriteRenderer>() != null)
-                    {
-                        _holderTransform.transform.GetChild(i).GetComponent<SpriteRenderer>().color = new Color(1, 1, 1);
-                    }
-                    else if (_holderTransform.transform.GetChild(i).GetComponent<MeshRenderer>() != null)
-                    {
-                        _holderTransform.transform.GetChild(i).gameObject.GetComponent<MeshRenderer>().sharedMaterial.SetColor("_Color", Color.white);
-                    }
-                }
-
-            
-          
+            }
+         
         }
+    
+
+        /*
+    if (i == m_slotIndex)
+    {
+        if (_holderTransform.transform.GetChild(m_slotIndex).GetComponent<SpriteRenderer>() != null)
+        {
+            _holderTransform.transform.GetChild(m_slotIndex).GetComponent<SpriteRenderer>().color = new Color(1, 0, 0);
+        }
+        if (_holderTransform.transform.GetChild(m_slotIndex).GetComponent<MeshRenderer>() != null)
+        {
+            _holderTransform.transform.GetChild(m_slotIndex).gameObject.GetComponent<MeshRenderer>().sharedMaterial.SetColor("_Color", Color.red);
+                Debug.Log("Hi");
+
+        }
+            break;
+    }
+    else
+        { 
+
+        if (_holderTransform.transform.GetChild(i).GetComponent<SpriteRenderer>() != null)
+        {
+            _holderTransform.transform.GetChild(i).GetComponent<SpriteRenderer>().color = new Color(1, 1, 1);
+        }
+        if (_holderTransform.transform.GetChild(i).GetComponent<MeshRenderer>() != null)
+        {
+            _holderTransform.transform.GetChild(i).gameObject.GetComponent<MeshRenderer>().sharedMaterial.SetColor("_Color", Color.white);
+
+        }
+
+    }
+
+
+    }
+       */
     }
 
     protected void OnDestroy()

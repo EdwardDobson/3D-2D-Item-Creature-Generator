@@ -19,8 +19,9 @@ MonoBehaviour:
   Mat: {fileID: 2100000, guid: e1be9651ff3024248bdf38cd0a3d1bd5, type: 2}
   BuffValueMaterial: 0
   Type: 1
+  CreaturePartType: 0
   Rarity: 0
-  BuffValuePart: 0
+  BuffValuePart: 50
   BuffValuePart2: 2
   Duration: 0
   AspectMode: 1
