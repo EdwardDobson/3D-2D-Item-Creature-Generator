@@ -20,9 +20,9 @@ public class CreatorWindow : EditorWindow
     Material m_itemMaterial;
     string m_aspectName;
     ItemType m_type;
-    Vector3[] m_itemPos = new Vector3[6];
-    Vector3[] m_itemScale = new Vector3[6];
-    Vector3[] m_itemRotation = new Vector3[6];
+    Vector3[] m_itemPos = new Vector3[17];
+    Vector3[] m_itemScale = new Vector3[17];
+    Vector3[] m_itemRotation = new Vector3[17];
     Camera m_viewCamera;
     Transform m_viewCameraTransform;
     Transform m_holder;
@@ -42,7 +42,7 @@ public class CreatorWindow : EditorWindow
     protected List<ScriptableObjectData> ItemBaseParts = new List<ScriptableObjectData>();
     protected UnityEngine.Object[] Rarities;
     protected List<RarityBaseData> RaritiesList = new List<RarityBaseData>();
-    protected int[] PartIDs = new int[6];
+    protected int[] PartIDs = new int[17];
     protected bool aspectMode;
     protected List<string> PartNames = new List<string>();
     protected int slotAmount;
@@ -190,7 +190,7 @@ public class CreatorWindow : EditorWindow
                         break;
                     case "Creature Builder":
                         m_type = ItemType.eCreaturePart;
-                        slotAmount = 6;
+                        slotAmount = 17;
                         break;
                     case "Potion Builder":
                     case "Material Builder":
@@ -614,6 +614,7 @@ public class CreatorWindow : EditorWindow
         {
             if (!currentWindowName.Contains("Part") && ItemBaseParts.Count > 0)
             {
+              
                 _holderTransform.transform.GetChild(i).transform.position = m_itemPos[i];
                 if (m_itemScale[i].x >= 1 || m_itemScale[i].y >= 1 || m_itemScale[i].z >= 1)
                 {
@@ -624,6 +625,7 @@ public class CreatorWindow : EditorWindow
                     _holderTransform.transform.GetChild(i).gameObject.AddComponent<ScriptableObjectHolder>();
                 _holderTransform.transform.GetChild(i).GetComponent<ScriptableObjectHolder>().data = ItemBaseParts[PartIDs[i]];
                 _holderTransform.transform.GetChild(i).GetComponent<ScriptableObjectHolder>().ResetValues();
+            
             }
             if (_holderTransform.name == "PartHolder3D")
             {
@@ -642,11 +644,42 @@ public class CreatorWindow : EditorWindow
                 if (_holderTransform.transform.GetChild(i).GetComponent<SpriteRenderer>() == null)
                     _holderTransform.transform.GetChild(i).gameObject.AddComponent<SpriteRenderer>();
             }
+            if (_holderTransform.transform.GetChild(i).GetComponent<ScriptableObjectHolder>().data.Name == "None")
+            {
+                if (aspectMode)
+                {
+                    _holderTransform.transform.GetChild(i).gameObject.GetComponent<MeshRenderer>().enabled = false;
+                    Debug.Log("Clearing mesh");
+                    _holderTransform.transform.GetChild(i).gameObject.GetComponent<BoxCollider>().enabled = false;
+                }
+                else
+                {
+                    _holderTransform.transform.GetChild(i).gameObject.GetComponent<SpriteRenderer>().enabled = false;
+                    Debug.Log("Clearing sprite");
+                    _holderTransform.transform.GetChild(i).gameObject.GetComponent<BoxCollider2D>().enabled = false;
+                }
 
-        
-                
+
+
+            }
+            else if (_holderTransform.transform.GetChild(m_slotIndex).GetComponent<ScriptableObjectHolder>().data.Name != "None")
+            {
+                if (aspectMode)
+                {
+                    _holderTransform.transform.GetChild(i).gameObject.GetComponent<BoxCollider>().enabled = true;
+                    _holderTransform.transform.GetChild(i).gameObject.GetComponent<MeshRenderer>().enabled = true;
+                }
+                else
+                {
+                    _holderTransform.transform.GetChild(i).gameObject.GetComponent<SpriteRenderer>().enabled = true;
+                    _holderTransform.transform.GetChild(i).gameObject.GetComponent<BoxCollider2D>().enabled = true;
+                }
+
+            }
+
+
         }
-
+ 
 
         if (_holderTransform.transform.GetChild(m_slotIndex).GetComponent<MeshRenderer>() != null)
         {
