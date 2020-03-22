@@ -21,7 +21,7 @@ MonoBehaviour:
   Type: 2
   CreaturePartType: 0
   Rarity: 4
-  BuffValuePart: 0
-  BuffValuePart2: 0
+  BuffValuePart: 50
+  BuffValuePart2: 2
   Duration: 0
   AspectMode: 1
