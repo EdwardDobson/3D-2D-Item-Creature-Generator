@@ -410,9 +410,13 @@ public class CreatorWindow : EditorWindow
         }
       
         ItemBaseParts = _items;
+  
+    }
+    protected void CheckCorrectPartsAmount()
+    {
         if (!aspectMode || aspectMode)
         {
-            if (_items.Count < 1)
+            if (ItemBaseParts.Count < 1)
                 GUILayout.Label("You need more parts to build the item");
         }
     }

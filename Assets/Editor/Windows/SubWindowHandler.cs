@@ -18,6 +18,7 @@ public class SubWindowHandler : CreatorWindow
         Camera();
         Slots();
         ShowList();
+        CheckCorrectPartsAmount();
         EndView();
     }
     //_dir example "Potions" _TypeName example "Potion" Make sure that the _dir is all one word
