@@ -10,18 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7773514e10543974d87f318260e6da82, type: 3}
-  m_Name: Iron
+  m_Name: Chest
   m_EditorClassIdentifier: 
-  Name: Iron
-  Description: Iron
+  Name: Chest
+  Description: Chest
   Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
   Mesh: {fileID: 0}
   Mat: {fileID: 2100000, guid: d3159de34d3116740bca629e9cc185b7, type: 2}
   BuffValueMaterial: 4
-  Type: 0
+  Type: 2
   CreaturePartType: 0
-  Rarity: 0
-  BuffValuePart: 0
-  BuffValuePart2: 0
-  Duration: 4
+  Rarity: 4
+  BuffValuePart: 40
+  BuffValuePart2: 2
+  Duration: 0
   AspectMode: 0

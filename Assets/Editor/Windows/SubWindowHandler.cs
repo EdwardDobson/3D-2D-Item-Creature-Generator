@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 //This script contains the base attributes and functions that are used in item building
 public class SubWindowHandler : CreatorWindow
 {
@@ -21,9 +22,22 @@ public class SubWindowHandler : CreatorWindow
         CheckCorrectPartsAmount();
         EndView();
     }
+    protected void AssignMaterial()
+    {
+        materialID = EditorGUILayout.Popup("Material", materialID, PartNames.ToArray());
+        for (int i = 0; i < Materials.Count; ++i)
+        {
+            if (Materials[i] == Materials[materialID])
+            {
+                objectData.BuffValueMaterial = Materials[i].BuffValueMaterial;
+                Debug.Log(Materials[i].Name + objectData.BuffValueMaterial);
+            }
+        }
+    }
     //_dir example "Potions" _TypeName example "Potion" Make sure that the _dir is all one word
     protected void BuildHandle(string _TypeName, ItemType _type, string _dir, float _duration)
     {
+        AssignMaterial();
         if (itemName != "" && itemDescription != "" && objectData.Sprite != null && objectData.Mat != null || objectData.Mesh != null && objectData.Mat != null)
         {
             if (GUILayout.Button("Build " + _TypeName))
@@ -33,7 +47,12 @@ public class SubWindowHandler : CreatorWindow
                 objectData.Description = itemDescription;
                 AssignRarity();
                 if (currentWindowName != "Material Builder")
-                    objectData.BuffValuePart = Parts[PartIDs[0]].BuffValueMaterial * RaritiesList[rarityID].BuffMuliplier;
+                {
+
+                    objectData.BuffValuePart = objectData.BuffValueMaterial * RaritiesList[rarityID].BuffMuliplier;
+                    Debug.Log("Buff" + objectData.BuffValueMaterial);
+
+                }
                 else
                     objectData.BuffValueMaterial = _duration * RaritiesList[rarityID].BuffMuliplier;
                 objectData.Type = _type;

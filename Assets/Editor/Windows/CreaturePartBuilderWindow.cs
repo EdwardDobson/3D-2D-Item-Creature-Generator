@@ -10,7 +10,7 @@ public class CreaturePartBuilderWindow : SubWindowHandler
     {
         Handle("Materials");
         m_speedModifer = EditorGUILayout.FloatField("Speed Value: ", m_speedModifer);
-        
+        objectData.BuffValuePart2 = m_speedModifer;
         if (m_speedModifer < 1)
             m_speedModifer = 1;
         m_creaturePartID = EditorGUILayout.Popup("Part Type", m_creaturePartID, System.Enum.GetNames(typeof(CreatureParts)));

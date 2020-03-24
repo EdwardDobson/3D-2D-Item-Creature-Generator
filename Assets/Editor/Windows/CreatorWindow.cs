@@ -38,13 +38,16 @@ public class CreatorWindow : EditorWindow
     protected ScriptableObjectData objectData;
     protected ItemBase itemBaseData;
     protected int rarityID;
+    protected int materialID;
     protected List<ScriptableObjectData> Parts = new List<ScriptableObjectData>();
     protected List<ScriptableObjectData> ItemBaseParts = new List<ScriptableObjectData>();
+    protected List<ScriptableObjectData> Materials = new List<ScriptableObjectData>();
     protected UnityEngine.Object[] Rarities;
     protected List<RarityBaseData> RaritiesList = new List<RarityBaseData>();
     protected int[] PartIDs = new int[17];
     protected bool aspectMode;
-    protected List<string> PartNames = new List<string>();
+    protected List<string> PartNames = new List<string>();  
+    protected List<string> MaterialNames = new List<string>();
     protected int slotAmount;
     protected List<string> folderNames = new List<string>();
     [MenuItem("Item + Creature Builder/Builder")]
@@ -173,10 +176,11 @@ public class CreatorWindow : EditorWindow
                     PartIDs = new int[slotAmount];
                 }
                 rarityID = EditorGUILayout.Popup("Rarity", rarityID, Enum.GetNames(typeof(Rarity)));
-                if (currentWindowName == "Weapon Part Builder" || currentWindowName == "Armour Part Builder" || currentWindowName == "Material Builder"
+                if (currentWindowName == "Weapon Part Builder" || currentWindowName == "Armour Part Builder" || currentWindowName == "Material Builder" 
                     || currentWindowName == "Creature Part Builder" || currentWindowName == "Potion Builder")
                 {
                     DisplayItemSpriteMesh();
+           
                 }
                 switch (currentWindowName)
                 {
@@ -331,6 +335,7 @@ public class CreatorWindow : EditorWindow
             }
         }
     }
+  
     //Handles displaying the slot info
     protected void Slots()
     {
@@ -340,38 +345,41 @@ public class CreatorWindow : EditorWindow
         {
             if (i == m_slotIndex && m_slotIndex <= slotAmount)
             {
-                PartIDs[i] = EditorGUILayout.Popup("Slot " + (i + 1), PartIDs[i], PartNames.ToArray());
-                m_itemPos[i] = EditorGUILayout.Vector3Field("Position", m_itemPos[i]);
-                m_itemRotation[i] = EditorGUILayout.Vector3Field("Rotation", m_itemRotation[i]);
-                m_itemScale[i] = EditorGUILayout.Vector3Field("Scale", m_itemScale[i]);
-                if (m_itemScale[i].x < 1)
-                {
-                    m_itemScale[i].x = 1;
-                }
-                if (m_itemScale[i].y < 1)
-                {
-                    m_itemScale[i].y = 1;
-                }
-                if (m_itemScale[i].z < 1)
-                {
-                    m_itemScale[i].z = 1;
-                }
-                if (m_itemRotation[i].x > 360 || m_itemRotation[i].x < -360)
-                {
-                    m_itemRotation[i].x = 0;
-                }
-                if (m_itemRotation[i].y > 360 || m_itemRotation[i].y < -360)
-                {
-                    m_itemRotation[i].y = 0;
-                }
-                if (m_itemRotation[i].z > 360 || m_itemRotation[i].z < -360)
-                {
-                    m_itemRotation[i].z = 0;
-                }
-                if (GUILayout.Button("Reset Slot " + (i + 1)))
-                {
-                    ResetSingleSlotValues(i);
-                }
+           
+                    PartIDs[i] = EditorGUILayout.Popup("Slot " + (i + 1), PartIDs[i], PartNames.ToArray());
+                    m_itemPos[i] = EditorGUILayout.Vector3Field("Position", m_itemPos[i]);
+                    m_itemRotation[i] = EditorGUILayout.Vector3Field("Rotation", m_itemRotation[i]);
+                    m_itemScale[i] = EditorGUILayout.Vector3Field("Scale", m_itemScale[i]);
+                    if (m_itemScale[i].x < 0.1f)
+                    {
+                        m_itemScale[i].x = 0.1f;
+                    }
+                    if (m_itemScale[i].y < 0.1f)
+                    {
+                        m_itemScale[i].y = 0.1f;
+                    }
+                    if (m_itemScale[i].z < 0.1f)
+                    {
+                        m_itemScale[i].z = 0.1f;
+                    }
+                    if (m_itemRotation[i].x > 360 || m_itemRotation[i].x < -360)
+                    {
+                        m_itemRotation[i].x = 0;
+                    }
+                    if (m_itemRotation[i].y > 360 || m_itemRotation[i].y < -360)
+                    {
+                        m_itemRotation[i].y = 0;
+                    }
+                    if (m_itemRotation[i].z > 360 || m_itemRotation[i].z < -360)
+                    {
+                        m_itemRotation[i].z = 0;
+                    }
+                    if (GUILayout.Button("Reset Slot " + (i + 1)))
+                    {
+                        ResetSingleSlotValues(i);
+                    }
+                
+            
             }
 
         }
@@ -387,11 +395,14 @@ public class CreatorWindow : EditorWindow
         List<ScriptableObjectData> _items = new List<ScriptableObjectData>();
         PartNames.Clear();
         Parts.Clear();
+        Materials.Clear();
+        MaterialNames.Clear();
         if (Parts.Count != m_parts.Length)
         {
             Parts.Clear();
             for (int i = 0; i < m_parts.Length; ++i)
             {
+                
                 if (!Parts.Contains((ScriptableObjectData)m_parts[i]))
                     Parts.Add((ScriptableObjectData)m_parts[i]);
             }
@@ -402,13 +413,20 @@ public class CreatorWindow : EditorWindow
             {
                 if (Parts[i].Type == m_type)
                     _items.Add(Parts[i]);
+                if (Parts[i].Type == ItemType.eMaterial)
+                    Materials.Add(Parts[i]);
             }
         }
         for (int i = 0; i < _items.Count; ++i)
         {
             PartNames.Add(_items[i].Name);
+
         }
-      
+        for (int i = 0; i < Materials.Count; ++i)
+        {
+            MaterialNames.Add(Materials[i].Name);
+
+        }
         ItemBaseParts = _items;
   
     }
@@ -644,38 +662,39 @@ public class CreatorWindow : EditorWindow
                 if (_holderTransform.transform.GetChild(i).GetComponent<SpriteRenderer>() == null)
                     _holderTransform.transform.GetChild(i).gameObject.AddComponent<SpriteRenderer>();
             }
-            if (_holderTransform.transform.GetChild(i).GetComponent<ScriptableObjectHolder>().data.Name == "None")
+            if(_holderTransform.transform.GetChild(i).GetComponent<ScriptableObjectHolder>().data != null)
             {
-                if (aspectMode)
+                if (_holderTransform.transform.GetChild(i).GetComponent<ScriptableObjectHolder>().data.Name == "None")
                 {
-                    _holderTransform.transform.GetChild(i).gameObject.GetComponent<MeshRenderer>().enabled = false;
-                    Debug.Log("Clearing mesh");
-                    _holderTransform.transform.GetChild(i).gameObject.GetComponent<BoxCollider>().enabled = false;
+                    if (aspectMode)
+                    {
+                        _holderTransform.transform.GetChild(i).gameObject.GetComponent<MeshRenderer>().enabled = false;
+                        Debug.Log("Clearing mesh");
+                        _holderTransform.transform.GetChild(i).gameObject.GetComponent<BoxCollider>().enabled = false;
+                    }
+                    else
+                    {
+                        _holderTransform.transform.GetChild(i).gameObject.GetComponent<SpriteRenderer>().enabled = false;
+                        Debug.Log("Clearing sprite");
+                        _holderTransform.transform.GetChild(i).gameObject.GetComponent<BoxCollider2D>().enabled = false;
+                    }
                 }
-                else
+                else if (_holderTransform.transform.GetChild(m_slotIndex).GetComponent<ScriptableObjectHolder>().data.Name != "None")
                 {
-                    _holderTransform.transform.GetChild(i).gameObject.GetComponent<SpriteRenderer>().enabled = false;
-                    Debug.Log("Clearing sprite");
-                    _holderTransform.transform.GetChild(i).gameObject.GetComponent<BoxCollider2D>().enabled = false;
+                    if (aspectMode)
+                    {
+                        _holderTransform.transform.GetChild(i).gameObject.GetComponent<BoxCollider>().enabled = true;
+                        _holderTransform.transform.GetChild(i).gameObject.GetComponent<MeshRenderer>().enabled = true;
+                    }
+                    else
+                    {
+                        _holderTransform.transform.GetChild(i).gameObject.GetComponent<SpriteRenderer>().enabled = true;
+                        _holderTransform.transform.GetChild(i).gameObject.GetComponent<BoxCollider2D>().enabled = true;
+                    }
+
                 }
-
-
-
             }
-            else if (_holderTransform.transform.GetChild(m_slotIndex).GetComponent<ScriptableObjectHolder>().data.Name != "None")
-            {
-                if (aspectMode)
-                {
-                    _holderTransform.transform.GetChild(i).gameObject.GetComponent<BoxCollider>().enabled = true;
-                    _holderTransform.transform.GetChild(i).gameObject.GetComponent<MeshRenderer>().enabled = true;
-                }
-                else
-                {
-                    _holderTransform.transform.GetChild(i).gameObject.GetComponent<SpriteRenderer>().enabled = true;
-                    _holderTransform.transform.GetChild(i).gameObject.GetComponent<BoxCollider2D>().enabled = true;
-                }
-
-            }
+           
 
 
         }
@@ -705,41 +724,6 @@ public class CreatorWindow : EditorWindow
             }
          
         }
-    
-
-        /*
-    if (i == m_slotIndex)
-    {
-        if (_holderTransform.transform.GetChild(m_slotIndex).GetComponent<SpriteRenderer>() != null)
-        {
-            _holderTransform.transform.GetChild(m_slotIndex).GetComponent<SpriteRenderer>().color = new Color(1, 0, 0);
-        }
-        if (_holderTransform.transform.GetChild(m_slotIndex).GetComponent<MeshRenderer>() != null)
-        {
-            _holderTransform.transform.GetChild(m_slotIndex).gameObject.GetComponent<MeshRenderer>().sharedMaterial.SetColor("_Color", Color.red);
-                Debug.Log("Hi");
-
-        }
-            break;
-    }
-    else
-        { 
-
-        if (_holderTransform.transform.GetChild(i).GetComponent<SpriteRenderer>() != null)
-        {
-            _holderTransform.transform.GetChild(i).GetComponent<SpriteRenderer>().color = new Color(1, 1, 1);
-        }
-        if (_holderTransform.transform.GetChild(i).GetComponent<MeshRenderer>() != null)
-        {
-            _holderTransform.transform.GetChild(i).gameObject.GetComponent<MeshRenderer>().sharedMaterial.SetColor("_Color", Color.white);
-
-        }
-
-    }
-
-
-    }
-       */
     }
 
     protected void OnDestroy()
