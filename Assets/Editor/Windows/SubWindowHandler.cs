@@ -24,15 +24,18 @@ public class SubWindowHandler : CreatorWindow
     }
     protected void AssignMaterial()
     {
-        materialID = EditorGUILayout.Popup("Material", materialID, PartNames.ToArray());
-        for (int i = 0; i < Materials.Count; ++i)
+        if (currentWindowName != "Material Builder")
         {
-            if (Materials[i] == Materials[materialID])
+            materialID = EditorGUILayout.Popup("Material", materialID, PartNames.ToArray());
+            for (int i = 0; i < Materials.Count; ++i)
             {
-                objectData.BuffValueMaterial = Materials[i].BuffValueMaterial;
-                Debug.Log(Materials[i].Name + objectData.BuffValueMaterial);
+                if (Materials[i] == Materials[materialID])
+                {
+                    objectData.BuffValueMaterial = Materials[i].BuffValueMaterial;
+                }
             }
-        }
+
+        }    
     }
     //_dir example "Potions" _TypeName example "Potion" Make sure that the _dir is all one word
     protected void BuildHandle(string _TypeName, ItemType _type, string _dir, float _duration)

@@ -666,13 +666,13 @@ public class CreatorWindow : EditorWindow
                     if (aspectMode)
                     {
                         _holderTransform.transform.GetChild(i).gameObject.GetComponent<MeshRenderer>().enabled = false;
-                        Debug.Log("Clearing mesh");
+                      
                         _holderTransform.transform.GetChild(i).gameObject.GetComponent<BoxCollider>().enabled = false;
                     }
                     else
                     {
                         _holderTransform.transform.GetChild(i).gameObject.GetComponent<SpriteRenderer>().enabled = false;
-                        Debug.Log("Clearing sprite");
+
                         _holderTransform.transform.GetChild(i).gameObject.GetComponent<BoxCollider2D>().enabled = false;
                     }
                 }
