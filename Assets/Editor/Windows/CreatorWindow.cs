@@ -32,6 +32,8 @@ public class CreatorWindow : EditorWindow
     string m_cameraStateName = "Show Camera";
     int m_slotIndex;
     List<string> m_slotNames = new List<string>();
+    GameObject m_slot2DPrefab;
+    GameObject m_slot3DPrefab;
     protected string currentWindowName = "";
     protected string itemName;
     protected string itemDescription;
@@ -129,6 +131,8 @@ public class CreatorWindow : EditorWindow
             Rarities = Resources.LoadAll("BuiltItems/Utility/ScriptableObjectData/RarityData/", typeof(RarityBaseData));
             itemBaseData = Resources.Load<ItemBase>("BuiltItems/Utility/ScriptableObjectData/ItemBase");
             m_holder = GameObject.Find("PartViewHolders").transform;
+            m_slot2DPrefab = Resources.Load<GameObject>("BuiltItems/Utility/Slot2D");
+            m_slot3DPrefab = Resources.Load<GameObject>("BuiltItems/Utility/Slot3D");
             foreach (RarityBaseData r in Rarities)
             {
                 if (!RaritiesList.Contains(r))
@@ -613,7 +617,22 @@ public class CreatorWindow : EditorWindow
     }
     protected void ViewItem(GameObject _holderTransform)
     {
-
+        if (_holderTransform.transform.childCount < slotAmount)
+        {
+            for (int i = 0; i < slotAmount; ++i)
+            {
+                if (!aspectMode)
+                {
+                    GameObject Clone2D = Instantiate(m_slot2DPrefab);
+                    Clone2D.transform.SetParent(_holderTransform.transform);
+                }
+                else
+                {
+                    GameObject Clone3D = Instantiate(m_slot3DPrefab);
+                    Clone3D.transform.SetParent(_holderTransform.transform);
+                }
+            }
+        }
         foreach (Transform t in _holderTransform.transform)
         {
             if (t.GetSiblingIndex() < slotAmount)
@@ -629,50 +648,24 @@ public class CreatorWindow : EditorWindow
         {
             if (!currentWindowName.Contains("Part") && ItemBaseParts.Count > 0)
             {
-
                 _holderTransform.transform.GetChild(i).transform.position = m_itemPos[i];
                 if (m_itemScale[i].x >= 1 || m_itemScale[i].y >= 1 || m_itemScale[i].z >= 1)
                 {
                     _holderTransform.transform.GetChild(i).transform.localScale = m_itemScale[i];
                 }
                 _holderTransform.transform.GetChild(i).localEulerAngles = new Vector3(m_itemRotation[i].x, m_itemRotation[i].y, m_itemRotation[i].z);
-                if (_holderTransform.transform.GetChild(i).GetComponent<ScriptableObjectHolder>() == null)
-                    _holderTransform.transform.GetChild(i).gameObject.AddComponent<ScriptableObjectHolder>();
                 _holderTransform.transform.GetChild(i).GetComponent<ScriptableObjectHolder>().data = ItemBaseParts[PartIDs[i]];
                 _holderTransform.transform.GetChild(i).GetComponent<ScriptableObjectHolder>().ResetValues();
-
-            }
-            if (_holderTransform.name == "PartHolder3D")
-            {
-                if (_holderTransform.transform.GetChild(i).GetComponent<BoxCollider>() == null)
-                    _holderTransform.transform.GetChild(i).gameObject.AddComponent<BoxCollider>();
-                if (_holderTransform.transform.GetChild(i).GetComponent<MeshFilter>() == null)
-                    _holderTransform.transform.GetChild(i).gameObject.AddComponent<MeshFilter>();
-                if (_holderTransform.transform.GetChild(i).GetComponent<MeshRenderer>() == null)
-                    _holderTransform.transform.GetChild(i).gameObject.AddComponent<MeshRenderer>();
-            }
-            else
-            {
-                if (_holderTransform.transform.GetChild(i).GetComponent<BoxCollider2D>() == null)
-                    _holderTransform.transform.GetChild(i).gameObject.AddComponent<BoxCollider2D>();
-
-                if (_holderTransform.transform.GetChild(i).GetComponent<SpriteRenderer>() == null)
-                    _holderTransform.transform.GetChild(i).gameObject.AddComponent<SpriteRenderer>();
-            }
-            if (_holderTransform.transform.GetChild(i).GetComponent<ScriptableObjectHolder>().data != null)
-            {
                 if (_holderTransform.transform.GetChild(i).GetComponent<ScriptableObjectHolder>().data.Name == "None")
                 {
                     if (aspectMode)
                     {
                         _holderTransform.transform.GetChild(i).gameObject.GetComponent<MeshRenderer>().enabled = false;
-                      
                         _holderTransform.transform.GetChild(i).gameObject.GetComponent<BoxCollider>().enabled = false;
                     }
                     else
                     {
                         _holderTransform.transform.GetChild(i).gameObject.GetComponent<SpriteRenderer>().enabled = false;
-
                         _holderTransform.transform.GetChild(i).gameObject.GetComponent<BoxCollider2D>().enabled = false;
                     }
                 }
@@ -688,7 +681,6 @@ public class CreatorWindow : EditorWindow
                         _holderTransform.transform.GetChild(i).gameObject.GetComponent<SpriteRenderer>().enabled = true;
                         _holderTransform.transform.GetChild(i).gameObject.GetComponent<BoxCollider2D>().enabled = true;
                     }
-
                 }
             }
         }
@@ -714,9 +706,8 @@ public class CreatorWindow : EditorWindow
                     _holderTransform.transform.GetChild(i).GetComponent<SpriteRenderer>().color = new Color(1, 1, 1);
                 }
             }
-        }
+        } 
     }
-
     protected void OnDestroy()
     {
         ClearObjectData();
