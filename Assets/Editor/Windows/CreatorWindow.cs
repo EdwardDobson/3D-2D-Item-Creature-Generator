@@ -190,7 +190,7 @@ public class CreatorWindow : EditorWindow
                 {
                     case "Armour Builder":
                         m_type = ItemType.eArmourPart;
-                        slotAmount = 5;
+                        slotAmount = 7;
                         break;
                     case "Weapon Builder":
                         m_type = ItemType.eWeaponPart;
@@ -684,6 +684,10 @@ public class CreatorWindow : EditorWindow
                 }
             }
         }
+        if(_holderTransform.transform.childCount > 0)
+        {
+
+       
         if (_holderTransform.transform.GetChild(m_slotIndex).GetComponent<MeshRenderer>() != null)
         {
             var tempMaterial = new Material(_holderTransform.transform.GetChild(m_slotIndex).GetComponent<MeshRenderer>().sharedMaterial);
@@ -706,7 +710,8 @@ public class CreatorWindow : EditorWindow
                     _holderTransform.transform.GetChild(i).GetComponent<SpriteRenderer>().color = new Color(1, 1, 1);
                 }
             }
-        } 
+        }
+        }
     }
     protected void OnDestroy()
     {
