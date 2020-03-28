@@ -625,11 +625,23 @@ public class CreatorWindow : EditorWindow
                 {
                     GameObject Clone2D = Instantiate(m_slot2DPrefab);
                     Clone2D.transform.SetParent(_holderTransform.transform);
+                    if (Clone2D.GetComponent<BoxCollider2D>() == null)
+                        Clone2D.AddComponent<BoxCollider2D>();
+                    if (Clone2D.GetComponent<SpriteRenderer>() == null)
+                        Clone2D.AddComponent<SpriteRenderer>();
+                    if (Clone2D.GetComponent<ScriptableObjectHolder>() == null)
+                        Clone2D.AddComponent<ScriptableObjectHolder>();
                 }
                 else
                 {
                     GameObject Clone3D = Instantiate(m_slot3DPrefab);
                     Clone3D.transform.SetParent(_holderTransform.transform);
+                    if (Clone3D.GetComponent<BoxCollider>() == null)
+                        Clone3D.AddComponent<BoxCollider>();
+                    if (Clone3D.GetComponent<MeshFilter>() == null)
+                        Clone3D.AddComponent<MeshFilter>();
+                    if (Clone3D.GetComponent<MeshRenderer>() == null)
+                        Clone3D.AddComponent<MeshRenderer>();
                 }
             }
         }
@@ -653,6 +665,25 @@ public class CreatorWindow : EditorWindow
                 {
                     _holderTransform.transform.GetChild(i).transform.localScale = m_itemScale[i];
                 }
+                if(!aspectMode)
+                {
+                    if (_holderTransform.transform.GetChild(i).GetComponent<BoxCollider2D>() == null)
+                        _holderTransform.transform.GetChild(i).gameObject.AddComponent<BoxCollider2D>();
+                    if (_holderTransform.transform.GetChild(i).GetComponent<SpriteRenderer>() == null)
+                        _holderTransform.transform.GetChild(i).gameObject.AddComponent<SpriteRenderer>();
+                }
+                else
+                {
+                    if (_holderTransform.transform.GetChild(i).GetComponent<BoxCollider>() == null)
+                        _holderTransform.transform.GetChild(i).gameObject.AddComponent<BoxCollider>();
+                    if (_holderTransform.transform.GetChild(i).GetComponent<MeshFilter>() == null)
+                        _holderTransform.transform.GetChild(i).gameObject.AddComponent<MeshFilter>();
+                    if (_holderTransform.transform.GetChild(i).GetComponent<MeshRenderer>() == null)
+                        _holderTransform.transform.GetChild(i).transform.GetChild(i).gameObject.AddComponent<MeshRenderer>();
+                }
+                if (_holderTransform.transform.GetChild(i).GetComponent<ScriptableObjectHolder>() == null)
+                    _holderTransform.transform.GetChild(i).gameObject.AddComponent<ScriptableObjectHolder>();
+
                 _holderTransform.transform.GetChild(i).localEulerAngles = new Vector3(m_itemRotation[i].x, m_itemRotation[i].y, m_itemRotation[i].z);
                 _holderTransform.transform.GetChild(i).GetComponent<ScriptableObjectHolder>().data = ItemBaseParts[PartIDs[i]];
                 _holderTransform.transform.GetChild(i).GetComponent<ScriptableObjectHolder>().ResetValues();
