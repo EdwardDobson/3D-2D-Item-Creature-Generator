@@ -722,7 +722,8 @@ public class CreatorWindow : EditorWindow
        
         if (_holderTransform.transform.GetChild(m_slotIndex).GetComponent<MeshRenderer>() != null)
         {
-            var tempMaterial = new Material(_holderTransform.transform.GetChild(m_slotIndex).GetComponent<MeshRenderer>().sharedMaterial);
+                _holderTransform.transform.GetChild(m_slotIndex).GetComponent<MeshRenderer>().sharedMaterial = Resources.Load<Material>("BuiltItems/Utility/Base");
+                var tempMaterial = new Material(_holderTransform.transform.GetChild(m_slotIndex).GetComponent<MeshRenderer>().sharedMaterial);
             tempMaterial.color = Color.red;
             _holderTransform.transform.GetChild(m_slotIndex).GetComponent<MeshRenderer>().sharedMaterial = tempMaterial;
         }
