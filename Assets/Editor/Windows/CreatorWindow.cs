@@ -676,10 +676,11 @@ public class CreatorWindow : EditorWindow
                 {
                     if (_holderTransform.transform.GetChild(i).GetComponent<BoxCollider>() == null)
                         _holderTransform.transform.GetChild(i).gameObject.AddComponent<BoxCollider>();
+                   
+                    if (_holderTransform.transform.GetChild(i).GetComponent<MeshRenderer>() == null)
+                        _holderTransform.transform.GetChild(i).gameObject.AddComponent<MeshRenderer>();
                     if (_holderTransform.transform.GetChild(i).GetComponent<MeshFilter>() == null)
                         _holderTransform.transform.GetChild(i).gameObject.AddComponent<MeshFilter>();
-                    if (_holderTransform.transform.GetChild(i).GetComponent<MeshRenderer>() == null)
-                        _holderTransform.transform.GetChild(i).transform.GetChild(i).gameObject.AddComponent<MeshRenderer>();
                 }
                 if (_holderTransform.transform.GetChild(i).GetComponent<ScriptableObjectHolder>() == null)
                     _holderTransform.transform.GetChild(i).gameObject.AddComponent<ScriptableObjectHolder>();
