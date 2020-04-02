@@ -10,26 +10,28 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8db30e05652b0c54e9be1b24b4f876d7, type: 3}
-  m_Name: ArmourTesdt3D
+  m_Name: hidetest
   m_EditorClassIdentifier: 
-  Name: ArmourTesdt3D
-  Description: 3D
+  Name: hidetest
+  Description: tttt
   Sprite: {fileID: 0}
   Mesh: {fileID: 0}
   Mat: {fileID: 0}
   BuffValueMaterial: 0
   Type: 4
   CreaturePartType: 0
-  Rarity: 5
+  Rarity: 0
   BuffValuePart: 0
   BuffValuePart2: 0
   Duration: 0
   AspectMode: 1
   Slots:
-  - {fileID: 11400000, guid: 7f890b2dd0047bb46bc7ddd4a0fe89a4, type: 2}
+  - {fileID: 11400000, guid: 7b0610dc32ba27c44b3e61d845270062, type: 2}
   - {fileID: 11400000, guid: d7d200ad7e83fb24cb374a620ecf2e46, type: 2}
   - {fileID: 11400000, guid: d7d200ad7e83fb24cb374a620ecf2e46, type: 2}
   - {fileID: 11400000, guid: d7d200ad7e83fb24cb374a620ecf2e46, type: 2}
   - {fileID: 11400000, guid: d7d200ad7e83fb24cb374a620ecf2e46, type: 2}
-  BuffValue: 250
-  Speed: 25
+  - {fileID: 11400000, guid: d7d200ad7e83fb24cb374a620ecf2e46, type: 2}
+  - {fileID: 11400000, guid: d7d200ad7e83fb24cb374a620ecf2e46, type: 2}
+  BuffValue: 0
+  Speed: 0
