@@ -11,31 +11,32 @@ public class CreatorWindow : EditorWindow
     static string[] m_buttonNames = { "Material Builder", "Weapon Builder", "Weapon Part Builder", "Armour Builder", "Armour Part Builder","Creature Builder",
     "Creature Part Builder","Potion Builder", "Rarity Window" , "Folder Window" };
 
-    int m_saveDirIndex;
-    Rect m_buttonSize;
-    int m_screenID;
     bool m_loadData = true;
+    bool m_resetAllSlotsOptions;
+    bool m_resetSingleSlotsOptions;
+    bool m_viewItem;
+    int m_saveDirIndex;
+    int m_screenID;
+    int m_slotIndex;
+    Rect m_buttonSize;
     Sprite m_itemTexture;
     Mesh m_itemMesh;
     Material m_itemMaterial;
     string m_aspectName;
-    bool m_resetAllSlotsOptions;
-    bool m_resetSingleSlotsOptions;
+    string m_cameraStateName = "Show Camera";
     ItemType m_type;
     Vector3[] m_itemPos = new Vector3[17];
     Vector3[] m_itemScale = new Vector3[17];
     Vector3[] m_itemRotation = new Vector3[17];
+    Vector2 m_scrollPos;
     Camera m_viewCamera;
     Transform m_viewCameraTransform;
     Transform m_holder;
-    Vector2 m_scrollPos;
-    bool m_viewItem;
     float m_windowSizeX;
-    string m_cameraStateName = "Show Camera";
-    int m_slotIndex;
     List<string> m_slotNames = new List<string>();
     GameObject m_slot2DPrefab;
     GameObject m_slot3DPrefab;
+
     protected string currentWindowName = "";
     protected string itemName;
     protected string itemDescription;
@@ -43,17 +44,18 @@ public class CreatorWindow : EditorWindow
     protected ItemBase itemBaseData;
     protected int rarityID;
     protected int materialID;
+    protected int slotAmount;
+    protected int[] PartIDs = new int[17];
     protected List<ScriptableObjectData> Parts = new List<ScriptableObjectData>();
     protected List<ScriptableObjectData> ItemBaseParts = new List<ScriptableObjectData>();
     protected List<ScriptableObjectData> Materials = new List<ScriptableObjectData>();
-    protected UnityEngine.Object[] Rarities;
     protected List<RarityBaseData> RaritiesList = new List<RarityBaseData>();
-    protected int[] PartIDs = new int[17];
-    protected bool aspectMode;
     protected List<string> PartNames = new List<string>();
     protected List<string> MaterialNames = new List<string>();
-    protected int slotAmount;
     protected List<string> folderNames = new List<string>();
+    protected UnityEngine.Object[] Rarities;
+    protected bool aspectMode;
+
     [MenuItem("Item + Creature Builder/Builder")]
     static void Init()
     {
@@ -360,15 +362,15 @@ public class CreatorWindow : EditorWindow
                 m_itemScale[i] = EditorGUILayout.Vector3Field("Scale", m_itemScale[i]);
                 if (m_itemScale[i].x < 0.1f)
                 {
-                    m_itemScale[i].x = 0.1f;
+                    m_itemScale[i].x = 1f;
                 }
                 if (m_itemScale[i].y < 0.1f)
                 {
-                    m_itemScale[i].y = 0.1f;
+                    m_itemScale[i].y = 1f;
                 }
                 if (m_itemScale[i].z < 0.1f)
                 {
-                    m_itemScale[i].z = 0.1f;
+                    m_itemScale[i].z = 1f;
                 }
                 if (m_itemRotation[i].x > 360 || m_itemRotation[i].x < -360)
                 {
