@@ -19,6 +19,8 @@ public class CreatorWindow : EditorWindow
     Mesh m_itemMesh;
     Material m_itemMaterial;
     string m_aspectName;
+    bool m_resetAllSlotsOptions;
+    bool m_resetSingleSlotsOptions;
     ItemType m_type;
     Vector3[] m_itemPos = new Vector3[17];
     Vector3[] m_itemScale = new Vector3[17];
@@ -267,6 +269,7 @@ public class CreatorWindow : EditorWindow
             {
                 m_viewCamera.transform.RotateAround(m_viewCameraTransform.position, Vector3.down, 15f);
                 m_viewCamera.transform.LookAt(m_viewCameraTransform);
+               
             }
             if (GUILayout.Button("Rotate Left"))
             {
@@ -291,14 +294,15 @@ public class CreatorWindow : EditorWindow
             {
                 m_viewCamera.transform.position -= Vector3.up * 1f;
             }
+            CreateLabel(15, new RectOffset(5, 0, 0, 0), "Camera Zoom");
+            m_viewCamera.orthographicSize = GUILayout.HorizontalSlider(m_viewCamera.orthographicSize, 1, 15);
             if (GUILayout.Button("Reset Camera"))
             {
                 m_viewCamera.transform.position = new Vector3(0, 0, -5);
                 m_viewCamera.transform.rotation = new Quaternion(0, 0, 0, 0);
                 m_viewCamera.fieldOfView = 60;
+                m_viewCamera.orthographicSize = 1;
             }
-            CreateLabel(15, new RectOffset(5, 0, 0, 0), "Camera Zoom");
-            m_viewCamera.orthographicSize = GUILayout.HorizontalSlider(m_viewCamera.orthographicSize, 1, 15);
 
         }
         if (!aspectMode)
@@ -378,16 +382,71 @@ public class CreatorWindow : EditorWindow
                 {
                     m_itemRotation[i].z = 0;
                 }
-                if (GUILayout.Button("Reset Slot " + (i + 1)))
+                if(!m_resetSingleSlotsOptions)
                 {
-                    ResetSingleSlotValues(i);
+                    if (GUILayout.Button("Reset Slot " + (i + 1) + " Options"))
+                    {
+                        m_resetSingleSlotsOptions = true;
+                    }
                 }
+                if(m_resetSingleSlotsOptions)
+                {
+                    if (GUILayout.Button("Hide Reset Slot " + (i + 1) + " Options"))
+                    {
+                        m_resetSingleSlotsOptions = false;
+                    }
+                    if (GUILayout.Button("Reset Slot " + (i + 1)))
+                    {
+                        ResetSingleSlotValues(i);
+                    }
+                    if (GUILayout.Button("Reset Slot " + (i + 1) + " Position"))
+                    {
+                        ResetSinglePos(i);
+                    }
+                    if (GUILayout.Button("Reset Slot " + (i + 1) + " Rotation"))
+                    {
+                        ResetSingleRotation(i);
+                    }
+                    if (GUILayout.Button("Reset Slot " + (i + 1) + " Scale"))
+                    {
+                        ResetSingleScale(i);
+                    }
+                }
+            
             }
         }
-        if (GUILayout.Button("Reset All Slots"))
+        if (!m_resetAllSlotsOptions)
         {
-            ResetSlotValues();
+            if (GUILayout.Button("Reset All Slots Options"))
+            {
+                m_resetAllSlotsOptions = true;
+            }
         }
+        if(m_resetAllSlotsOptions)
+        {
+            if (GUILayout.Button("Hide Reset All Slots Options"))
+            {
+                m_resetAllSlotsOptions = false;
+            }
+            if (GUILayout.Button("Reset All Slots"))
+            {
+                ResetSlotValues();
+            }
+            if (GUILayout.Button("Reset All Slot " + "Postions"))
+            {
+                ResetSlotPos();
+            }
+            if (GUILayout.Button("Reset All Slot " + "Rotations"))
+            {
+                ResetSlotRotation();
+            }
+            if (GUILayout.Button("Reset All Slots " + "Scales"))
+            {
+                ResetSlotScale();
+            }
+            
+        }
+        
     }
     //Handles showing each of the parts the user can use
     protected void ShowList()
@@ -449,6 +508,28 @@ public class CreatorWindow : EditorWindow
             m_itemPos[i] = new Vector3(0, 0, 0);
         }
     }
+    void ResetSlotPos()
+    {
+        for (int i = 0; i < slotAmount; ++i)
+        {
+            m_itemPos[i] = new Vector3(0, 0, 0);
+        }
+    }
+    void ResetSlotScale()
+    {
+        for (int i = 0; i < slotAmount; ++i)
+        {
+            m_itemScale[i] = new Vector3(1, 1, 1);
+        }
+    }
+    void ResetSlotRotation()
+    {
+        for (int i = 0; i < slotAmount; ++i)
+        {
+            m_itemRotation[i] = new Vector3(0, 0, 0);
+        }
+    }
+    #region SingleSlotResets
     //Resets only a single slot
     void ResetSingleSlotValues(int _index)
     {
@@ -456,6 +537,21 @@ public class CreatorWindow : EditorWindow
         m_itemRotation[_index] = new Vector3(0, 0, 0);
         m_itemPos[_index] = new Vector3(0, 0, 0);
     }
+    void ResetSingleScale(int _index)
+    {
+        m_itemScale[_index] = new Vector3(1, 1, 1);
+    }
+    void ResetSinglePos(int _index)
+    {
+        m_itemPos[_index] = new Vector3(0, 0, 0);
+    }
+    void ResetSingleRotation(int _index)
+    {
+        m_itemRotation[_index] = new Vector3(0, 0, 0);
+
+    }
+    #endregion
+
     public void CreateLabel(int _fontSize, RectOffset _rect, string _labelText)
     {
         GUIStyle style = GUI.skin.GetStyle("label");
