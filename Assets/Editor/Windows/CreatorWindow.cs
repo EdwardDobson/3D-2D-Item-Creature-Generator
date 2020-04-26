@@ -355,7 +355,6 @@ public class CreatorWindow : EditorWindow
         {
             if (i == m_slotIndex && m_slotIndex <= slotAmount)
             {
-
                 PartIDs[i] = EditorGUILayout.Popup("Slot " + (i + 1), PartIDs[i], PartNames.ToArray());
                 m_itemPos[i] = EditorGUILayout.Vector3Field("Position", m_itemPos[i]);
                 m_itemRotation[i] = EditorGUILayout.Vector3Field("Rotation", m_itemRotation[i]);
@@ -414,7 +413,6 @@ public class CreatorWindow : EditorWindow
                         ResetSingleScale(i);
                     }
                 }
-            
             }
         }
         if (!m_resetAllSlotsOptions)
@@ -446,9 +444,7 @@ public class CreatorWindow : EditorWindow
             {
                 ResetSlotScale();
             }
-            
         }
-        
     }
     //Handles showing each of the parts the user can use
     protected void ShowList()
@@ -464,7 +460,6 @@ public class CreatorWindow : EditorWindow
             Parts.Clear();
             for (int i = 0; i < m_parts.Length; ++i)
             {
-
                 if (!Parts.Contains((ScriptableObjectData)m_parts[i]))
                     Parts.Add((ScriptableObjectData)m_parts[i]);
             }
@@ -482,15 +477,12 @@ public class CreatorWindow : EditorWindow
         for (int i = 0; i < m_items.Count; ++i)
         {
             PartNames.Add(m_items[i].Name);
-
         }
         for (int i = 0; i < Materials.Count; ++i)
         {
             MaterialNames.Add(Materials[i].Name);
-
         }
         ItemBaseParts = m_items;
-
     }
     protected void CheckCorrectPartsAmount()
     {
@@ -607,7 +599,6 @@ public class CreatorWindow : EditorWindow
                 item = GameObject.Find("PartViewHolders").transform.GetChild(1).gameObject;
             }
         }
-
         if (currentWindowName.Contains("Part") || currentWindowName == "Potion Builder" || currentWindowName == "Material Builder")
         {
             if (aspectMode)
@@ -644,7 +635,6 @@ public class CreatorWindow : EditorWindow
                 {
                     itemData = Instantiate(objectData);
                 }
-
                 if (!aspectMode)
                 {
                     GameObject.Find("PartViewHolders").transform.GetChild(0).gameObject.name = "PartHolder2D";
@@ -662,14 +652,12 @@ public class CreatorWindow : EditorWindow
                     }
                 }
                 AssetDatabase.CreateAsset(itemData, "Assets/Resources/BuiltItems/" + folderNames[m_saveDirIndex] + "/" + itemName + ".asset");
-                item.GetComponent<ScriptableObjectHolder>().data = (ScriptableObjectData)AssetDatabase.LoadAssetAtPath("Assets/Resources/BuiltItems/" + folderNames[m_saveDirIndex] + "/" + itemName + ".asset", typeof(ScriptableObjectData));
+                item.GetComponent<ScriptableObjectHolder>().data = (ScriptableObjectData)AssetDatabase.LoadAssetAtPath("Assets/Resources/BuiltItems/" + 
+                folderNames[m_saveDirIndex]  + "/" + itemName + ".asset", typeof(ScriptableObjectData));
                 Debug.Log("Building item");
-
                 if (m_holder.transform.GetChild(0).GetChild(m_slotIndex).GetComponent<SpriteRenderer>() != null)
                 {
-
                     m_holder.transform.GetChild(0).GetChild(m_slotIndex).GetComponent<SpriteRenderer>().color = Color.white;
-
                 }
                 PrefabUtility.SaveAsPrefabAsset(item, "Assets/Resources/BuiltItems/" + folderNames[m_saveDirIndex] + "/" + itemNameCombined);
                 AssetDatabase.Refresh();
@@ -682,9 +670,7 @@ public class CreatorWindow : EditorWindow
             {
                 DestroyImmediate(GameObject.Find(item.name));
             }
-
             ResetSlotValues();
-
             DestroyImmediate(GameObject.Find("New Game Object"));
             ClearObjectData();
         }
@@ -816,12 +802,10 @@ public class CreatorWindow : EditorWindow
         }
         if(_holderTransform.transform.childCount > 0)
         {
-
-       
         if (_holderTransform.transform.GetChild(m_slotIndex).GetComponent<MeshRenderer>() != null)
         {
-                _holderTransform.transform.GetChild(m_slotIndex).GetComponent<MeshRenderer>().sharedMaterial = Resources.Load<Material>("BuiltItems/Utility/Base");
-                var tempMaterial = new Material(_holderTransform.transform.GetChild(m_slotIndex).GetComponent<MeshRenderer>().sharedMaterial);
+            _holderTransform.transform.GetChild(m_slotIndex).GetComponent<MeshRenderer>().sharedMaterial = Resources.Load<Material>("BuiltItems/Utility/Base");
+            var tempMaterial = new Material(_holderTransform.transform.GetChild(m_slotIndex).GetComponent<MeshRenderer>().sharedMaterial);
             tempMaterial.color = Color.red;
             _holderTransform.transform.GetChild(m_slotIndex).GetComponent<MeshRenderer>().sharedMaterial = tempMaterial;
         }
