@@ -260,7 +260,6 @@ public class CreatorWindow : EditorWindow
                 m_viewItem = true;
                 m_cameraStateName = "Hide Camera";
             }
-
         }
         m_viewCamera = GameObject.Find("ItemViewCamera").GetComponent<Camera>();
         m_viewCameraTransform = GameObject.Find("ViewCenter").transform;
@@ -270,8 +269,7 @@ public class CreatorWindow : EditorWindow
             if (GUILayout.Button("Rotate Right"))
             {
                 m_viewCamera.transform.RotateAround(m_viewCameraTransform.position, Vector3.down, 15f);
-                m_viewCamera.transform.LookAt(m_viewCameraTransform);
-               
+                m_viewCamera.transform.LookAt(m_viewCameraTransform); 
             }
             if (GUILayout.Button("Rotate Left"))
             {
@@ -305,7 +303,6 @@ public class CreatorWindow : EditorWindow
                 m_viewCamera.fieldOfView = 60;
                 m_viewCamera.orthographicSize = 1;
             }
-
         }
         if (!aspectMode)
         {

@@ -34,7 +34,6 @@ public class SubWindowHandler : CreatorWindow
                     objectData.BuffValueMaterial = Materials[i].BuffValueMaterial;
                 }
             }
-
         }    
     }
     //_dir example "Potions" _TypeName example "Potion" Make sure that the _dir is all one word
@@ -45,16 +44,12 @@ public class SubWindowHandler : CreatorWindow
         {
             if (GUILayout.Button("Build " + _TypeName))
             {
-
                 objectData.Name = itemName;
                 objectData.Description = itemDescription;
                 AssignRarity();
                 if (currentWindowName != "Material Builder")
                 {
-
                     objectData.BuffValuePart = objectData.BuffValueMaterial * RaritiesList[rarityID].BuffMuliplier;
-                    Debug.Log("Buff" + objectData.BuffValueMaterial);
-
                 }
                 else
                     objectData.BuffValueMaterial = _duration * RaritiesList[rarityID].BuffMuliplier;
@@ -62,7 +57,6 @@ public class SubWindowHandler : CreatorWindow
                 objectData.Struct.isFullItem = false;
                 objectData.Duration = _duration * RaritiesList[rarityID].BuffMuliplier;
                 BuildItem(_dir, objectData.Struct);
-
             }
         }
         CloseButton();
@@ -74,18 +68,15 @@ public class SubWindowHandler : CreatorWindow
         {
             if (GUILayout.Button("Build " + _TypeName))
             {
-
                 for (int i = 0; i < itemBaseData.Slots.Length; ++i)
                 {
                     itemBaseData.Slots[i] = _parts[PartIDs[i]];
                 }
-
                 itemBaseData.Name = itemName;
                 itemBaseData.Description = itemDescription;
                 itemBaseData.Type = _type;
                 itemBaseData.Struct.isFullItem = true;
                 AssignRarity();
-
                 itemBaseData.BuffValue = (_parts[PartIDs[0]].BuffValuePart + _parts[PartIDs[1]].BuffValuePart +
                 _parts[PartIDs[2]].BuffValuePart) * RaritiesList[rarityID].BuffMuliplier;
                 itemBaseData.Speed = (_parts[PartIDs[0]].BuffValuePart2 + _parts[PartIDs[1]].BuffValuePart2 +
