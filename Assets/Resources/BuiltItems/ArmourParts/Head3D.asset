@@ -10,18 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7773514e10543974d87f318260e6da82, type: 3}
-  m_Name: Head
+  m_Name: Head3D
   m_EditorClassIdentifier: 
-  Name: Head
-  Description: Head
-  Sprite: {fileID: 21300000, guid: f40e6c21d8febb145af1365e281338f3, type: 3}
-  Mesh: {fileID: 0}
-  Mat: {fileID: 2100000, guid: d3159de34d3116740bca629e9cc185b7, type: 2}
-  BuffValueMaterial: 25
+  Name: Head3D
+  Description: Head3D
+  Sprite: {fileID: 0}
+  Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+  Mat: {fileID: 2100000, guid: e1be9651ff3024248bdf38cd0a3d1bd5, type: 2}
+  BuffValueMaterial: 10
   Type: 2
   CreaturePartType: 0
   Rarity: 4
-  BuffValuePart: 250
+  BuffValuePart: 100
   BuffValuePart2: 5
   Duration: 0
-  AspectMode: 0
+  AspectMode: 1

@@ -10,18 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7773514e10543974d87f318260e6da82, type: 3}
-  m_Name: Head
+  m_Name: Material Showcase
   m_EditorClassIdentifier: 
-  Name: Head
-  Description: Head
-  Sprite: {fileID: 21300000, guid: f40e6c21d8febb145af1365e281338f3, type: 3}
+  Name: Material Showcase
+  Description: Showcase
+  Sprite: {fileID: 21300000, guid: 9a38fe5cec7776643a97f46244d562a6, type: 3}
   Mesh: {fileID: 0}
   Mat: {fileID: 2100000, guid: d3159de34d3116740bca629e9cc185b7, type: 2}
   BuffValueMaterial: 25
-  Type: 2
+  Type: 0
   CreaturePartType: 0
-  Rarity: 4
-  BuffValuePart: 250
-  BuffValuePart2: 5
-  Duration: 0
+  Rarity: 5
+  BuffValuePart: 0
+  BuffValuePart2: 0
+  Duration: 25
   AspectMode: 0

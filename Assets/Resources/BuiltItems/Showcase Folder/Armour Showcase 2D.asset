@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8db30e05652b0c54e9be1b24b4f876d7, type: 3}
-  m_Name: Test
+  m_Name: Armour Showcase 2D
   m_EditorClassIdentifier: 
-  Name: Test
-  Description: Test
+  Name: Armour Showcase 2D
+  Description: 2D
   Sprite: {fileID: 0}
   Mesh: {fileID: 0}
   Mat: {fileID: 0}
@@ -28,10 +28,10 @@ MonoBehaviour:
   Slots:
   - {fileID: 11400000, guid: 7b0610dc32ba27c44b3e61d845270062, type: 2}
   - {fileID: 11400000, guid: 12b774b527310d64b95d90812f84073b, type: 2}
-  - {fileID: 11400000, guid: 12b774b527310d64b95d90812f84073b, type: 2}
-  - {fileID: 11400000, guid: 12b774b527310d64b95d90812f84073b, type: 2}
-  - {fileID: 11400000, guid: 12b774b527310d64b95d90812f84073b, type: 2}
   - {fileID: 11400000, guid: 7b0610dc32ba27c44b3e61d845270062, type: 2}
   - {fileID: 11400000, guid: 12b774b527310d64b95d90812f84073b, type: 2}
-  BuffValue: 2500
-  Speed: 50
+  - {fileID: 11400000, guid: 12b774b527310d64b95d90812f84073b, type: 2}
+  - {fileID: 11400000, guid: 12b774b527310d64b95d90812f84073b, type: 2}
+  - {fileID: 11400000, guid: 12b774b527310d64b95d90812f84073b, type: 2}
+  BuffValue: 5000
+  Speed: 100
