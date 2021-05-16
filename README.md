@@ -5,11 +5,11 @@ Third year final project that can create items and creatures within the Unity Ee
 
 This project users a combination of scriptable objects to save the items/creatures data and custom editor windows. 
 
+[How to import Unity Packages](https://docs.unity3d.com/Manual/AssetPackagesImport.html)
+
 ### ITEM CREATION TUTORIAL ###
 
 Creating an item is a multi stage process following the steps below should yield you a complete item. For the purposes of this example I will be creating a sword. I written tutorial can be seen below, or you can watch [my showcase video](https://user-images.githubusercontent.com/47003895/118391006-06914f00-b62a-11eb-94ff-b1eb8bcdb4dd.mp4)
-
-[How to import Unity Packages](https://docs.unity3d.com/Manual/AssetPackagesImport.html)
 
 
 * Clicking on the window "Item + Creature Builder" at the top will give you a drop down called builder click it.
