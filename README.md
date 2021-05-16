@@ -25,7 +25,7 @@ You can create your own folder now for the items created later.
 
 * The final window is the Weapon Builder. There are a few options to configure in this window such as the amount of slots (*add as many as needed*). You can also move your slots around so your item looks correct. You can view your item via the Show Camera button.
 
-* After clicking builder weapon it will now be added into the folder you have chosen and can be added into your scene.
+* After clicking build weapon it will now be added into the folder you have chosen and can be added into your scene.
 
 
 
