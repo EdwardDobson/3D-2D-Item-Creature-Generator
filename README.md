@@ -16,10 +16,10 @@ Creating an item is a multi stage process following the steps below should yield
 This will display the hub window. This window houses all of the systems that my project offers.
 
 * The first window to use would be the folder window, when opened you will be able to remove/add folders from the Assets/Resources/BuiltItems directory.
-You can create your own folder now for the items created later.
+***You can create your own folder now for the items created later.***
 
 * The next window to use is the Material Builder after filing in all of the information you should be able to build a material these are used as modifiers for item/creature parts.
-  ***If you are making a 2D weapon make sure to make 2D materials.***
+  ***If you are making a 2D item make sure to make 2D materials.***
 
 * Now with your materials created lets move to the Weapon Part Builder. Just like the material builder add in all the details and add the material you want.
 
@@ -27,5 +27,4 @@ You can create your own folder now for the items created later.
 
 * After clicking build weapon it will now be added into the folder you have chosen and can be added into your scene.
 
-
-
+**If there are any problems with my package please let me know**
