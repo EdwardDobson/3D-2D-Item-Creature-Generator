@@ -27,4 +27,4 @@ This will display the hub window. This window houses all of the systems that my 
 
 * After clicking build weapon it will now be added into the folder you have chosen and can be added into your scene.
 
-**If there are any problems with my package please let me know**
+**If there are any problems with my package please let me know.**
