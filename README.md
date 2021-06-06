@@ -9,7 +9,7 @@ This project users a combination of scriptable objects to save the items/creatur
 
 ### ITEM CREATION TUTORIAL ###
 
-Creating an item is a multi stage process following the steps below should yield you a complete item. For the purposes of this example I will be creating a sword. I written tutorial can be seen below, or you can watch my showcase video below [![Watch Video](https://user-images.githubusercontent.com/47003895/120930092-b87ce200-c6e3-11eb-8423-15550a49d973.png)](https://user-images.githubusercontent.com/47003895/118391006-06914f00-b62a-11eb-94ff-b1eb8bcdb4dd.mp4)
+Creating an item is a multi stage process following the steps below should yield you a complete item. For the purposes of this example I will be creating a sword. I written tutorial can be seen below, or you can watch my showcase video below. [![Watch Video](https://user-images.githubusercontent.com/47003895/120930092-b87ce200-c6e3-11eb-8423-15550a49d973.png)](https://user-images.githubusercontent.com/47003895/118391006-06914f00-b62a-11eb-94ff-b1eb8bcdb4dd.mp4)
 
 
 * Clicking on the window "Item + Creature Builder" at the top will give you a drop down called builder click it.
